@@ -1,19 +1,27 @@
-import * as React from "react";
+export const dynamic = 'force-dynamic'
 
-export default function layout({ children }: { children: React.ReactNode }) {
+// default dari next js layout itu merender static page
+// dimana kondisi ini jika ada pemanggilan data melalui sisi server maka akan dibaca oleh next js sepert static site generation
+// meskipun cache dalam api call sudah no-store, nextjs tetap menganggap bahwa pemanggilan di sisi server ialah static site
+// maka digunakan force-dynamic agar memberitahu layout dari next js bahwa api call ini di panggil secara dinamis
+// memaksa layout agar menjadikan halaman layout dirender secara dinamis bukan statis
+
+// kesimpulannya, pemanggilan cookies tidak bisa di halaman statis
+// maka dari itu menggunakan force-dynamic untuk menjadikan halaman layout ini menjadi dinamis
+// default nextJs layout itu dirender secara server dan statis, maka dari itu akan muncul error bahwa cookie tidak bisa dirender di halaman statis
+
+import SideBarLayout from "@/app/(admin)/admin/_clientside/components/sideBarLayout";
+import { handleGetData } from "@/app/(admin)/admin/_serverside/action";
+import { cookies } from "next/headers"
+import * as React from "react"
+
+export default async function layout({ children }: { children: React.ReactNode }) {
+    const token = (await cookies()).get('_token')?.value;
+    const result = await handleGetData(String(token))
+
     return (
-        <aside className="w-full min-h-screen flex">
-            <section className="w-1/5 bg-slate-500 min-h-screen">
-                <div className="py-4 min-h-32 flex items-center px-4 bg-yellow-400">
-                    <div className="rounded-full w-20 h-20 bg-black"></div>
-                </div>
-                <div className="px-4">
-                    <h1>Menu</h1>
-                </div>
-            </section>
-            <section className="w-4/5 h-full">
-                {children}
-            </section>
-        </aside>
-    );
+        <SideBarLayout dataProfil={result?.data}>
+            {children}
+        </SideBarLayout>
+    )
 }

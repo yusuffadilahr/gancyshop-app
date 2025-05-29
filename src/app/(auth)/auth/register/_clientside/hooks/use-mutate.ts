@@ -1,4 +1,4 @@
-import { registerAction } from "@/app/(auth)/auth/register/_serverside/action/register";
+import { registerAction } from "@/app/(auth)/auth/register/_serverside/action";
 import { toast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 

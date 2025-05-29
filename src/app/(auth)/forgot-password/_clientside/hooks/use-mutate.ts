@@ -1,4 +1,4 @@
-import { forgotPasswordAction } from "@/app/(auth)/forgot-password/_serverside/action/forgotPassword";
+import { forgotPasswordAction } from "@/app/(auth)/forgot-password/_serverside/action";
 import { useAppTools } from "@/hooks/use-app";
 import { toast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";

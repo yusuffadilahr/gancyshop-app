@@ -1,4 +1,4 @@
-import { loginAction } from "@/app/(auth)/auth/login/_serverside/action/login"
+import { loginAction } from "@/app/(auth)/auth/login/_serverside/action"
 import { setCookie } from "@/app/_serverside/setCookies"
 import { toast } from "@/hooks/use-toast"
 import { encryptCrypto } from "@/utils/cryptoJs"
@@ -15,15 +15,14 @@ export const useLoginHooks = ({
     const { mutate: handleLogin, isPending } = useMutation({
         mutationFn: async (fd: FormData) => {
             const response = await loginAction(fd)
-            if (!response.error) {
-                return response
-            }
+            return response
         }, onSuccess: (res) => {
             const token = res.data.token
             const role = res.data.role
 
             const encryptedRole = encryptCrypto({ role, key: secretKey as string })
 
+            localStorage.setItem('_token', token)
             setCookie({ data: encryptedRole.toString(), expires: 1, cookieName: '_role' })
             setCookie({ data: token, expires: 1, cookieName: '_token' })
 
