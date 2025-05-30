@@ -2,34 +2,63 @@
 
 import { cookies } from "next/headers"
 
-export const addProductAction = async (fd: FormData) => {
+export const getAllProduct = async ({
+    search = '',
+    page = '1',
+    limit = '10'
+}: {
+    search: string
+    page: string,
+    limit: string
+}) => {
     try {
         const token = (await cookies()).get('_token')?.value
-        const data = {
-            images: fd.get('images'),
-            name: fd.get('name'),
-            description: fd.get('description'),
-            price: fd.get('price'),
-            isActive: fd.get('isActive'),
-            stock: fd.get('stock'),
-            weightGram: fd.get('weightGram'),
-        }
-        console.log(data, '<< dapet ga')
+        const url = 'http://localhost:8000/api/admin/all-products'
 
-        const res = await fetch('http://localhost:8000/api/admin/add-products', {
-            body: JSON.stringify(data),
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            },
-
+        const res = await fetch(`${url}?search=${search}&page=${page}&limit=${limit}`, {
+            method: 'GET',
             cache: 'no-store',
-            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
         })
 
         const result = await res.json()
+        if (!res.ok) throw new Error('Gagal mendapatkan data')
 
-        console.log(result, '<<<')
+        return result
+    } catch (error) {
+        if (error) return []
+    }
+}
+
+export const updateIsActiveProduct = async (fd: FormData, idProduct: string) => {
+    try {
+        const data = {
+            isActive: fd.get('isActive')
+        }
+
+        const token = (await cookies()).get('_token')?.value
+
+        const url = 'http://localhost:8000/api/admin'
+        const res = await fetch(`${url}/update-is-active/${idProduct}`, {
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": 'application/json',
+                "Accept": 'application/json'
+            },
+
+            body: JSON.stringify(data),
+            cache: 'no-store',
+            method: 'PATCH'
+        })
+
+        const result = await res.json()
+        if (!res.ok) throw new Error('Gagal memperbaharui produk')
+        
+        return result
+
     } catch (error) {
         throw error
     }

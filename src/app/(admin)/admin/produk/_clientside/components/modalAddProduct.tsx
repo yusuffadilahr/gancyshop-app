@@ -1,3 +1,4 @@
+import { IInitialValuesAddProduct } from "@/app/(admin)/admin/produk/_clientside/types";
 import { Button } from "@/components/ui/button"
 import {
     Dialog,
@@ -10,37 +11,24 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
-import { toast } from "@/hooks/use-toast";
-import { axiosInstance } from "@/utils/axiosInstance";
-import { fileToDataURL } from "@/utils/readFileToJpg";
-import { useMutation } from "@tanstack/react-query";
-import { Form, Formik, FormikErrors } from "formik"
+import { Form, Formik, FormikErrors } from "formik";
 import Image from "next/image";
-import * as React from "react";
 import { MdCancel } from "react-icons/md";
 
-export default function ModalAddProduct() {
-    const [filePreview, setFilePreview] = React.useState<string>('')
-
-    const initialValues: {
-        images: null | File,
-        name: string,
-        description: string,
-        price: string,
-        isActive: boolean,
-        stock: string,
-        weightGram: string,
-    } = {
-        images: null,
-        name: '',
-        description: '',
-        price: '',
-        isActive: false,
-        stock: '',
-        weightGram: '',
-    }
-
-    const handleChangeFile = async (e: React.ChangeEvent<HTMLInputElement>,
+export default function ModalAddProduct({
+    initialValues,
+    handleAddProduct,
+    isPending,
+    filePreview,
+    setFilePreview,
+    handleChangeFile,
+}: {
+    initialValues: IInitialValuesAddProduct
+    handleAddProduct: (formData: FormData, options: { onSuccess: () => void }) => void
+    isPending: boolean
+    filePreview: string
+    setFilePreview: (val: string) => void
+    handleChangeFile: (e: React.ChangeEvent<HTMLInputElement>,
         setFieldValue: (field: string, value: File | null | undefined,
             shouldValidate?: boolean) => Promise<void | FormikErrors<{
                 images: null | File;
@@ -50,39 +38,13 @@ export default function ModalAddProduct() {
                 isActive: boolean;
                 stock: number;
                 weightGram: number;
-            }>>) => {
-        const value = e.target.files?.[0]
-
-        setFieldValue('images', value)
-        const data = await fileToDataURL(value as File)
-        setFilePreview(data)
-    }
-
-    const { mutate: handleAddProduct, isPending } = useMutation({
-        mutationFn: async (fd: FormData) => {
-            const token = localStorage.getItem('_token')
-            return await axiosInstance.post('/admin/add-products', fd, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
-        }, onSuccess: (res) => {
-            toast({
-                title: res.data?.message || 'Berhasil mengupload produk',
-                description: new Date().toDateString(),
-            })
-        }, onError: () => {
-            toast({
-                title: 'Gagal membuat produk',
-                description: new Date().toDateString(),
-            })
-        }
-    })
+            }>>) => void
+}) {
 
     return (
         <Dialog onOpenChange={() => setFilePreview('')}>
             <DialogTrigger asChild>
-                <Button variant="default" size={"sm"}>Tambah</Button>
+                <Button variant="default" size={"default"}>Tambah</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px] max-h-[80vh] overflow-auto">
                 <DialogHeader>
@@ -100,7 +62,7 @@ export default function ModalAddProduct() {
                         fd.append('name', values.name)
                         fd.append('description', values.description)
                         fd.append('price', values.price)
-                        fd.append('isActive', values.isActive ? 'true' : 'false')
+                        fd.append('isActive', values.isActive === true ? 'true' : 'false')
                         fd.append('stock', values.stock)
                         fd.append('weightGram', values.weightGram)
 
