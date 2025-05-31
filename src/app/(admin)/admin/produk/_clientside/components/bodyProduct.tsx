@@ -1,6 +1,5 @@
 'use client'
 
-import ModalAddProduct from "@/app/(admin)/admin/produk/_clientside/components/modalAddProduct"
 import TableProduct from "@/app/(admin)/admin/produk/_clientside/components/tableProduct";
 import { useMutateAddProduct } from "@/app/(admin)/admin/produk/_clientside/hooks/use-mutate";
 import { useProductState } from "@/app/(admin)/admin/produk/_clientside/hooks/use-product-state";
@@ -10,8 +9,11 @@ import { Input } from "@/components/ui/input"
 import { Spinner } from "@/components/ui/spinner";
 import { useAppTools } from "@/hooks/use-app";
 import { useQuery } from "@tanstack/react-query";
+import dynamic from "next/dynamic";
 import * as React from "react";
 import { useDebouncedCallback } from 'use-debounce'
+
+const DynamicModalAddProduct = dynamic(() => import('./modalAddProduct'), { loading: () => <></> })
 
 export default function BodyProduk() {
     const { pathname, router, searchParams } = useAppTools()
@@ -74,7 +76,7 @@ export default function BodyProduk() {
     return (
         <div className="w-full px-5 pt-10">
             <div className="flex items-center gap-2 pb-5">
-                <ModalAddProduct filePreview={filePreview}
+                <DynamicModalAddProduct filePreview={filePreview}
                     handleAddProduct={handleAddProduct} handleChangeFile={handleChangeFile}
                     initialValues={initialValues} isPending={isPending}
                     setFilePreview={setFilePreview} />
