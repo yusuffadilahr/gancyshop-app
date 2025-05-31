@@ -1,4 +1,6 @@
 import { IDataProduk } from "@/app/(admin)/admin/produk/_clientside/types";
+import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import {
@@ -9,6 +11,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import { MoreHorizontal } from "lucide-react";
 
 export default function TableProduct({
     data,
@@ -57,6 +60,19 @@ export default function TableProduct({
                             </div>
                         </TableCell>
                         <TableCell className="px-4 py-5">{item.weightGram} kg</TableCell>
+                        <TableCell className="px-4 py-5 text-left flex justify-end">
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button variant="ghost" size="icon">
+                                        <MoreHorizontal className="h-4 w-4" />
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                    <DropdownMenuItem className="cursor-pointer">Edit</DropdownMenuItem>
+                                    <DropdownMenuItem className="cursor-pointer">Delete</DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        </TableCell>
                     </TableRow>
                 ))}
             </TableBody>
