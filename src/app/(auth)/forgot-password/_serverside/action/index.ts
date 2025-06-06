@@ -1,12 +1,14 @@
 'use server'
 
+import { baseUrl } from "@/utils/axiosInstance"
+
 export const forgotPasswordAction = async (fd: FormData) => {
     try {
         const data = {
             email: fd.get('email')
         }
 
-        const res = await fetch('http://localhost:8000/api/user/forgot-password-user', {
+        const res = await fetch(`${baseUrl}/user/forgot-password-user`, {
             method: 'POST',
             cache: 'no-store',
             headers: {

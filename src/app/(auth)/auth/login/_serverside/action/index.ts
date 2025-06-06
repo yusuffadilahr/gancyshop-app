@@ -1,5 +1,7 @@
 'use server'
 
+import { baseUrl } from "@/utils/axiosInstance"
+
 export const loginAction = async (fd: FormData) => {
     try {
         const data = {
@@ -7,7 +9,7 @@ export const loginAction = async (fd: FormData) => {
             password: fd.get('password')
         }
 
-        const res = await fetch('http://localhost:8000/api/user/login-user', {
+        const res = await fetch(`${baseUrl}/user/login-user`, {
             cache: 'no-store',
             headers: {
                 "Content-Type": 'application/json',

@@ -18,6 +18,7 @@ export const useMutateAddProduct = ({ refetch }: { refetch: () => void }) => {
         isActive: false,
         stock: '',
         weightGram: '',
+        categoryId: ''
     }
 
     const handleChangeFile = async (e: React.ChangeEvent<HTMLInputElement>,

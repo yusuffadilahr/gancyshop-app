@@ -1,4 +1,4 @@
-import { IInitialValuesAddProduct } from "@/app/(admin)/admin/produk/_clientside/types";
+import { IDataCategoryName, IModalAddProductProps } from "@/app/(admin)/admin/produk/_clientside/types";
 import { Button } from "@/components/ui/button"
 import {
     Dialog,
@@ -11,9 +11,13 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
-import { Form, Formik, FormikErrors } from "formik";
+import { Form, Formik } from "formik";
 import Image from "next/image";
 import { MdCancel } from "react-icons/md";
+import * as React from "react";
+import SelectOptionCategoryMotorSearch from "@/app/(admin)/admin/produk/_clientside/components/selectOptionCategoryMotor";
+import SelectOptionCategorySearch from "@/app/(admin)/admin/produk/_clientside/components/selectOptionCategory";
+import { handleGetDataCategoryByCategoryMotor } from "@/app/(admin)/admin/produk/_serverside/action";
 
 export default function ModalAddProduct({
     initialValues,
@@ -22,27 +26,37 @@ export default function ModalAddProduct({
     filePreview,
     setFilePreview,
     handleChangeFile,
-}: {
-    initialValues: IInitialValuesAddProduct
-    handleAddProduct: (formData: FormData, options: { onSuccess: () => void }) => void
-    isPending: boolean
-    filePreview: string
-    setFilePreview: (val: string) => void
-    handleChangeFile: (e: React.ChangeEvent<HTMLInputElement>,
-        setFieldValue: (field: string, value: File | null | undefined,
-            shouldValidate?: boolean) => Promise<void | FormikErrors<{
-                images: null | File;
-                name: string;
-                description: string;
-                price: number;
-                isActive: boolean;
-                stock: number;
-                weightGram: number;
-            }>>) => void
-}) {
+}: IModalAddProductProps) {
+    const [open, setOpen] = React.useState<boolean>(false)
+    const [valueSelectOption, setValueSelectOption] = React.useState<{
+        categoryMotor: string
+        category: string
+    }>({
+        categoryMotor: '',
+        category: ''
+    })
+    const [dataCategory, setDataCategory] = React.useState<IDataCategoryName[]>([])
+
+    const handleGetData = async (id: string) => {
+        try {
+            const res = await handleGetDataCategoryByCategoryMotor(id)
+            if (!res.error) {
+                setDataCategory(res.data)
+            }
+        } catch (error) {
+            setDataCategory([])
+            console.log(error)
+        }
+    }
 
     return (
-        <Dialog onOpenChange={() => setFilePreview('')}>
+        <Dialog onOpenChange={() => {
+            setValueSelectOption({
+                categoryMotor: '',
+                category: ''
+            })
+            setFilePreview('')
+        }}>
             <DialogTrigger asChild>
                 <Button variant="default" size={"default"}>Tambah</Button>
             </DialogTrigger>
@@ -59,12 +73,14 @@ export default function ModalAddProduct({
 
                         if (!!values.images) fd.append('images', values.images)
 
+                        console.log(values, '<< val')
                         fd.append('name', values.name)
                         fd.append('description', values.description)
                         fd.append('price', values.price)
                         fd.append('isActive', values.isActive === true ? 'true' : 'false')
                         fd.append('stock', values.stock)
                         fd.append('weightGram', values.weightGram)
+                        fd.append('categoryId', values.categoryId)
 
                         handleAddProduct(fd, {
                             onSuccess: () => {
@@ -131,6 +147,19 @@ export default function ModalAddProduct({
 
                                         setFieldValue('weightGram', value)
                                     }} value={values.weightGram || ''} />
+
+                                <SelectOptionCategoryMotorSearch open={open} setFieldValue={setFieldValue}
+                                    setValue={setValueSelectOption} value={valueSelectOption}
+                                    handleGetDataCategoryByCategoryMotor={handleGetData}
+                                    setOpen={setOpen} />
+
+
+                                {!!valueSelectOption.categoryMotor && (
+                                    <SelectOptionCategorySearch data={dataCategory}
+                                        setFieldValue={setFieldValue}
+                                        setValueDisplay={setValueSelectOption}
+                                        valueDisplay={valueSelectOption} />
+                                )}
 
                                 <div className="flex items-center space-x-2 py-3 px-2">
                                     <Label htmlFor="airplane-mode">Aktifkan produk ini?</Label>

@@ -1,5 +1,7 @@
 'use server'
 
+import { baseUrl } from "@/utils/axiosInstance"
+
 export const registerAction = async (fd: FormData) => {
     try {
         const data = {
@@ -9,7 +11,7 @@ export const registerAction = async (fd: FormData) => {
             phoneNumber: fd.get('phoneNumber')
         }
 
-        const res = await fetch('http://localhost:8000/api/user/register-user', {
+        const res = await fetch(`${baseUrl}/user/register-user`, {
             cache: 'no-store',
             headers: {
                 "Content-Type": 'application/json',

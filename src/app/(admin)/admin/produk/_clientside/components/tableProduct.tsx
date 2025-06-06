@@ -1,6 +1,6 @@
-import { IDataProduk } from "@/app/(admin)/admin/produk/_clientside/types";
+import { IDataProduk, ITableProductProps } from "@/app/(admin)/admin/produk/_clientside/types";
+import MoreOption from "@/components/core/moreOption";
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import {
@@ -11,21 +11,27 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { MoreHorizontal } from "lucide-react";
+import dynamic from "next/dynamic";
+import Link from "next/link";
+import * as React from "react";
+import { FaDesktop } from "react-icons/fa";
+
+const DynamicModalEdit = dynamic(() => import('./modalEditProduct'), { loading: () => <h1 className="text-xs text-center">...</h1> })
 
 export default function TableProduct({
     data,
     handleUpdateActiveProduct,
     isPending,
-
-}: {
-    data: IDataProduk[],
-    handleUpdateActiveProduct: ({ fd, id }: { fd: FormData, id: string }) => void,
-    isPending: boolean,
-}) {
+    setFilePreview,
+    handleChangeFile,
+    filePreview,
+    refetch
+}: ITableProductProps) {
+    const [findProduct, setFindProduct] = React.useState<IDataProduk | null>(null)
 
     return (
         <Table className="w-full border rounded-md overflow-hidden">
+
             {/* <TableCaption className="text-sm text-gray-500">Table Product.</TableCaption> */}
             <TableHeader className="bg-gray-50">
                 <TableRow>
@@ -44,7 +50,7 @@ export default function TableProduct({
                     <TableRow key={item.id} className="border-t border-gray-200 hover:bg-gray-50">
                         <TableCell className="px-4 py-5 font-medium">{item.name}</TableCell>
                         <TableCell className="px-4 py-5">{item.description}</TableCell>
-                        <TableCell className="px-4 py-5">Rp. {item.stock.toLocaleString('id-ID')}</TableCell>
+                        <TableCell className="px-4 py-5">{item.stock} Pcs</TableCell>
                         <TableCell className="px-4 py-5">Rp. {item.price.toLocaleString('id-ID')}</TableCell>
                         <TableCell className="px-4 py-5">
                             <div className="flex items-center space-x-2 px-2">
@@ -61,17 +67,22 @@ export default function TableProduct({
                         </TableCell>
                         <TableCell className="px-4 py-5">{item.weightGram} kg</TableCell>
                         <TableCell className="px-4 py-5 text-left flex justify-end">
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost" size="icon">
-                                        <MoreHorizontal className="h-4 w-4" />
+                            <MoreOption>
+                                <Link href={'/'}>
+                                    <Button variant={"ghost"} size={"sm"} className="w-full flex justify-start">
+                                        <FaDesktop />
+                                        Lihat
                                     </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end">
-                                    <DropdownMenuItem className="cursor-pointer">Edit</DropdownMenuItem>
-                                    <DropdownMenuItem className="cursor-pointer">Delete</DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
+                                </Link>
+
+                                <DynamicModalEdit setDataTable={setFindProduct} setFilePreview={setFilePreview}
+                                    dataTable={findProduct} filePreview={filePreview}
+                                    handleChangeFile={handleChangeFile} refetch={refetch}
+                                    onClick={() => {
+                                        const findData = data.find((find) => find.id === item.id)
+                                        setFindProduct(findData as IDataProduk)
+                                    }} />
+                            </MoreOption>
                         </TableCell>
                     </TableRow>
                 ))}

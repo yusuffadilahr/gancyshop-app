@@ -1,5 +1,5 @@
 import { loginAction } from "@/app/(auth)/auth/login/_serverside/action"
-import { setCookie } from "@/app/_serverside/setCookies"
+import { setCookie } from "@/app/_serverside/utils/setCookies"
 import { toast } from "@/hooks/use-toast"
 import { encryptCrypto } from "@/utils/cryptoJs"
 import { useMutation } from "@tanstack/react-query"

@@ -1,4 +1,5 @@
-import { IInitialValuesAddProduct } from "@/app/(admin)/admin/produk/_clientside/types";
+import { useMutateEditProduct } from "@/app/(admin)/admin/produk/_clientside/hooks/use-mutate-edit-product";
+import { IModalEditProductProps } from "@/app/(admin)/admin/produk/_clientside/types";
 import { Button } from "@/components/ui/button"
 import {
     Dialog,
@@ -9,46 +10,38 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Switch } from "@/components/ui/switch"
-import { Form, Formik, FormikErrors } from "formik";
+import {
+    Form, Formik,
+} from "formik";
 import Image from "next/image";
+import { FaEdit } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
 
-export default function ModalAddProduct({
-    initialValues,
-    handleAddProduct,
-    isPending,
+export default function ModalEditProduct({
+    dataTable,
+    onClick,
     filePreview,
     setFilePreview,
     handleChangeFile,
-}: {
-    initialValues: IInitialValuesAddProduct
-    handleAddProduct: (formData: FormData, options: { onSuccess: () => void }) => void
-    isPending: boolean
-    filePreview: string
-    setFilePreview: (val: string) => void
-    handleChangeFile: (e: React.ChangeEvent<HTMLInputElement>,
-        setFieldValue: (field: string, value: File | null | undefined,
-            shouldValidate?: boolean) => Promise<void | FormikErrors<{
-                images: null | File;
-                name: string;
-                description: string;
-                price: number;
-                isActive: boolean;
-                stock: number;
-                weightGram: number;
-            }>>) => void
-}) {
+    refetch
+}: IModalEditProductProps) {
+
+    const { initialValuesEditProduct,
+        handleEditProduct,
+        validatEditProduct } = useMutateEditProduct({ dataTable, refetch })
 
     return (
-        <Dialog onOpenChange={() => setFilePreview('')}>
+        <Dialog>
             <DialogTrigger asChild>
-                <Button variant="default" size={"default"}>Tambah</Button>
+                <Button className="w-full flex justify-start"
+                    variant={"ghost"} size={"sm"} onClick={onClick}>
+                    <FaEdit className="mr-1 font-normal" />
+                    Edit
+                </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px] max-h-[80vh] overflow-auto">
                 <DialogHeader>
-                    <DialogTitle>Tambah Produk</DialogTitle>
+                    <DialogTitle>Edit Produk</DialogTitle>
                     <DialogDescription>
                         Silakan lengkapi detail produk dengan informasi yang akurat sebelum disimpan.
                     </DialogDescription>
@@ -66,21 +59,24 @@ export default function ModalAddProduct({
                         fd.append('stock', values.stock)
                         fd.append('weightGram', values.weightGram)
 
-                        handleAddProduct(fd, {
+                        handleEditProduct({ fd, idProduct: dataTable?.id as number }, {
                             onSuccess: () => {
-                                resetForm({ values: initialValues })
+                                resetForm({ values: initialValuesEditProduct })
                             }
                         })
                     }}
-                        initialValues={initialValues}>
+                        initialValues={initialValuesEditProduct}>
                         {({ setFieldValue, values }) => (
                             <Form className="space-y-3">
-                                {filePreview && (
+                                {filePreview ? (
                                     <div>
                                         <Image alt="photos" width={500}
                                             height={500} src={filePreview} />
                                     </div>
-                                )}
+                                ) : <div>
+                                    <Image alt="photos" width={500}
+                                        height={500} src={dataTable?.imageUrl || ''} />
+                                </div>}
 
                                 {!!values.images ? (
                                     <div className="w-full text-sm px-2 rounded-xl justify-between border flex py-2 items-center">
@@ -95,7 +91,8 @@ export default function ModalAddProduct({
                                     </div>
                                 ) : (
                                     <Input type="file" accept="image/png, image/jpeg"
-                                        onChange={(e) => handleChangeFile(e, setFieldValue)} />
+                                        onChange={(e) => handleChangeFile(e, setFieldValue)}
+                                    />
                                 )}
 
                                 <Input placeholder="Nama Produk" name="name" onChange={(e) => {
@@ -132,17 +129,10 @@ export default function ModalAddProduct({
                                         setFieldValue('weightGram', value)
                                     }} value={values.weightGram || ''} />
 
-                                <div className="flex items-center space-x-2 py-3 px-2">
-                                    <Label htmlFor="airplane-mode">Aktifkan produk ini?</Label>
-                                    <Switch id="airplane-mode" value={!values.isActive ? -1 : 1}
-                                        onCheckedChange={(val) => setFieldValue('isActive', val)} />
-                                </div>
-
                                 <div className="w-full justify-end flex">
-                                    <Button type="submit" disabled={
-                                        !values.images || !values.description || isPending ||
-                                        !values.name || !values.price || !values.stock || !values.weightGram
-                                    }>Save changes</Button>
+                                    <Button type="submit"
+                                        disabled={validatEditProduct(values)}
+                                    >Save changes</Button>
                                 </div>
                             </Form>
                         )}

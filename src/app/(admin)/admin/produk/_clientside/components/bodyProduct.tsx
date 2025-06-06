@@ -91,9 +91,10 @@ export default function BodyProduk() {
                 </div>
             </div>
 
-            <TableProduct data={dataTable?.data}
+            <TableProduct data={dataTable?.data} filePreview={filePreview}
                 handleUpdateActiveProduct={handleUpdateActiveProduct}
-                isPending={isPendingUpdateIsActive} />
+                isPending={isPendingUpdateIsActive} setFilePreview={setFilePreview}
+                handleChangeFile={handleChangeFile} refetch={refetch} />
 
             <div className="py-5 w-full">
                 <PaginationTable totalPage={dataTable?.totalPage}
