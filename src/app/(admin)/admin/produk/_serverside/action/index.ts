@@ -1,5 +1,6 @@
 'use server'
 
+import { baseUrl } from "@/utils/axiosInstance"
 import { cookies } from "next/headers"
 
 export const getAllProduct = async ({
@@ -13,7 +14,7 @@ export const getAllProduct = async ({
 }) => {
     try {
         const token = (await cookies()).get('_token')?.value
-        const url = 'http://localhost:8000/api/admin/all-products'
+        const url = `${baseUrl}/admin/all-products`
 
         const res = await fetch(`${url}?search=${search}&page=${page}&limit=${limit}`, {
             method: 'GET',
@@ -41,7 +42,7 @@ export const updateIsActiveProduct = async (fd: FormData, idProduct: string) => 
 
         const token = (await cookies()).get('_token')?.value
 
-        const url = 'http://localhost:8000/api/admin'
+        const url = `${baseUrl}/admin`
         const res = await fetch(`${url}/update-is-active/${idProduct}`, {
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -56,9 +57,49 @@ export const updateIsActiveProduct = async (fd: FormData, idProduct: string) => 
 
         const result = await res.json()
         if (!res.ok) throw new Error('Gagal memperbaharui produk')
-        
+
         return result
 
+    } catch (error) {
+        throw error
+    }
+}
+
+export const handleGetDataCategoryMotor = async () => {
+    try {
+        const token = (await cookies()).get('_token')?.value
+        const res = await fetch(`${baseUrl}/category/all-category-motorcycle`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+            method: 'GET',
+            cache: 'no-store',
+        })
+
+        if (!res.status) throw new Error('Data tidak tersedia')
+        const result = await res.json()
+
+        return result
+    } catch (error) {
+        throw error
+    }
+}
+
+export const handleGetDataCategoryByCategoryMotor = async (categoryMotorId: string) => {
+    try {
+        const token = (await cookies()).get('_token')?.value
+        const res = await fetch(`${baseUrl}/category/all-category/${categoryMotorId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+            method: 'GET',
+            cache: 'no-store'
+        })
+
+        if (!res.ok) throw new Error('Data tidak tersedia')
+        const result = await res.json()
+
+        return result
     } catch (error) {
         throw error
     }
