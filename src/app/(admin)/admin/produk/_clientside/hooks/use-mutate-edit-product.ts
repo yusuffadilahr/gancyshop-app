@@ -10,7 +10,7 @@ export const useMutateEditProduct = ({ dataTable, refetch }: { dataTable: IDataP
         description: dataTable?.description || '',
         price: dataTable?.price || '',
         isActive: dataTable?.isActive,
-        stock: dataTable?.price || '',
+        stock: dataTable?.stock || '',
         weightGram: dataTable?.weightGram || '',
     } as IInitialValuesEditProduct
 

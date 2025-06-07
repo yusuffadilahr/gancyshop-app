@@ -1,40 +1,72 @@
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { ChevronLeft, ChevronRight } from "lucide-react"
+import Image from "next/image"
 import * as React from "react"
-import Autoplay from "embla-carousel-autoplay"
-
-import { CardContent } from "@/components/ui/card";
-import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
-import Image from "next/image";
 
 export default function CarouselSection() {
-  const plugin = React.useRef(
-    Autoplay({ delay: 2000, stopOnInteraction: true })
-  )
-
+  const [indexImage, setIndexImage] = React.useState<number>(0)
   const arrayHeroSection = [
-    { img: '/hero-section.png', nama: 'ABC' },
-    { img: '/hero-section.png', nama: 'ABC' },
+    { img: '/matic.png', nama: 'ABC' },
+    { img: '/body.jpg', nama: 'ABC' },
+    { img: '/beat.jpeg', nama: 'ABC' },
   ]
 
   return (
-    <Carousel
-      plugins={[plugin.current]}
-      className="w-full"
-      onMouseEnter={plugin.current.stop}
-      onMouseLeave={plugin.current.reset}
-    >
-      <CarouselContent>
-        {arrayHeroSection.map((item, index) => (
-          <CarouselItem key={index}>
-            <div className="pt-2 w-full">
-              <CardContent className="flex items-center justify-center w-full">
-                <Image src={item.img} id="hero-section-id"
-                  height={500} width={500} alt="hero-section"
-                  className="w-full h-[50vh] object-cover rounded-xl" />
-              </CardContent>
+    <div className="w-full flex pt-2 gap-1 px-5">
+      <div className="w-full min-h-52 h-fit flex items-center px-0 m-auto bg-blue-700 rounded-xl relative overflow-hidden">
+        <Image src={arrayHeroSection[indexImage].img} id="hero-section-id"
+          height={500} width={500} alt="hero-section"
+          className="w-full h-[70vh] object-cover rounded-xl transition-opacity" />
+        <div className="absolute left-[10%] top-[30%] z-10">
+          {indexImage === 0 && (
+            <div className="space-y-3">
+              <Badge>Selamat datang di Gancy Shop</Badge>
+              <h1 className="text-white text-3xl">Dapatkan Produk Terbaik!</h1>
+              <h1 className="text-white text-3xl font-bold">Dengan Harga Menarik!</h1>
+              <Button variant={"default"}>Pesan Sekarang</Button>
             </div>
-          </CarouselItem>
-        ))}
-      </CarouselContent>
-    </Carousel>
+          )}
+        </div>
+        <div className="absolute inset-0 flex items-center justify-between px-4">
+          <Button
+            size="icon"
+            variant="ghost"
+            onClick={() => {
+              if (indexImage === 0) {
+                setIndexImage(arrayHeroSection.length - 1)
+                return
+              }
+
+              setIndexImage(indexImage - 1)
+            }}
+            className="bg-black/50 hover:bg-black/70 text-white"
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </Button>
+
+          <Button
+            size="icon"
+            variant="ghost"
+            onClick={() => {
+              if ((arrayHeroSection.length - 1) === indexImage) {
+                setIndexImage(0)
+                return
+              }
+
+              setIndexImage(indexImage + 1)
+            }}
+            className="bg-black/50 hover:bg-black/70 text-white"
+          >
+            <ChevronRight className="w-6 h-6" />
+          </Button>
+        </div>
+      </div>
+      <div className="w-1/3 items-stretch hidden lg:flex bg-red-500 rounded-xl">
+        <Image src={arrayHeroSection[arrayHeroSection.length - 1].img} id="hero-section-id"
+          height={500} width={500} alt="hero-section"
+          className="w-full h-[70vh] object-cover rounded-xl" />
+      </div>
+    </div>
   )
 }
