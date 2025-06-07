@@ -1,5 +1,4 @@
-"use client"
-
+"use client";;
 import * as React from "react"
 import Link from "next/link"
 
@@ -12,156 +11,194 @@ import {
     NavigationMenuList,
     NavigationMenuTrigger,
     navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu"
+} from "@/components/ui/navigation-menu";
 import Image from "next/image"
 import { useAppSelector } from "@/redux/store"
 import { usePathname } from "next/navigation"
-
-const components: { title: string; href: string; description: string }[] = [
-    {
-        title: "Alert Dialog",
-        href: "/docs/primitives/alert-dialog",
-        description:
-            "A modal dialog that interrupts the user with important content and expects a response.",
-    },
-    {
-        title: "Hover Card",
-        href: "/docs/primitives/hover-card",
-        description:
-            "For sighted users to preview content available behind a link.",
-    },
-    {
-        title: "Progress",
-        href: "/docs/primitives/progress",
-        description:
-            "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
-    },
-    {
-        title: "Scroll-area",
-        href: "/docs/primitives/scroll-area",
-        description: "Visually or semantically separates content.",
-    },
-    {
-        title: "Tabs",
-        href: "/docs/primitives/tabs",
-        description:
-            "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
-    },
-    {
-        title: "Tooltip",
-        href: "/docs/primitives/tooltip",
-        description:
-            "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
-    },
-]
+import { Marquee, MarqueeItem, MarqueeContent } from '@/components/ui/shadcn-io/marquee';
+import { Button } from "@/components/ui/button"
+import { FaBox } from "react-icons/fa";
+import { Input } from "@/components/ui/input";
+import { useDebouncedCallback } from "use-debounce";
+import { getAllDataProductBySearch } from "@/app/_serverside/action";
+import { IDataProduk } from "@/app/(admin)/admin/produk/_clientside/types";
+import { Spinner } from "@/components/ui/spinner";
 
 export function Navbar() {
     const isNotFound = useAppSelector((state) => state.globaltheme.notFoundPage)
     const pathname = usePathname()
+    const [tokenExist, setTokenExist] = React.useState<string>('')
+    const [dataProduct, setDataProduct] = React.useState<IDataProduk[]>([])
+    const [loading, setLoading] = React.useState<boolean>(false)
+
+    const arrayStatisNavigation = [
+        { menuName: 'Beranda', href: '/' },
+        {
+            menuName: 'Produk',
+            submenu: [
+                { title: 'Semua Produk', href: '/product' },
+                { title: 'Produk Populer', href: '/product/popular' },
+                { title: 'Produk Terbaru', href: '/product/new' },
+                { title: 'Diskon & Promo', href: '/product/discount' },
+            ],
+        },
+        {
+            menuName: 'Kategori',
+            submenu: [
+                { title: 'Honda Series', href: '/category/honda' },
+                { title: 'Yamaha Series', href: '/category/yamaha' },
+                { title: 'Suzuki Series', href: '/category/suzuki' },
+                { title: 'Kawasaki Series', href: '/category/kawasaki' },
+                { title: 'Custom & Aksesoris', href: '/category/custom' },
+            ]
+        },
+        { menuName: 'Tentang', href: '/tentang-kami' },
+        { menuName: 'Kontak', href: '/kontak' },
+        { menuName: 'Testimonial', href: '/testimoni' },
+        { menuName: 'Bantuan', href: '/faq' },
+    ]
+
+    const debounce = useDebouncedCallback((val: string) => {
+        if (!!val) {
+            handleGetData(val)
+        }
+
+        setLoading(false)
+    }, 800)
+
+    const handleGetData = async (val: string) => {
+        try {
+            const res = await getAllDataProductBySearch(val)
+            if (!res.error) {
+                setDataProduct(res.data)
+                setLoading(false)
+                return;
+            }
+
+        } catch (error) {
+            setDataProduct([])
+            console.log(error)
+        }
+    }
+
+    React.useEffect(() => {
+        const token = localStorage?.getItem('_token')
+        setTokenExist(token as string)
+    }, [])
 
     return (
         <React.Fragment>
             {(!isNotFound && !pathname.startsWith('/admin')) && (
                 <React.Fragment>
-                    <div className="py-4 px-5 w-full md:flex hidden justify-between items-center">
-                        <React.Fragment></React.Fragment>
-                        <NavigationMenu>
-                            <NavigationMenuList>
-                                <NavigationMenuItem>
-                                    <NavigationMenuTrigger>Produk</NavigationMenuTrigger>
-                                    <NavigationMenuContent>
-                                        <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-                                            <li className="row-span-3">
-                                                <NavigationMenuLink asChild>
-                                                    <Link
-                                                        className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                                                        href="/"
-                                                    >
-                                                        {/* <Icons.logo className="h-6 w-6" /> */}
-                                                        <div className="mb-2 mt-4 text-lg font-medium">
-                                                            shadcn/ui
-                                                        </div>
-                                                        <p className="text-sm leading-tight text-muted-foreground">
-                                                            Beautifully designed components built with Radix UI and
-                                                            Tailwind CSS.
-                                                        </p>
-                                                    </Link>
-                                                </NavigationMenuLink>
-                                            </li>
-                                            <ListItem href="/docs" title="Introduction">
-                                                Re-usable components built using Radix UI and Tailwind CSS.
-                                            </ListItem>
-                                            <ListItem href="/docs/installation" title="Installation">
-                                                How to install dependencies and structure your app.
-                                            </ListItem>
-                                            <ListItem href="/docs/primitives/typography" title="Typography">
-                                                Styles for headings, paragraphs, lists...etc
-                                            </ListItem>
-                                        </ul>
-                                    </NavigationMenuContent>
-                                </NavigationMenuItem>
-                                <NavigationMenuItem>
-                                    <NavigationMenuTrigger>Kategori</NavigationMenuTrigger>
-                                    <NavigationMenuContent>
-                                        <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                                            {components.map((component) => (
-                                                <ListItem
-                                                    key={component.title}
-                                                    title={component.title}
-                                                    href={component.href}
-                                                >
-                                                    {component.description}
-                                                </ListItem>
-                                            ))}
-                                        </ul>
-                                    </NavigationMenuContent>
-                                </NavigationMenuItem>
-                                <NavigationMenuItem>
-                                    <Link href="/docs" legacyBehavior passHref>
-                                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                                            Tentang Kami
-                                        </NavigationMenuLink>
-                                    </Link>
-                                </NavigationMenuItem>
-                                <NavigationMenuItem>
-                                    <Link href="/docs" legacyBehavior passHref>
-                                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                                            Kontak
-                                        </NavigationMenuLink>
-                                    </Link>
-                                </NavigationMenuItem>
-                                <NavigationMenuItem>
-                                    <Link href="/docs" legacyBehavior passHref>
-                                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                                            Promo
-                                        </NavigationMenuLink>
-                                    </Link>
-                                </NavigationMenuItem>
-                                <NavigationMenuItem>
-                                    <Link href="/docs" legacyBehavior passHref>
-                                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                                            Promo
-                                        </NavigationMenuLink>
-                                    </Link>
-                                </NavigationMenuItem>
-                            </NavigationMenuList>
-                        </NavigationMenu>
-                        <div className="md:flex hidden items-center gap-2">
-                            <i className="font-semibold text-neutral-500 border-r-[2px] pr-2 text-lg">Your Trusted Motor Body Partner</i>
-                            <Link href={'/'} className="rounded-full w-fit h-16">
+                    <Marquee className="bg-red-700">
+                        <MarqueeContent>
+                            {[
+                                "Diskon Hingga 50% untuk Sparepart Pilihan!",
+                                "Cover Body Motor Tersedia",
+                                "Pengiriman Cepat Seluruh Indonesia",
+                                "Beli Sekarang, Bayar di Tempat (COD)",
+                                "Kualitas Terjamin, Harga Bersahabat",
+                                "Banyak Pilihan Warna dan Model Cover Motor",
+                            ].map((promo, index) => (
+                                <MarqueeItem key={index}>
+                                    <div className="py-2 flex items-center gap-2">
+                                        {index === 3 && (<FaBox className="text-yellow-100" />)}
+                                        <h1 className={`${index === 3 ? 'text-yellow-100' : 'text-white'} text-sm md:text-sm font-bold`}>{promo}</h1>
+                                        <Link href={!!tokenExist ? '/product' : '/auth/login'}>
+                                            <Button variant={"ghost"} size={"sm"} className="rounded-xl border text-white">
+                                                Ambil sekarang
+                                            </Button>
+                                        </Link>
+                                    </div>
+                                </MarqueeItem>
+                            ))}
+                        </MarqueeContent>
+                    </Marquee>
+
+                    <div className="py-4 px-5 w-full gap-2 md:flex hidden justify-between items-center">
+                        <div className="md:flex hidden items-center gap-5 w-full">
+                            <Link href={'/'} className="rounded-full w-fit h-12">
                                 <Image alt="profile"
                                     src={'/new-logo.png'} width={500} height={500}
-                                    className="w-fit h-16" />
+                                    className="w-fit h-12" />
                             </Link>
+                            <div className="w-full flex relative">
+                                <Input className={`flex w-full py-5 px-5 ${loading ? 'pl-10' : ''} rounded-full active:outline-none bg-white`}
+                                    type="search" placeholder="Cari disini.."
+                                    onChange={(e) => {
+                                        setLoading(true)
+                                        debounce(e.target.value)
+                                        setDataProduct([])
+                                    }} />
+                                {loading && <Spinner className="absolute left-2" size={"small"} />}
+                                {dataProduct.length > 0 ? (
+                                    <div className="absolute bg-white top-12 z-20">
+                                        <ul className="grid gap-2 p-4 md:w-[200px] lg:w-[300px]">
+                                            {dataProduct.map((sub) => (
+                                                <Link href={`/product/${sub.id}`} key={sub.id}>
+                                                    <li title={sub.name} onClick={()=> setDataProduct([])}>
+                                                        {sub.name}
+                                                    </li>
+                                                </Link>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                ) : loading && (
+                                    <ul className="grid gap-2 p-4 md:w-[200px] lg:w-[300px] absolute bg-white top-12 z-20">
+                                        <li>
+                                            Loading
+                                        </li>
+                                    </ul>
+                                )}
+                            </div>
                         </div>
+                        <NavigationMenu>
+                            <NavigationMenuList>
+                                {arrayStatisNavigation.map(item => {
+                                    return (
+                                        <NavigationMenuItem key={item.menuName}>
+                                            {item.submenu ? (
+                                                <React.Fragment>
+                                                    <NavigationMenuTrigger className="font-semibold">{item.menuName}</NavigationMenuTrigger>
+                                                    <NavigationMenuContent>
+                                                        <ul className="grid gap-2 p-4 md:w-[200px] lg:w-[300px]">
+                                                            {item.submenu.map((sub) => (
+                                                                <ListItem href={sub.href} title={sub.title} key={sub.title}>
+                                                                    {sub.title}
+                                                                </ListItem>
+                                                            ))}
+                                                        </ul>
+                                                    </NavigationMenuContent>
+                                                </React.Fragment>
+                                            ) : (
+                                                <Link href={item.href} passHref legacyBehavior>
+                                                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                                                        {item.menuName}
+                                                    </NavigationMenuLink>
+                                                </Link>
+                                            )}
+                                        </NavigationMenuItem>
+                                    )
+                                })}
+
+                                {!tokenExist && (
+                                    <React.Fragment>
+                                        <NavigationMenuItem>
+                                            <Link href="/auth/register" legacyBehavior passHref>
+                                                <Button variant={"outline"}>Daftar</Button>
+                                            </Link>
+                                        </NavigationMenuItem>
+                                        <NavigationMenuItem>
+                                            <Link href="/auth/login" legacyBehavior passHref>
+                                                <Button variant={"outline"}>Masuk</Button>
+                                            </Link>
+                                        </NavigationMenuItem>
+                                    </React.Fragment>
+                                )}
+                            </NavigationMenuList>
+                        </NavigationMenu>
                     </div>
-                    <div className="w-full bg-gradient-to-r md:flex hidden from-red-600 via-red-700 to-red-800 shadow-lg">
-                        <div className="max-w-7xl mx-auto flex items-center justify-start gap-3 py-2 px-6">
-                            <h1 className="text-white text-3xl md:text-sm font-extrabold tracking-widest uppercase drop-shadow-md select-none">
-                                Gancy Motor Part
-                            </h1>
-                        </div>
-                    </div>
+
                 </React.Fragment>
             )}
         </React.Fragment>

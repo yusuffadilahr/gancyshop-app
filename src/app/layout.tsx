@@ -1,19 +1,16 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import RootProvider from "@/provider";
 import { Navbar } from "@/components/core/navbar";
 import { Toaster } from "@/components/ui/toaster"
+import { Noto_Sans } from 'next/font/google'
+import Footer from "@/components/core/footer";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const pacifico = Noto_Sans({
+  weight: '400', 
+  subsets: ['latin'],
+  variable: '--font-pacifico'
+})
 
 export const metadata: Metadata = {
   title: "Gancy Motor Parts",
@@ -27,11 +24,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${pacifico.className} antialiased`}>
         <RootProvider>
           <Navbar />
           {children}
           <Toaster />
+          <Footer />
         </RootProvider>
       </body>
     </html>

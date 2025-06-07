@@ -13,6 +13,14 @@ export interface IDataProduk {
     updatedAt: string
     deletedAt: string | null
     ownerId: number
+    category: {
+        categoryMotorcyleId: number
+        categoryName: string
+        createdAt: string
+        deletedAt: string | null
+        id: number
+        updatedAt: string
+    }
 }
 
 export interface IInitialValuesAddProduct {
