@@ -5,9 +5,10 @@ import { Navbar } from "@/components/core/navbar";
 import { Toaster } from "@/components/ui/toaster"
 import { Noto_Sans } from 'next/font/google'
 import Footer from "@/components/core/footer";
+import { Suspense } from "react";
 
 const pacifico = Noto_Sans({
-  weight: '400', 
+  weight: '400',
   subsets: ['latin'],
   variable: '--font-pacifico'
 })
@@ -26,7 +27,16 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${pacifico.className} antialiased`}>
         <RootProvider>
-          <Navbar />
+
+          {/* dibungkus oleh suspense agar tidak terjadi masalah saat rendering,
+          secara default navbar component berisikan data2 yang membawa hooks yang
+          memungkinkan dirender hanya dari sisi client, dan layout disini adalah ssr,
+          suspense disini berfungsi untuk menunda render
+          ketika komponen itu siap dijalankan maka suspense akan mengeksekusinya */}
+          
+          <Suspense fallback={null}>
+            <Navbar />
+          </Suspense>
           {children}
           <Toaster />
           <Footer />

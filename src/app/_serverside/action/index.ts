@@ -14,7 +14,7 @@ export const getAllDataProductPublic = async () => {
         return result
     } catch (error) {
         console.log(error, '<< error get')
-        throw error
+        return []
     }
 }
 

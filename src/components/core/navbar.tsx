@@ -1,4 +1,4 @@
-"use client";;
+"use client";
 import * as React from "react"
 import Link from "next/link"
 
@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/navigation-menu";
 import Image from "next/image"
 import { useAppSelector } from "@/redux/store"
-import { usePathname } from "next/navigation"
 import { Marquee, MarqueeItem, MarqueeContent } from '@/components/ui/shadcn-io/marquee';
 import { Button } from "@/components/ui/button"
 import { FaBox } from "react-icons/fa";
@@ -23,10 +22,14 @@ import { useDebouncedCallback } from "use-debounce";
 import { getAllDataProductBySearch } from "@/app/_serverside/action";
 import { IDataProduk } from "@/app/(admin)/admin/produk/_clientside/types";
 import { Spinner } from "@/components/ui/spinner";
+import { MdKeyboardArrowRight } from "react-icons/md";
+import { useAppTools } from "@/hooks/use-app";
 
 export function Navbar() {
+    const { pathname } = useAppTools()
+    // const pathname = usePathname()
     const isNotFound = useAppSelector((state) => state.globaltheme.notFoundPage)
-    const pathname = usePathname()
+
     const [tokenExist, setTokenExist] = React.useState<string>('')
     const [dataProduct, setDataProduct] = React.useState<IDataProduk[]>([])
     const [loading, setLoading] = React.useState<boolean>(false)
@@ -132,21 +135,31 @@ export function Navbar() {
                                     }} />
                                 {loading && <Spinner className="absolute left-2" size={"small"} />}
                                 {dataProduct.length > 0 ? (
-                                    <div className="absolute bg-white top-12 z-20">
-                                        <ul className="grid gap-2 p-4 md:w-[200px] lg:w-[300px]">
+                                    <div className="absolute bg-white top-12 z-20 rounded-b-xl max-h-[250px] overflow-auto">
+                                        <ul className="grid gap-2 p-4 md:w-[200px] lg:w-[650px] space-y-2">
                                             {dataProduct.map((sub) => (
                                                 <Link href={`/product/${sub.id}`} key={sub.id}>
-                                                    <li title={sub.name} onClick={()=> setDataProduct([])}>
-                                                        {sub.name}
-                                                    </li>
+                                                    <div className="flex justify-between items-center border-b pb-2">
+                                                        <div className="flex items-center gap-2">
+                                                            <Image alt="photo" src={sub.imageUrl} className="w-14 h-1w-14 object-cover"
+                                                                height={500} width={500} />
+                                                            <div>
+                                                                <li title={sub.name} onClick={() => setDataProduct([])}>
+                                                                    {sub.name}
+                                                                </li>
+                                                                <p className="text-sm text-neutral-500">{sub.category.categoryName}</p>
+                                                            </div>
+                                                        </div>
+                                                        <MdKeyboardArrowRight />
+                                                    </div>
                                                 </Link>
                                             ))}
                                         </ul>
                                     </div>
                                 ) : loading && (
-                                    <ul className="grid gap-2 p-4 md:w-[200px] lg:w-[300px] absolute bg-white top-12 z-20">
-                                        <li>
-                                            Loading
+                                    <ul className="grid gap-2 p-4 md:w-[200px] lg:w-[650px] absolute bg-white rounded-b-xl top-12 z-20">
+                                        <li className="w-full flex justify-center items-center gap-2">
+                                            <Spinner size={"small"} /> Loading..
                                         </li>
                                     </ul>
                                 )}

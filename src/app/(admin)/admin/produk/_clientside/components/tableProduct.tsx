@@ -16,7 +16,8 @@ import Link from "next/link";
 import * as React from "react";
 import { FaDesktop } from "react-icons/fa";
 
-const DynamicModalEdit = dynamic(() => import('./modalEditProduct'), { loading: () => <h1 className="text-xs text-center">...</h1> })
+const DynamicModalEdit = dynamic(() => import('./modalEditProduct'), { loading: () => <></> })
+const DynamicModalDeleteProduct = dynamic(() => import('./modalDeleteProduct'), { loading: () => <h1 className="text-xs text-center">...</h1> })
 
 export default function TableProduct({
     data,
@@ -31,8 +32,6 @@ export default function TableProduct({
 
     return (
         <Table className="w-full border rounded-md overflow-hidden">
-
-            {/* <TableCaption className="text-sm text-gray-500">Table Product.</TableCaption> */}
             <TableHeader className="bg-gray-50">
                 <TableRow>
                     <TableHead className="w-fit max-w-[200px] border px-4 py-2 text-left text-gray-700">Nama Produk</TableHead>
@@ -82,6 +81,8 @@ export default function TableProduct({
                                         const findData = data.find((find) => find.id === item.id)
                                         setFindProduct(findData as IDataProduk)
                                     }} />
+
+                                <DynamicModalDeleteProduct data={item} refetch={refetch} />
                             </MoreOption>
                         </TableCell>
                     </TableRow>

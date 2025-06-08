@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaArrowRight } from "react-icons/fa";
 
-export default function CardSection({ dataProduct }: { dataProduct: IDataProduk[] | undefined }) {
+export default function CardProduct({ dataProduct }: { dataProduct: IDataProduk[] | undefined }) {
     return (
         <div className="px-5 space-y-5 pt-4">
             <h1 className="font-semibold text-2xl">Produk Kami</h1>

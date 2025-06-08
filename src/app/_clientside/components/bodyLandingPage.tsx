@@ -1,25 +1,17 @@
-'use client';
-import { IDataProduk } from "@/app/(admin)/admin/produk/_clientside/types";
-import CardSection from "@/app/_clientside/components/cardSection";
+'use client'
+
 import CarouselSection from "@/app/_clientside/components/carouselSection";
-import { getAllDataProductPublic } from "@/app/_serverside/action";
-import { useQuery } from "@tanstack/react-query";
 import * as React from "react";
-import { Spinner } from "@/components/ui/spinner";
 import CardPlatform from "@/app/_clientside/components/cardPlatform";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
 
-export default function BodyLanding() {
-
-    const { data: dataProduct, isPending } = useQuery<IDataProduk[], Error>({
-        queryKey: ['data-products'],
-        queryFn: async () => {
-            const res = await getAllDataProductPublic()
-            return res.data
-        }
-    })
+export default function BodyLanding({
+    cardProductServer
+}: {
+    cardProductServer?: React.ReactNode
+}) {
 
     React.useEffect(() => {
         console.log('Welcome, Diddy!')
@@ -51,19 +43,7 @@ export default function BodyLanding() {
                     </CarouselContent>
                 </Carousel>
             </div>
-
-            {dataProduct?.length === 0 && isPending ? (
-                <div className="w-full justify-center items-center">
-                    <Spinner />
-                </div>
-            ) : !!dataProduct && dataProduct.length > 0 ? (
-                <CardSection dataProduct={dataProduct} />
-            ) : dataProduct?.length === 0 ? '' : (
-                <div className="w-full justify-center items-center">
-                    <Spinner />
-                </div>
-            )}
-
+            <React.Fragment>{cardProductServer}</React.Fragment>
             <CardPlatform />
 
         </div>
