@@ -103,15 +103,6 @@ export interface IModalAddProductProps {
             }>>) => void
 }
 
-export interface IDataCategory {
-    id: number;
-    motorCycleName: string;
-    releaseYear: string
-    createdAt: string;
-    updatedAt: string;
-    deletedAt: string | null;
-}
-
 export interface ISelectOptionSearchProps {
     handleGetDataCategoryByCategoryMotor: (id: string) => void
     open: boolean,
