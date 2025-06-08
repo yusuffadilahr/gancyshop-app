@@ -104,3 +104,24 @@ export const handleGetDataCategoryByCategoryMotor = async (categoryMotorId: stri
         throw error
     }
 }
+
+export const deleteDataProductById = async (idProduct: string) => {
+    try {
+        const token = (await cookies()).get('_token')?.value
+        const res = await fetch(`${baseUrl}/admin/delete-product/${idProduct}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+            method: 'PATCH',
+            cache: 'no-store',
+            body: JSON.stringify({})
+        })
+
+        if (!res.ok) throw new Error('Data tidak tersedia')
+        const result = await res.json()
+
+        return result
+    } catch (error) {
+        throw error
+    }
+}
