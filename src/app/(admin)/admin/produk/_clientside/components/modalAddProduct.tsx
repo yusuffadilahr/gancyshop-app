@@ -171,7 +171,7 @@ export default function ModalAddProduct({
                                     <Button type="submit" disabled={
                                         !values.images || !values.description || isPending ||
                                         !values.name || !values.price || !values.stock || !values.weightGram
-                                    }>Save changes</Button>
+                                    }>Buat Produk</Button>
                                 </div>
                             </Form>
                         )}

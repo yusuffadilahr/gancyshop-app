@@ -1,17 +1,15 @@
 'use client'
 
 import TableProduct from "@/app/(admin)/admin/produk/_clientside/components/tableProduct";
+import { useHelperProduct } from "@/app/(admin)/admin/produk/_clientside/hooks/use-helper-product";
 import { useMutateAddProduct } from "@/app/(admin)/admin/produk/_clientside/hooks/use-mutate";
 import { useProductState } from "@/app/(admin)/admin/produk/_clientside/hooks/use-product-state";
-import { getAllProduct } from "@/app/(admin)/admin/produk/_serverside/action";
+import { useQueryGetProduct } from "@/app/(admin)/admin/produk/_clientside/hooks/use-query-get-product";
 import { PaginationTable } from "@/components/core/paginationTable";
 import { Input } from "@/components/ui/input"
 import { Spinner } from "@/components/ui/spinner";
 import { useAppTools } from "@/hooks/use-app";
-import { useQuery } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
-import * as React from "react";
-import { useDebouncedCallback } from 'use-debounce'
 
 const DynamicModalAddProduct = dynamic(() => import('./modalAddProduct'), { loading: () => <></> })
 
@@ -21,53 +19,13 @@ export default function BodyProduk() {
     const { limit, loadingSearch, setLoadingSearch,
         page, setPage, searchData, setSearchData } = useProductState({ searchParams })
 
-    const { data: dataTable, refetch } = useQuery({
-        queryKey: ['get-data-product'],
-        queryFn: async () => {
-            const res = await getAllProduct({
-                search: searchData,
-                limit,
-                page
-            })
+    const { dataTable, refetch } = useQueryGetProduct({ searchData, limit, page })
 
-            return res?.data
-        },
+    const { debounce, handleChangePage } = useHelperProduct({
+        limit, page, pathname,
+        refetch, router, searchData,
+        setLoadingSearch, setPage, setSearchData
     })
-
-    const handleChangePage = (currentPage: number) => {
-        setPage(String(currentPage))
-    }
-
-    const debounce = useDebouncedCallback((value) => {
-        setSearchData(value)
-        setLoadingSearch(false)
-    }, 800)
-
-    React.useEffect(() => {
-        const newParams = new URLSearchParams()
-        if (searchData) {
-            newParams.set('search', searchData)
-        } else {
-            newParams.delete('search')
-        }
-
-        if (page) {
-            newParams.set('page', page)
-        } else {
-            newParams.delete('page')
-        }
-
-        if (limit) {
-            newParams.set('limit', limit)
-        } else {
-            newParams.delete('limit')
-        }
-
-        router.replace(`${pathname}?${newParams.toString()}`)
-        refetch()
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [searchData, page])
 
     const { filePreview, handleAddProduct, handleChangeFile,
         initialValues, isPending, setFilePreview,

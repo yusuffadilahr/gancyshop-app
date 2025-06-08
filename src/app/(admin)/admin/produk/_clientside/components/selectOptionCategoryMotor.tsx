@@ -15,8 +15,9 @@ import {
 } from "@/components/ui/popover"
 import { Button } from "@/components/ui/button";
 import * as React from "react";
-import { IDataCategory, ISelectOptionSearchProps } from "@/app/(admin)/admin/produk/_clientside/types";
+import { ISelectOptionSearchProps } from "@/app/(admin)/admin/produk/_clientside/types";
 import { handleGetDataCategoryMotor } from "@/app/(admin)/admin/produk/_serverside/action";
+import { IDataCategoryMotor } from "@/app/_clientside/types";
 
 export default function SelectOptionCategoryMotorSearch({
     open,
@@ -26,7 +27,7 @@ export default function SelectOptionCategoryMotorSearch({
     setFieldValue,
     handleGetDataCategoryByCategoryMotor
 }: ISelectOptionSearchProps) {
-    const [data, setData] = React.useState<IDataCategory[]>([])
+    const [data, setData] = React.useState<IDataCategoryMotor[]>([])
     const [loading, setLoading] = React.useState<boolean>(false)
     const handleGetData = async (open: boolean) => {
         try {
