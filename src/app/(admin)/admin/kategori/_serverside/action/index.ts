@@ -1,0 +1,61 @@
+'use server'
+
+import { baseUrl } from "@/utils/axiosInstance"
+import { cookies } from "next/headers"
+
+export const getCategoryProduct = async () => {
+    try {
+        const token = (await cookies()).get('_token')?.value
+
+        const res = await fetch(`${baseUrl}/category/all-categorys`, {
+            cache: 'no-store',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+
+            method: 'GET'
+        })
+
+        if (!res.ok) throw new Error('Data tidak tersedia')
+
+        const result = await res.json()
+
+        return result
+    } catch (error) {
+        console.log(error)
+        throw error
+    }
+}
+
+export const createCategoryAction = async (fd: FormData) => {
+    try {
+        const data = {
+            idCategoryMotor: fd.get('idCategoryMotor'),
+            dataMotorOptional: fd.get('motorCycleName'),
+            releaseYearOptional: fd.get('releaseYear'),
+            categoryName: fd.get('categoryName')
+        }
+
+        const token = (await cookies()).get('_token')?.value
+
+        const res = await fetch(`${baseUrl}/category/create-category`, {
+            cache: 'no-store',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                "Content-Type": 'application/json',
+                "Accept": 'application/json'
+            },
+
+            method: 'POST',
+            body: JSON.stringify(data)
+        })
+
+        if (!res.ok) throw new Error('Ada kesalahan saat proses membuat data')
+        const result = await res.json()
+
+        return result
+    } catch (error) {
+        console.log(error)
+        throw error
+    }
+}

@@ -17,17 +17,8 @@ import { Button } from "@/components/ui/button";
 import * as React from "react";
 import { handleGetDataCategoryMotor } from "@/app/(admin)/admin/produk/_serverside/action";
 import { IDataCategoryMotor } from "@/app/_clientside/types";
-import { FormikErrors } from "formik";
-
-interface ISelectOptionKategoriMotorProps {
-    open: boolean,
-    setOpen: React.Dispatch<React.SetStateAction<boolean>>,
-    value: string,
-    setValue: React.Dispatch<React.SetStateAction<string>>
-    setFieldValue: (field: string, value: string, shouldValidate?: boolean) => Promise<void | FormikErrors<{
-        categoryMotor: string
-    }>>
-}
+import { ISelectOptionKategoriMotorProps } from "@/app/(admin)/admin/kategori/_clientside/types";
+import { useHelperOptionMotor } from "@/app/(admin)/admin/kategori/_clientside/hooks/use-helper-option-motor";
 
 export default function SelectOptionCategoryMotorSearch({
     open,
@@ -55,39 +46,14 @@ export default function SelectOptionCategoryMotorSearch({
         }
     }
 
-    const labelName = data?.find((item) => item.id === Number(value?.split('-')[0]))
-
-    const onSelectOption = (currentValue: string) => {
-        if (currentValue === 'Lainnya') {
-            setValue(value === currentValue ? '' : currentValue)
-            setFieldValue('categoryMotor', currentValue)
-            setOpen(false)
-
-            return
-        }
-
-        const newValue = currentValue.split('-')
-        setValue(newValue[1] === value?.split('-')[1] ? "" : currentValue)
-
-        setFieldValue('categoryMotor', newValue[0])
-        setOpen(false)
-    }
-
-    const valueOnSelectOption = () => {
-        return (!!value && value !== 'Lainnya'
-            ? `${labelName?.motorCycleName} - ${labelName?.releaseYear}`
-            : !!value && value === 'Lainnya' ? 'Lainnya' :
-                loading ? 'Mohon Tunggu' :
-                    "Pilih Kategori Motor...") || 'Pilih Kategori Motor...'
-    }
-
-    const handleOpen = (open: boolean) => {
-        if (data.length === 0) {
-            handleGetData(open)
-        } else {
-            setOpen(true)
-        }
-    }
+    const {
+        onSelectOption,
+        valueOnSelectOption,
+        handleOpen } = useHelperOptionMotor({
+            data, handleGetData, loading,
+            setFieldValue, setOpen, setValue,
+            value
+        })
 
     return (
         <Popover open={open} onOpenChange={handleOpen}>
