@@ -1,4 +1,4 @@
-"use client";
+"use client";;
 import * as React from "react"
 import Link from "next/link"
 
@@ -17,17 +17,16 @@ import { useAppSelector } from "@/redux/store"
 import { Marquee, MarqueeItem, MarqueeContent } from '@/components/ui/shadcn-io/marquee';
 import { Button } from "@/components/ui/button"
 import { FaBox } from "react-icons/fa";
-import { Input } from "@/components/ui/input";
 import { useDebouncedCallback } from "use-debounce";
 import { getAllDataProductBySearch } from "@/app/_serverside/action";
 import { IDataProduk } from "@/app/(admin)/admin/produk/_clientside/types";
 import { Spinner } from "@/components/ui/spinner";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { useAppTools } from "@/hooks/use-app";
+import InputSearch from "@/components/core/inputSearch";
 
 export function Navbar() {
     const { pathname } = useAppTools()
-    // const pathname = usePathname()
     const isNotFound = useAppSelector((state) => state.globaltheme.notFoundPage)
 
     const [tokenExist, setTokenExist] = React.useState<string>('')
@@ -126,14 +125,12 @@ export function Navbar() {
                                     className="w-fit h-12" />
                             </Link>
                             <div className="w-full flex relative">
-                                <Input className={`flex w-full py-5 px-5 ${loading ? 'pl-10' : ''} rounded-full active:outline-none bg-white`}
-                                    type="search" placeholder="Cari disini.."
-                                    onChange={(e) => {
-                                        setLoading(true)
-                                        debounce(e.target.value)
-                                        setDataProduct([])
-                                    }} />
-                                {loading && <Spinner className="absolute left-2" size={"small"} />}
+                                <InputSearch loadingSearch={loading} onChange={(e) => {
+                                    setLoading(true)
+                                    debounce(e.target.value)
+                                    setDataProduct([])
+                                }} />
+
                                 {dataProduct.length > 0 ? (
                                     <div className="absolute bg-white top-12 z-20 rounded-b-xl max-h-[250px] overflow-auto">
                                         <ul className="grid gap-2 p-4 md:w-[200px] lg:w-[650px] space-y-2">

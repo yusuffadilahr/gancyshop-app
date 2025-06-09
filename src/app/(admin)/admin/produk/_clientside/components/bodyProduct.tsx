@@ -1,13 +1,11 @@
-'use client'
-
+'use client';
 import TableProduct from "@/app/(admin)/admin/produk/_clientside/components/tableProduct";
 import { useHelperProduct } from "@/app/(admin)/admin/produk/_clientside/hooks/use-helper-product";
 import { useMutateAddProduct } from "@/app/(admin)/admin/produk/_clientside/hooks/use-mutate";
 import { useProductState } from "@/app/(admin)/admin/produk/_clientside/hooks/use-product-state";
 import { useQueryGetProduct } from "@/app/(admin)/admin/produk/_clientside/hooks/use-query-get-product";
+import InputSearch from "@/components/core/inputSearch";
 import { PaginationTable } from "@/components/core/paginationTable";
-import { Input } from "@/components/ui/input"
-import { Spinner } from "@/components/ui/spinner";
 import { useAppTools } from "@/hooks/use-app";
 import dynamic from "next/dynamic";
 
@@ -39,14 +37,11 @@ export default function BodyProduk() {
                     initialValues={initialValues} isPending={isPending}
                     setFilePreview={setFilePreview} />
 
-                <div className="flex items-center relative w-full">
-                    <Input type="search" defaultValue={searchParams.get('search') || ''}
-                        onChange={(e) => {
-                            setLoadingSearch(true)
-                            debounce(e.target.value)
-                        }} placeholder="Cari disini.." className={`w-full ${loadingSearch ? 'pl-10' : ''}`} />
-                    {loadingSearch && <Spinner className="absolute left-2" size={"small"} />}
-                </div>
+                <InputSearch loadingSearch={loadingSearch} searchParams={searchParams}
+                    onChange={(e) => {
+                        setLoadingSearch(true)
+                        debounce(e.target.value)
+                    }} />
             </div>
 
             <TableProduct data={dataTable?.data} filePreview={filePreview}
