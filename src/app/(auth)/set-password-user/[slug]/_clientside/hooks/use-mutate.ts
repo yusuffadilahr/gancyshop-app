@@ -1,10 +1,11 @@
 import { setPasswordAction } from "@/app/(auth)/set-password-user/[slug]/_serverside/action";
-import { useAppTools } from "@/hooks/use-app";
 import { toast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 
 export const useMutateSetPassword = (token: string) => {
-    const { router } = useAppTools()
+    const router = useRouter()
+
     const initialValues = {
         password: '',
         confirm_password: ''

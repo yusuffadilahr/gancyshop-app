@@ -7,11 +7,7 @@ import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carouse
 import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
 
-export default function BodyLanding({
-    cardProductServer
-}: {
-    cardProductServer?: React.ReactNode
-}) {
+export default function BodyLanding({ cardProductServer }: { cardProductServer?: React.ReactNode }) {
 
     React.useEffect(() => {
         console.log('Welcome, Diddy!')
