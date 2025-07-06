@@ -4,7 +4,7 @@ import RootProvider from "@/provider";
 import { Navbar } from "@/components/core/navbar";
 import { Toaster } from "@/components/ui/toaster"
 import { Noto_Sans } from 'next/font/google'
-import Footer from "@/components/core/footer";
+import { Footer } from "@/components/core/footer";
 import { Suspense } from "react";
 
 const pacifico = Noto_Sans({
@@ -33,13 +33,15 @@ export default function RootLayout({
           memungkinkan dirender hanya dari sisi client, dan layout disini adalah ssr,
           suspense disini berfungsi untuk menunda render
           ketika komponen itu siap dijalankan maka suspense akan mengeksekusinya */}
-          
+
           <Suspense fallback={null}>
             <Navbar />
           </Suspense>
           {children}
+          <Suspense fallback={null}>
+            <Footer />
+          </Suspense>
           <Toaster />
-          <Footer />
         </RootProvider>
       </body>
     </html>

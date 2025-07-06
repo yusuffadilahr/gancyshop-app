@@ -17,6 +17,8 @@ export default function NotFound() {
         }
     }, [])
 
+    if (typeof window === 'undefined') return null
+
     return (
         <React.Fragment>
             {isClient && (

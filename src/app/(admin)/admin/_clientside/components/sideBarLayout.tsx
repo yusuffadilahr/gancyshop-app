@@ -1,10 +1,9 @@
-'use client'
-
+'use client';
 import { AppSidebar } from "@/app/(admin)/admin/_clientside/components/appSideBar";
 import { AppBreadcrumb } from "@/app/(admin)/admin/_clientside/components/breadCrumbs";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { useAppTools } from "@/hooks/use-app";
 import { setProfileAdmin } from "@/redux/slice/globalSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
 import * as React from "react";
 
 export default function SideBarLayout({
@@ -18,7 +17,9 @@ export default function SideBarLayout({
         email: string
     }
 }) {
-    const { dispatch, profileAdmin } = useAppTools()
+    const dispatch = useAppDispatch()
+    const profileAdmin = useAppSelector((state) => state.globaltheme.profileAdmin)
+
     const setToGlobalState = () => {
         dispatch(setProfileAdmin(dataProfil))
     }

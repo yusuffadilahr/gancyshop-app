@@ -1,4 +1,4 @@
-"use client";;
+"use client"
 import * as React from "react"
 import Link from "next/link"
 
@@ -11,22 +11,23 @@ import {
     NavigationMenuList,
     NavigationMenuTrigger,
     navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu";
+} from "@/components/ui/navigation-menu"
 import Image from "next/image"
 import { useAppSelector } from "@/redux/store"
-import { Marquee, MarqueeItem, MarqueeContent } from '@/components/ui/shadcn-io/marquee';
+import { Marquee, MarqueeItem, MarqueeContent } from '@/components/ui/shadcn-io/marquee'
 import { Button } from "@/components/ui/button"
-import { FaBox } from "react-icons/fa";
-import { useDebouncedCallback } from "use-debounce";
-import { getAllDataProductBySearch } from "@/app/_serverside/action";
-import { IDataProduk } from "@/app/(admin)/admin/produk/_clientside/types";
-import { Spinner } from "@/components/ui/spinner";
-import { MdKeyboardArrowRight } from "react-icons/md";
-import { useAppTools } from "@/hooks/use-app";
-import InputSearch from "@/components/core/inputSearch";
+import { FaBox } from "react-icons/fa"
+import { useDebouncedCallback } from "use-debounce"
+import { getAllDataProductBySearch } from "@/app/_serverside/action"
+import { IDataProduk } from "@/app/(admin)/admin/produk/_clientside/types"
+import { Spinner } from "@/components/ui/spinner"
+import { MdKeyboardArrowRight } from "react-icons/md"
+import InputSearch from "@/components/core/inputSearch"
+import { usePathname } from "next/navigation"
 
 export function Navbar() {
-    const { pathname } = useAppTools()
+    const pathname = usePathname()
+
     const isNotFound = useAppSelector((state) => state.globaltheme.notFoundPage)
 
     const [tokenExist, setTokenExist] = React.useState<string>('')
@@ -74,7 +75,7 @@ export function Navbar() {
             if (!res.error) {
                 setDataProduct(res.data)
                 setLoading(false)
-                return;
+                return
             }
 
         } catch (error) {

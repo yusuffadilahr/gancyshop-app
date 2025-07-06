@@ -1,4 +1,4 @@
-'use client';
+'use client';;
 import TableProduct from "@/app/(admin)/admin/produk/_clientside/components/tableProduct";
 import { useHelperProduct } from "@/app/(admin)/admin/produk/_clientside/hooks/use-helper-product";
 import { useMutateAddProduct } from "@/app/(admin)/admin/produk/_clientside/hooks/use-mutate";
@@ -6,13 +6,15 @@ import { useProductState } from "@/app/(admin)/admin/produk/_clientside/hooks/us
 import { useQueryGetProduct } from "@/app/(admin)/admin/produk/_clientside/hooks/use-query-get-product";
 import InputSearch from "@/components/core/inputSearch";
 import { PaginationTable } from "@/components/core/paginationTable";
-import { useAppTools } from "@/hooks/use-app";
 import dynamic from "next/dynamic";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const DynamicModalAddProduct = dynamic(() => import('./modalAddProduct'), { loading: () => <></> })
 
 export default function BodyProduk() {
-    const { pathname, router, searchParams } = useAppTools()
+    const router = useRouter()
+    const pathname = usePathname()
+    const searchParams = useSearchParams()
 
     const { limit, loadingSearch, setLoadingSearch,
         page, setPage, searchData, setSearchData } = useProductState({ searchParams })
