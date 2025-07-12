@@ -73,7 +73,7 @@ export function Navbar() {
         try {
             const res = await getAllDataProductBySearch(val)
             if (!res.error) {
-                setDataProduct(res.data)
+                setDataProduct(res?.data?.data)
                 setLoading(false)
                 return
             }

@@ -1,4 +1,4 @@
-"use client";
+"use client";;
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import Image from "next/image"
@@ -6,7 +6,6 @@ import { IProductPublic } from "@/app/(landingmenu)/product/_clientside/types"
 import * as React from 'react'
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useDebouncedCallback } from "use-debounce"
-import InputSearch from "@/components/core/inputSearch"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -15,12 +14,18 @@ import { useQuery } from "@tanstack/react-query"
 import { getAllProductPublic } from "@/app/(landingmenu)/product/_serverside/action"
 import axios from "axios"
 import { baseUrl } from "@/utils/axiosInstance"
+import SkeletonCardProduct from "@/components/core/skeletonCardProduct";
+import { GrPowerReset } from "react-icons/gr";
+import DatePicker from "@/components/core/datePickerInput";
 
 interface IValueOnChange {
-    tabList?: string
     searchProduct?: string
     kategoriId?: string
     minPrice?: string
+    maxPrice?: string
+    minWeight?: string
+    maxWeight?: string
+    stock?: string
 }
 
 interface ICategoryProduct {
@@ -39,29 +44,48 @@ export default function BodyProduct() {
 
     const [page, setPage] = React.useState<number>(Number(params?.get('page')) || 1)
     const limit = 8
-
-    const [loading, setLoading] = React.useState<{ loadingSearch: boolean }>({ loadingSearch: false })
+    const [datePicker, setDatePicker] = React.useState<Date | undefined>(undefined)
     const [valueOnChange, setValueOnChange] = React.useState<IValueOnChange>({
-        searchProduct: params?.get('search') || '',
-        tabList: params?.get('tab') || '',
-        kategoriId: params?.get('categoryId') || ''
+        searchProduct: '', kategoriId: params?.get('category-id') || '',
+        minPrice: '', maxPrice: '',
+        minWeight: '', maxWeight: '',
+        stock: ''
     })
 
-    const debounce = useDebouncedCallback((val) => {
-        setValueOnChange(prev => ({ ...prev, searchProduct: val }))
-        setLoading(prev => ({ ...prev, loadingSearch: false }))
+    const debounceMinPrice = useDebouncedCallback(val => {
+        setValueOnChange(prev => ({ ...prev, minPrice: val }))
+    }, 800)
+
+    const debounceMaxPrice = useDebouncedCallback(val => {
+        setValueOnChange(prev => ({ ...prev, maxPrice: val }))
+    }, 800)
+
+    const debounceMinWeight = useDebouncedCallback(val => {
+        setValueOnChange(prev => ({ ...prev, minWeight: val }))
+    }, 800)
+
+    const debounceMaxWeight = useDebouncedCallback(val => {
+        setValueOnChange(prev => ({ ...prev, maxWeight: val }))
     }, 800)
 
     const { data: dataGetProduct, refetch,
         isLoading: isLoadingGetProduct } = useQuery<{ totalPage: number; data: IProductPublic[] }>({
             queryKey: ['get-all-product', valueOnChange?.searchProduct, page, limit, valueOnChange?.kategoriId],
             queryFn: async () => {
-                const response = await getAllProductPublic({
+                const dataArgs = {
                     search: valueOnChange?.searchProduct || '',
                     page: page || 1,
                     limit: limit || 8,
-                    category: valueOnChange?.kategoriId && valueOnChange?.kategoriId !== 'all' ? valueOnChange?.kategoriId : ''
-                })
+                    category: valueOnChange?.kategoriId && valueOnChange?.kategoriId !== 'all' ? valueOnChange?.kategoriId : '',
+                    tanggal: datePicker?.toLocaleDateString() || '',
+                    minPrice: (valueOnChange?.minPrice && valueOnChange?.minPrice !== '0') ? valueOnChange?.minPrice : '',
+                    maxPrice: (valueOnChange?.maxPrice && valueOnChange?.maxPrice !== '0') ? valueOnChange?.maxPrice : '',
+                    minWeight: (valueOnChange?.minWeight && valueOnChange?.minWeight !== '0') ? valueOnChange?.minWeight : '',
+                    maxWeight: (valueOnChange?.maxWeight && valueOnChange?.maxWeight !== '0') ? valueOnChange?.maxWeight : '',
+                    stock: (valueOnChange?.stock && valueOnChange?.stock !== 'all') ? valueOnChange?.stock : '',
+                }
+
+                const response = await getAllProductPublic(dataArgs)
 
                 const dataProduct = response?.data?.data || []
                 const result = {
@@ -110,39 +134,61 @@ export default function BodyProduct() {
         }
 
         if (valueOnChange?.kategoriId && valueOnChange?.kategoriId !== 'all') {
-            searchParams.set('categoryId', valueOnChange?.kategoriId)
+            searchParams.set('category-id', valueOnChange?.kategoriId)
         } else {
-            searchParams.delete('categoryId')
+            searchParams.delete('category-id')
+        }
+
+        if (valueOnChange?.stock && valueOnChange?.stock !== 'all') {
+            searchParams.set('stok', valueOnChange?.stock)
+        } else {
+            searchParams.delete('stok')
+        }
+
+        if (datePicker) {
+            searchParams.set('tanggal', datePicker.toLocaleDateString())
+        } else {
+            searchParams.delete('tanggal')
+        }
+
+        if (valueOnChange?.minPrice && valueOnChange.minPrice !== '0') {
+            searchParams.set('min-price', valueOnChange?.minPrice)
+        } else {
+            searchParams.delete('min-price')
+        }
+
+        if (valueOnChange?.maxPrice && valueOnChange.maxPrice !== '0') {
+            searchParams.set('max-price', valueOnChange?.maxPrice)
+        } else {
+            searchParams.delete('max-price')
+        }
+
+        if (valueOnChange?.minWeight && valueOnChange.minWeight !== '0') {
+            searchParams.set('min-weight', valueOnChange?.minWeight)
+        } else {
+            searchParams.delete('min-weight')
+        }
+
+        if (valueOnChange?.maxWeight && valueOnChange.maxWeight !== '0') {
+            searchParams.set('max-weight', valueOnChange?.maxWeight)
+        } else {
+            searchParams.delete('max-weight')
         }
 
         const currentUrl = `${pathname}?${searchParams?.toString()}`
         router.replace(currentUrl)
         refetch()
 
-    }, [valueOnChange, page, params])
+    }, [valueOnChange, page, params, datePicker])
+
+    console.log(dataGetProduct, '<<')
 
     return (
         <div className="p-6 space-y-6">
-            <div className="flex justify-between items-center">
-                <h1 className="text-2xl font-bold">Management Product</h1>
-                <Button variant="secondary">Add Product</Button>
-            </div>
-
-            <div className="flex items-center justify-end gap-4 w-full">
-                <Button variant="secondary">Add Product</Button>
-
-                <div className="w-[400px]">
-                    <InputSearch loadingSearch={loading.loadingSearch} placeholder="Search Product"
-                        onChange={(e) => {
-                            setLoading(prev => ({ ...prev, loadingSearch: true }))
-                            debounce(e.target.value)
-                        }} />
-                </div>
-            </div>
 
             <div className="w-full h-fit flex justify-center gap-2">
                 <div className="hidden md:block w-full md:max-w-xs bg-white rounded-xl shadow-md p-4 space-y-4 h-fit
-                sticky top-0">
+                sticky top-2 border">
                     <h2 className="text-lg font-bold">Filter Produk</h2>
 
                     <div className="space-y-1">
@@ -166,78 +212,52 @@ export default function BodyProduct() {
                     <div className="space-y-1">
                         <Label>Harga</Label>
                         <div className="flex gap-2">
-                            <Input type="number" placeholder="Min" className="w-1/2" />
-                            <Input type="number" placeholder="Max" className="w-1/2" />
+                            <Input type="number" placeholder="Min" className="w-1/2" min={0}
+                                onChange={(e) => debounceMinPrice(e.target.value)} />
+                            <Input type="number" placeholder="Max" className="w-1/2" min={0}
+                                onChange={(e) => debounceMaxPrice(e.target.value)} />
                         </div>
                     </div>
 
                     <div className="space-y-1">
                         <Label>Berat (gram)</Label>
                         <div className="flex gap-2">
-                            <Input type="number" placeholder="Min" className="w-1/2" />
-                            <Input type="number" placeholder="Max" className="w-1/2" />
+                            <Input type="number" placeholder="Min" className="w-1/2" min={0}
+                                onChange={(e) => debounceMinWeight(e.target.value)} />
+
+                            <Input type="number" placeholder="Max" className="w-1/2" min={0}
+                                onChange={(e) => debounceMaxWeight(e.target.value)} />
+
                         </div>
                     </div>
 
                     <div className="space-y-1">
-                        <Label>Status Produk</Label>
-                        <Select>
-                            <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Pilih status" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="all">Semua</SelectItem>
-                                <SelectItem value="true">Aktif</SelectItem>
-                                <SelectItem value="false">Tidak Aktif</SelectItem>
-                            </SelectContent>
-                        </Select>
-                    </div>
-
-                    <div className="space-y-1">
                         <Label>Stok</Label>
-                        <Select>
+                        <Select onValueChange={(val) => setValueOnChange(prev => ({ ...prev, stock: val }))}>
                             <SelectTrigger className="w-full">
                                 <SelectValue placeholder="Ketersediaan" />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectItem value="all">Semua</SelectItem>
-                                <SelectItem value="ready">Tersedia</SelectItem>
-                                <SelectItem value="empty">Stok Habis</SelectItem>
+                                <SelectItem value="tersedia">Tersedia Banyak</SelectItem>
+                                <SelectItem value="hampir-habis">Stok Hampir Habis</SelectItem>
+                                <SelectItem value="stok-habis">Stok Habis</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
 
                     <div className="space-y-1">
                         <Label>Tanggal Dibuat</Label>
-                        <Input type="date" />
+                        <DatePicker date={datePicker} setDate={setDatePicker} />
                     </div>
 
+                    <Button className="w-full flex items-center">
+                        <GrPowerReset /> Reset Filter</Button>
                 </div>
 
                 {(isLoadingGetProduct) ?
                     <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
-                        {Array.from({ length: 8 }).map((_, i) => (
-                            <Card className="overflow-hidden flex flex-col h-fit animate-pulse" key={i}>
-                                <CardHeader className="p-0 relative h-60 w-full bg-gray-200" />
-                                <CardContent className="p-4 flex flex-col justify-between space-y-2">
-                                    <div>
-                                        <div className="h-4 bg-gray-300 rounded w-3/4 mb-1"></div>
-                                        <div className="h-3 bg-gray-200 rounded w-full mb-1"></div>
-                                        <div className="h-3 bg-gray-200 rounded w-1/2"></div>
-                                    </div>
-                                    <div className="space-y-1 mt-2">
-                                        <div className="h-5 bg-gray-300 rounded w-1/2"></div>
-                                        <div className="h-3 bg-gray-200 rounded w-1/3"></div>
-                                        <div className="h-3 bg-gray-200 rounded w-3/4"></div>
-                                        <div className="h-2 bg-gray-100 rounded w-2/4"></div>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="p-4 pt-0 flex justify-between items-center">
-                                    <div className="h-4 bg-gray-200 rounded w-1/3" />
-                                    <div className="h-8 bg-gray-300 rounded w-16" />
-                                </CardFooter>
-                            </Card>
-                        ))}
+                        {Array.from({ length: 8 }).map((_, i) => <SkeletonCardProduct key={i} />)}
                     </div>
                     : !isLoadingGetProduct && dataGetProduct &&
                         dataGetProduct?.data?.length > 0 ?
@@ -261,10 +281,7 @@ export default function BodyProduct() {
                                                 {product.name}
                                             </h3>
                                             <p className="text-xs text-muted-foreground mb-1 line-clamp-2">
-                                                {product.description}
-                                            </p>
-                                            <p className="text-xs text-blue-600 font-medium">
-                                                {product.category.name}
+                                                {product.category.categoryName}
                                             </p>
                                         </div>
                                         <div className="mt-2 space-y-1">

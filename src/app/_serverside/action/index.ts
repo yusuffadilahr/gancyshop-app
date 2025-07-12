@@ -30,7 +30,6 @@ export const getAllDataProductBySearch = async (searchData: string) => {
 
         return result
     } catch (error) {
-        console.log(error, '<< error get')
         throw error
     }
 }
