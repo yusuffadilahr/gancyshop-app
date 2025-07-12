@@ -5,14 +5,14 @@ import * as React from 'react'
 
 export default async function CardProductServer() {
     const res = await getAllDataProductPublic()
-
+    const products = res?.data?.data
     return (
         <React.Suspense fallback={
             <div className="w-full justify-center items-center">
                 <Spinner />
             </div>
         }>
-            <CardProduct dataProduct={res?.data || []} />
+            <CardProduct dataProduct={products || []} />
         </React.Suspense>
     );
 }
