@@ -73,7 +73,6 @@ export default function ModalAddProduct({
 
                         if (!!values.images) fd.append('images', values.images)
 
-                        console.log(values, '<< val')
                         fd.append('name', values.name)
                         fd.append('description', values.description)
                         fd.append('price', values.price)

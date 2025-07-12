@@ -318,15 +318,15 @@ export default function BodyProduct() {
 
             <div className="flex justify-end items-center gap-2 pt-4">
                 <Button variant="ghost" size="sm" disabled={page === 1}
-                    onClick={(() => setPage(page + 1))}>Prev</Button>
+                    onClick={(() => setPage(page - 1))}>Prev</Button>
                 {Array.from({ length: Number(dataGetProduct?.totalPage || 1) }).map((_, i) => (
-                    <Button key={i} variant='ghost' size="sm">
-                        {i + 1}
-                    </Button>
+                    <Button key={i} variant={((i + 1) === page) ? 'default' :'ghost'} size="sm">
+                {i + 1}
+            </Button>
                 ))}
-                <Button variant="ghost" size="sm" disabled={page === dataGetProduct?.totalPage}
-                    onClick={(() => setPage(page + 1))}>Next</Button>
-            </div>
+            <Button variant="ghost" size="sm" disabled={page === dataGetProduct?.totalPage}
+                onClick={(() => setPage(page + 1))}>Next</Button>
         </div>
+        </div >
     )
 }

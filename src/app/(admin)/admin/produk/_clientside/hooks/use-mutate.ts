@@ -41,12 +41,7 @@ export const useMutateAddProduct = ({ refetch }: { refetch: () => void }) => {
 
     const { mutate: handleAddProduct, isPending } = useMutation({
         mutationFn: async (fd: FormData) => {
-            const token = localStorage.getItem('_token')
-            return await axiosInstance.post('/admin/add-products', fd, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
+            return await axiosInstance.post('/admin/add-products', fd)
         }, onSuccess: (res) => {
             toast({
                 title: res.data?.message || 'Berhasil mengupload produk',
