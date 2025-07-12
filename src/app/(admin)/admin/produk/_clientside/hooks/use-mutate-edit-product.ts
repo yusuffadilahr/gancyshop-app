@@ -16,12 +16,7 @@ export const useMutateEditProduct = ({ dataTable, refetch }: { dataTable: IDataP
 
     const { mutate: handleEditProduct, isPending } = useMutation({
         mutationFn: async ({ fd, idProduct }: { fd: FormData, idProduct: number }) => {
-            const token = localStorage.getItem('_token')
-            return await axiosInstance.patch(`/admin/edit-product/${idProduct}`, fd, {
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
-            })
+            return await axiosInstance.patch(`/admin/edit-product/${idProduct}`, fd)
         }, onSuccess: (res) => {
             toast({
                 title: res.data?.message || 'Berhasil mengupload produk',

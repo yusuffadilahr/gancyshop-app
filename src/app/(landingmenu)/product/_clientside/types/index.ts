@@ -15,7 +15,7 @@ export interface IProductPublic {
     ownerId: number
     category: {
         id: number
-        name: string
+        categoryName: string
         createdAt: string
         updatedAt: string
         deletedAt: string | null
