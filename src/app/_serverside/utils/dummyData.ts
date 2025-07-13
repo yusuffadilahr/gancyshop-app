@@ -120,3 +120,38 @@ export const dummyData = [
         }
     },
 ]
+
+export const dataRatingStatis = [
+    {
+        aplikasiName: "Shopee",
+        rating: 4.8,
+        followers: 2100,
+        lastUpdated: "2025-06-06",
+        image: '/shopee.png',
+        link: 'https://shopee.co.id/gancyshop'
+    },
+    {
+        aplikasiName: "Tokopedia",
+        rating: 4.6,
+        followers: 2300,
+        lastUpdated: "2025-06-06",
+        image: '/tokped.png',
+        link: 'https://tokopedia.com/gancis'
+    },
+    {
+        aplikasiName: "Lazada",
+        rating: 4.2,
+        followers: 2000,
+        lastUpdated: "2025-06-06",
+        image: '/laz.png',
+        link: 'https://lazada.co.id/gancyshop'
+    },
+    {
+        aplikasiName: "TikTok Shop",
+        rating: 4.4,
+        followers: 2200,
+        lastUpdated: "2025-06-06",
+        image: '/tik.jpg',
+        link: 'https://tiktok.com/@gancyshop'
+    }
+];

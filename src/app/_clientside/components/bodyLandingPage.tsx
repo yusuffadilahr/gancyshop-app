@@ -15,9 +15,9 @@ export default function BodyLanding({ sectionProductServer }: { sectionProductSe
     }, [])
 
     return (
-        <div className="pb-20 px-4 min-h-screen h-fit space-y-4">
+        <div className="pb-20 md:px-4 min-h-screen h-fit space-y-4">
             <CarouselSection />
-            <div className="px-5 space-y-5 pt-6">
+            <div className="px-2 md:px-5 space-y-5 pt-6">
                 <div className="flex w-full justify-between items-center">
                     <h1 className="font-semibold text-2xl">Kategori</h1>
                     <Link href={'/'} className="text-sm">Lihat semua</Link>
@@ -25,7 +25,7 @@ export default function BodyLanding({ sectionProductServer }: { sectionProductSe
                 <Carousel opts={{ align: "start" }} className="w-full max-w-[100vw]">
                     <CarouselContent>
                         {Array.from({ length: 6 }).map((_, index) => (
-                            <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/6">
+                            <CarouselItem key={index} className="basis-1/2 md:basis-1/3 lg:basis-1/6">
                                 <Card className="flex w-full flex-col justify-center items-center">
                                     <div className="flex w-full items-center justify-center rounded-xl">
                                         <Image width={500} alt="kategori" height={500}

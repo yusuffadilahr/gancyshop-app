@@ -4,9 +4,10 @@ import SectionProductServer from "@/app/_serverside/components/sectionProductSer
 import * as React from "react";
 
 import { default as nextDynamic } from "next/dynamic";
+import { Spinner } from "@/components/ui/spinner";
 
 const DynamicBodyLanding = nextDynamic(() => import('@/app/_clientside/components/bodyLandingPage'), {
-  loading: () => <></>
+  loading: () => <Spinner />
 })
 
 export default function page() {

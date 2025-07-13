@@ -27,7 +27,7 @@ export function Footer() {
     if ((!isNotFound && pathname.startsWith("/admin")) || isNotFound) return null
 
     return (
-        <footer className="bg-white text-slate-800 border-t border-slate-200">
+        <footer className="bg-white text-slate-800 border-t px-2 md:px-0 border-slate-200">
             <div className="w-full flex flex-col items-center py-12 space-y-10">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
                     <div className="col-span-1">
