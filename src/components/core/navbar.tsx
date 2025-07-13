@@ -39,20 +39,21 @@ export function Navbar() {
         {
             menuName: 'Produk',
             submenu: [
-                { title: 'Semua Produk', href: '/product' },
-                { title: 'Produk Populer', href: '/product/popular' },
-                { title: 'Produk Terbaru', href: '/product/new' },
-                { title: 'Diskon & Promo', href: '/product/discount' },
+                {
+                    title: 'Semua Produk',
+                    href: '/product',
+                    titleCaption: 'Lihat semua produk yang tersedia'
+                },
             ],
         },
         {
             menuName: 'Kategori',
             submenu: [
-                { title: 'Honda Series', href: '/category/honda' },
-                { title: 'Yamaha Series', href: '/category/yamaha' },
-                { title: 'Suzuki Series', href: '/category/suzuki' },
-                { title: 'Kawasaki Series', href: '/category/kawasaki' },
-                { title: 'Custom & Aksesoris', href: '/category/custom' },
+                { title: 'Honda Series', href: '/category/honda', titleCaption: 'Sparepart & aksesoris Honda' },
+                { title: 'Yamaha Series', href: '/category/yamaha', titleCaption: 'Sparepart & aksesoris Yamaha' },
+                { title: 'Suzuki Series', href: '/category/suzuki', titleCaption: 'Sparepart & aksesoris Suzuki' },
+                { title: 'Kawasaki Series', href: '/category/kawasaki', titleCaption: 'Sparepart & aksesoris Kawasaki' },
+                { title: 'Custom & Aksesoris', href: '/category/custom', titleCaption: 'Khusus aksesoris dan modifikasi' },
             ]
         },
         { menuName: 'Tentang', href: '/tentang-kami' },
@@ -175,7 +176,7 @@ export function Navbar() {
                                                         <ul className="grid gap-2 p-4 md:w-[200px] lg:w-[300px]">
                                                             {item.submenu.map((sub) => (
                                                                 <ListItem href={sub.href} title={sub.title} key={sub.title}>
-                                                                    {sub.title}
+                                                                    {sub.titleCaption}
                                                                 </ListItem>
                                                             ))}
                                                         </ul>

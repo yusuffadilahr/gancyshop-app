@@ -83,7 +83,8 @@ export default function SectionFilter({
 
             <div className="space-y-1">
                 <Label>Stok</Label>
-                <Select onValueChange={(val) => setValueOnChange(prev => ({ ...prev, stock: val }))}>
+                <Select onValueChange={(val) => setValueOnChange(prev => ({ ...prev, stock: val }))}
+                    value={valueOnChange?.stock || ''}>
                     <SelectTrigger className="w-full">
                         <SelectValue placeholder="Ketersediaan" />
                     </SelectTrigger>

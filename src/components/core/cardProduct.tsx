@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import Image from "next/image"
+import * as React from "react"
 
 interface ICardProductProps {
     imageUrl: string
@@ -12,13 +13,14 @@ interface ICardProductProps {
     productWeight: number
     productCreatedAt: string | Date
     productIsActive: boolean
+    customButton?: React.ReactNode
 }
 
 export default function CardProduct({
     categoryName, imageUrl,
     productCreatedAt, productIsActive,
     productName, productPrice, productStock,
-    productWeight, imageAlt, 
+    productWeight, imageAlt, customButton
 }: ICardProductProps) {
     return (
         <Card className="overflow-hidden flex flex-col h-fit">
@@ -58,11 +60,12 @@ export default function CardProduct({
                 <span className={`text-sm font-medium ${productStock > 0 ? "text-green-600" : "text-red-500"}`}>
                     {productStock > 0 ? 'Tersedia' : 'Stok Habis'}
                 </span>
-                <Button variant='default' size="sm" className="bg-red-500 hover:bg-red-400 text-white"
-                    disabled={!productIsActive || productStock === 0}
-                >
-                    Beli
-                </Button>
+                {!customButton ? (
+                    <Button variant='default' size="sm" className="bg-red-500 hover:bg-red-400 text-white"
+                        disabled={!productIsActive || productStock === 0}>
+                        Beli
+                    </Button>
+                ) : <>{customButton}</>}
             </CardFooter>
         </Card>
     );

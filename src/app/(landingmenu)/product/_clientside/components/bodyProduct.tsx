@@ -8,7 +8,8 @@ import { useQueryGetData } from "@/app/(landingmenu)/product/_clientside/hooks/u
 import { useSetParamsFilter } from "@/app/(landingmenu)/product/_clientside/hooks/use-set-params-filter"
 import SectionFilter from "@/app/(landingmenu)/product/_clientside/components/sectionFilter"
 import CardProduct from "@/components/core/cardProduct"
-import * as React from "react"
+import Link from "next/link"
+import { encryptParams } from "@/utils/secureParams"
 
 export default function BodyProduct() {
     const { page, setPage, limit,
@@ -35,7 +36,7 @@ export default function BodyProduct() {
                 <SectionFilter dataCategory={dataCategory} isLoadingGetCategory={isLoadingGetCategory}
                     debounceMaxWeight={debounceMaxWeight} debounceMinWeight={debounceMinWeight}
                     debounceMaxPrice={debounceMaxPrice} debounceMinPrice={debounceMinPrice}
-                    datePicker={datePicker} setDatePicker={setDatePicker} 
+                    datePicker={datePicker} setDatePicker={setDatePicker}
                     handleResetFilter={handleResetFilter} setValueOnChange={setValueOnChange} valueOnChange={valueOnChange} />
 
                 {(isLoadingGetProduct) ?
@@ -51,7 +52,16 @@ export default function BodyProduct() {
                                     productCreatedAt={product?.createdAt || ''}
                                     productIsActive={product?.isActive} productName={product?.name}
                                     productPrice={product?.price} productStock={product?.stock}
-                                    productWeight={product?.weightGram} key={idx} />
+                                    productWeight={product?.weightGram} key={idx}
+
+                                    customButton={
+                                        <Link href={`/product/${encryptParams(String(product?.id))}`}>
+                                            <Button variant='default' size="sm" className="bg-red-500 hover:bg-red-400 text-white"
+                                                disabled={!product.isActive || product.stock === 0}>
+                                                Lihat
+                                            </Button>
+                                        </Link>
+                                    } />
                             ))}
                         </div>
                         : !isLoadingGetProduct && dataGetProduct && dataGetProduct?.data?.length === 0 && (

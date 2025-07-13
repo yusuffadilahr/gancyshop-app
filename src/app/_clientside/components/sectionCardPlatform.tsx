@@ -19,7 +19,7 @@ export default function CardPlatform() {
             followers: 2300,
             lastUpdated: "2025-06-06",
             image: '/tokped.png',
-            link: 'https://tokopedia.com/gancyshop'
+            link: 'https://tokopedia.com/gancis'
         },
         {
             aplikasiName: "Lazada",

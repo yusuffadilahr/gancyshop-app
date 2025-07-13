@@ -1,7 +1,7 @@
 import CryptoJS from "crypto-js"
 
-export const encryptCrypto = ({ role, key }: { role: string, key: string }) => {
-    const data = CryptoJS.AES.encrypt(role, key as string, {
+export const encryptCrypto = ({ val, key }: { val: string, key: string }) => {
+    const data = CryptoJS.AES.encrypt(val, key as string, {
         iv: CryptoJS.lib.WordArray.random(16)
     })
 
