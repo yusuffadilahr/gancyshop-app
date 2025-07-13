@@ -1,46 +1,12 @@
+import { dataRatingStatis } from "@/app/_serverside/utils/dummyData";
 import { Card, CardContent } from "@/components/ui/card"
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function CardPlatform() {
-    const dataRatingStatis = [
-        {
-            aplikasiName: "Shopee",
-            rating: 4.8,
-            followers: 2100,
-            lastUpdated: "2025-06-06",
-            image: '/shopee.png',
-            link: 'https://shopee.co.id/gancyshop'
-        },
-        {
-            aplikasiName: "Tokopedia",
-            rating: 4.6,
-            followers: 2300,
-            lastUpdated: "2025-06-06",
-            image: '/tokped.png',
-            link: 'https://tokopedia.com/gancis'
-        },
-        {
-            aplikasiName: "Lazada",
-            rating: 4.2,
-            followers: 2000,
-            lastUpdated: "2025-06-06",
-            image: '/laz.png',
-            link: 'https://lazada.co.id/gancyshop'
-        },
-        {
-            aplikasiName: "TikTok Shop",
-            rating: 4.4,
-            followers: 2200,
-            lastUpdated: "2025-06-06",
-            image: '/tik.jpg',
-            link: 'https://tiktok.com/@gancyshop'
-        }
-    ];
-
     return (
-        <div className="px-5 space-y-5 pt-6">
+        <div className="px-2 md:px-5 space-y-5 pt-6">
             <h1 className="font-semibold text-2xl">Platform Resmi</h1>
             <Carousel className="w-full max-w-[100vw]">
                 <CarouselContent>

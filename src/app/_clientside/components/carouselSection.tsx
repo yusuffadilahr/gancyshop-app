@@ -13,8 +13,8 @@ export default function CarouselSection() {
   ]
 
   return (
-    <div className="w-full flex pt-2 gap-1 px-5">
-      <div className="w-full min-h-52 h-fit flex items-center px-0 m-auto bg-blue-700 rounded-xl relative overflow-hidden">
+    <div className="w-full flex pt-2 gap-1 px-2 md:px-5">
+      <div className="w-full min-h-52 h-fit flex items-center px-0 m-auto bg-neutral-100 rounded-xl relative overflow-hidden">
         <Image src={arrayHeroSection[indexImage].img} id="hero-section-id"
           height={500} width={500} alt="hero-section"
           className="w-full h-[70vh] object-cover rounded-xl transition-opacity" />
@@ -62,7 +62,7 @@ export default function CarouselSection() {
           </Button>
         </div>
       </div>
-      <div className="w-1/3 items-stretch hidden lg:flex bg-red-500 rounded-xl">
+      <div className="w-1/3 items-stretch hidden lg:flex bg-neutral-100 rounded-xl">
         <Image src={arrayHeroSection[arrayHeroSection.length - 1].img} id="hero-section-id"
           height={500} width={500} alt="hero-section"
           className="w-full h-[70vh] object-cover rounded-xl" />
