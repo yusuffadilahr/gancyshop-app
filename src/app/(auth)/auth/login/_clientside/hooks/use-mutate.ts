@@ -20,7 +20,7 @@ export const useLoginHooks = ({
             const token = res.data.token
             const role = res.data.role
 
-            const encryptedRole = encryptCrypto({ role, key: secretKey as string })
+            const encryptedRole = encryptCrypto({ val: role, key: secretKey as string })
 
             localStorage.setItem('_token', token)
             setCookie({ data: encryptedRole.toString(), expires: 1, cookieName: '_role' })

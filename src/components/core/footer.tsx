@@ -73,7 +73,7 @@ export function Footer() {
                 <Separator className="bg-slate-200" />
 
                 <div className="flex flex-col md:flex-row justify-between items-center text-xs text-slate-500 gap-2">
-                    <p>&copy; {new Date().getFullYear()} Your Company. All rights reserved.</p>
+                    <p>&copy; {new Date().getFullYear()} Gancy Motor Parts. All rights reserved.</p>
                     <div className="flex gap-4 text-red-600">
                         <a href="#"><Facebook size={16} /></a>
                         <a href="#"><Twitter size={16} /></a>

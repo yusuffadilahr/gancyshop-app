@@ -21,3 +21,22 @@ export interface IProductPublic {
         deletedAt: string | null
     }
 }
+
+export interface IValueOnChange {
+    searchProduct?: string
+    kategoriId?: string
+    minPrice?: string
+    maxPrice?: string
+    minWeight?: string
+    maxWeight?: string
+    stock?: string
+}
+
+export interface ICategoryProduct {
+    id: number
+    categoryMotorcyleId: number
+    categoryName: string
+    createdAt: string
+    updatedAt: string
+    deletedAt: string | null
+}

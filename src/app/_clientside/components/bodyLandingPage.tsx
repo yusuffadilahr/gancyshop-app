@@ -2,12 +2,13 @@
 
 import CarouselSection from "@/app/_clientside/components/carouselSection";
 import * as React from "react";
-import CardPlatform from "@/app/_clientside/components/cardPlatform";
+import CardPlatform from "@/app/_clientside/components/sectionCardPlatform";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import Link from "next/link";
+import Image from "next/image";
 
-export default function BodyLanding({ cardProductServer }: { cardProductServer?: React.ReactNode }) {
+export default function BodyLanding({ sectionProductServer }: { sectionProductServer?: React.ReactNode }) {
 
     React.useEffect(() => {
         console.log('Welcome, Diddy!')
@@ -21,25 +22,25 @@ export default function BodyLanding({ cardProductServer }: { cardProductServer?:
                     <h1 className="font-semibold text-2xl">Kategori</h1>
                     <Link href={'/'} className="text-sm">Lihat semua</Link>
                 </div>
-                <Carousel
-                    opts={{
-                        align: "start",
-                    }}
-                    className="w-full max-w-[100vw]">
+                <Carousel opts={{ align: "start" }} className="w-full max-w-[100vw]">
                     <CarouselContent>
-                        {Array.from({ length: 20 }).map((_, index) => (
-                            <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/12 ">
-                                <Card>
-                                    <CardContent className="w-full min-h-20 flex justify-center items-center">
-                                        <span className="text-3xl font-semibold">{index + 1}</span>
-                                    </CardContent>
+                        {Array.from({ length: 6 }).map((_, index) => (
+                            <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/6">
+                                <Card className="flex w-full flex-col justify-center items-center">
+                                    <div className="flex w-full items-center justify-center rounded-xl">
+                                        <Image width={500} alt="kategori" height={500}
+                                            src='/no-data.png' className="w-full object-cover rounded-t-xl" />
+                                    </div>
+                                     <div className="flex w-full items-center justify-center rounded-xl">
+                                    <h1>tess</h1>
+                                    </div>
                                 </Card>
                             </CarouselItem>
                         ))}
                     </CarouselContent>
                 </Carousel>
             </div>
-            <React.Fragment>{cardProductServer}</React.Fragment>
+            <React.Fragment>{sectionProductServer}</React.Fragment>
             <CardPlatform />
 
         </div>
