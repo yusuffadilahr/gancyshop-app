@@ -1,6 +1,7 @@
 'use server'
 
 import { baseUrl } from "@/utils/axiosInstance"
+import { optionError } from "@/utils/optionError"
 
 export const getDataProductById = async (id: string | undefined) => {
     try {
@@ -23,6 +24,6 @@ export const getDataProductById = async (id: string | undefined) => {
 
         throw new Error('Data tidak tersedia')
     } catch (error) {
-        if (error) return {}
+        if (error) return optionError.errorGetData
     }
 }

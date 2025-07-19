@@ -2,7 +2,7 @@ import { IInitialValuesAddProduct } from "@/app/(admin)/admin/produk/_clientside
 import { updateIsActiveProduct } from "@/app/(admin)/admin/produk/_serverside/action";
 import { toast } from "@/hooks/use-toast";
 import { axiosInstance } from "@/utils/axiosInstance";
-import { fileToDataURL } from "@/utils/readFileToJpg";
+import { fileToDataURL } from "@/utils/formatConverter";
 import { useMutation } from "@tanstack/react-query";
 import { FormikErrors } from "formik";
 import * as React from "react";

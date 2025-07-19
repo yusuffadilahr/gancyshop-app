@@ -11,13 +11,13 @@ export const dynamic = 'force-dynamic'
 // default nextJs layout itu dirender secara server dan statis, maka dari itu akan muncul error bahwa cookie tidak bisa dirender di halaman statis
 
 import SideBarLayout from "@/app/(admin)/admin/_clientside/components/sideBarLayout";
-import { handleGetData } from "@/app/(admin)/admin/_serverside/action";
+import { handleGetDataProfileAdmin } from "@/app/(admin)/admin/_serverside/action";
 import { cookies } from "next/headers"
 import * as React from "react"
 
 export default async function layout({ children }: { children: React.ReactNode }) {
     const token = (await cookies()).get('_token')?.value;
-    const result = await handleGetData(String(token))
+    const result = await handleGetDataProfileAdmin(String(token))
 
     return (
         <SideBarLayout dataProfil={result?.data}>
