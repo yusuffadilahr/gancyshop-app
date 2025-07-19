@@ -2,7 +2,7 @@
 
 import { baseUrl } from "@/utils/axiosInstance";
 
-export const handleGetData = async (token: string) => {
+export const handleGetDataProfileAdmin = async (token: string) => {
     try {
         const res = await fetch(`${baseUrl}/user/detail-user`, {
             cache: 'no-store',

@@ -24,27 +24,19 @@ import {
 } from "react-icons/fa";
 import { MdCategory } from "react-icons/md"
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai"
+import { formatRupiah } from "@/utils/formatConverter"
 
 export default function BodyDetailProduct({ idProduct }: { idProduct: string }) {
     const idProductDecrypted = decryptParams(idProduct) || undefined
 
-    const { data: dataProduct,
-        // isLoading: isLoadingGetProduct 
-    } = useQuery<IProductPublic>({
+    const { data: dataProduct, isLoading: isLoadingGetProduct } = useQuery<IProductPublic>({
         queryKey: ['get-product'],
         queryFn: async () => {
             return (await getDataProductById(idProductDecrypted))?.data
         }
     })
 
-    function formatRupiah(value: number): string {
-        return new Intl.NumberFormat('id-ID', {
-            style: 'currency',
-            currency: 'IDR',
-            maximumFractionDigits: 0,
-        }).format(value);
-    }
-
+    if (isLoadingGetProduct) return null
     return (
         <div className="px-2 py-6 min-h-screen w-full space-y-10">
             <div className="w-full flex flex-col lg:flex-row gap-4">
@@ -157,7 +149,7 @@ export default function BodyDetailProduct({ idProduct }: { idProduct: string }) 
                             </div>
                             <div className="flex items-center gap-2"><FaBoxOpen /> Stok: <strong>{dataProduct?.stock} pcs</strong></div>
                         </TabsContent>
-{/* 
+                        {/* 
                         <TabsContent value="tanggal" className="p-4 text-sm bg-white border rounded-md mt-2">
                             <div className="flex items-center gap-2"><FaCalendarAlt /> Dibuat: <strong>{new Date(dataProduct?.createdAt).toLocaleDateString("id-ID")}</strong></div>
                         </TabsContent> */}

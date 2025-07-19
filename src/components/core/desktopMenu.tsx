@@ -121,11 +121,11 @@ export default function DesktopMenu({
                                         </NavigationMenuContent>
                                     </React.Fragment>
                                 ) : (
-                                    <Link href={item.href as string} passHref legacyBehavior>
-                                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                                    <NavigationMenuLink className={navigationMenuTriggerStyle()} asChild>
+                                        <Link href={item.href as string}>
                                             {item.menuName}
-                                        </NavigationMenuLink>
-                                    </Link>
+                                        </Link>
+                                    </NavigationMenuLink>
                                 )}
                             </NavigationMenuItem>
                         )
@@ -134,12 +134,12 @@ export default function DesktopMenu({
                     {!tokenExist && (
                         <React.Fragment>
                             <NavigationMenuItem>
-                                <Link href="/auth/register" legacyBehavior passHref>
+                                <Link href="/auth/register">
                                     <Button variant={"outline"}>Daftar</Button>
                                 </Link>
                             </NavigationMenuItem>
                             <NavigationMenuItem>
-                                <Link href="/auth/login" legacyBehavior passHref>
+                                <Link href="/auth/login">
                                     <Button variant={"outline"}>Masuk</Button>
                                 </Link>
                             </NavigationMenuItem>
