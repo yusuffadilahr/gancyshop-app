@@ -39,7 +39,7 @@ export default function CarouselSection() {
           </Badge>
 
           <h1 className="text-2xl md:text-4xl font-extrabold text-white leading-tight drop-shadow">
-            MOTOR LO, GAYA LO! 🛵🔥
+            MOTOR LO, GAYA LO!
           </h1>
 
           <p className="text-sm md:text-base text-white/80 leading-snug">
