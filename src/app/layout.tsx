@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/toaster"
 import { Noto_Sans } from 'next/font/google'
 import { Footer } from "@/components/core/footer";
 import { Suspense } from "react";
+import FloatMenu from "@/components/core/floatMenu";
 
 const pacifico = Noto_Sans({
   weight: '400',
@@ -38,6 +39,7 @@ export default function RootLayout({
             <Navbar />
           </Suspense>
           {children}
+          <FloatMenu />
           <Suspense fallback={null}>
             <Footer />
           </Suspense>
