@@ -12,6 +12,7 @@ import { IDataProduk } from "@/app/(admin)/admin/produk/_clientside/types"
 import { usePathname } from "next/navigation"
 import DesktopMenu from "@/components/core/desktopMenu"
 import MobileMenu from "@/components/core/mobileMenu"
+import Cookies from "js-cookie"
 
 export function Navbar() {
     const pathname = usePathname()
@@ -64,7 +65,7 @@ export function Navbar() {
     }
 
     React.useEffect(() => {
-        const token = localStorage?.getItem('_token')
+        const token = Cookies.get('_token')
         if (token) setTokenExist(token as string)
     }, [])
 
