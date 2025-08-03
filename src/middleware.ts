@@ -7,7 +7,8 @@ export async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname
   const currentUrl = req.url
 
-  const token = (await cookies()).get('_token')?.value
+  const accessToken = (await cookies()).get('_token')?.value
+  const tokenRefresh = (await cookies()).get('_refreshToken')?.value
   const encryptedRole = (await cookies()).get('_role')?.value
 
   let role
@@ -19,16 +20,24 @@ export async function middleware(req: NextRequest) {
     }
   }
 
-  if (pathname.startsWith('/auth') && !!token) {
+  if (pathname.startsWith('/auth') && accessToken) {
     return NextResponse.redirect(new URL(role === 'ADMIN' ?
       '/admin/dashboard' : '/', currentUrl))
   }
 
-  if (!!token && role !== 'ADMIN' && pathname.startsWith('/admin')) {
+  if (accessToken && role !== 'ADMIN' && pathname.startsWith('/admin')) {
     return NextResponse.redirect(new URL('/', currentUrl))
   }
 
-  if (!token && pathname.startsWith('/admin')) {
+   if (tokenRefresh && accessToken && pathname.startsWith('/refresh')) {
+    return NextResponse.redirect(new URL('/not-found', currentUrl))
+  }
+
+  if (tokenRefresh && !accessToken && !pathname.startsWith('/refresh')) {
+    return NextResponse.redirect(new URL('/refresh', currentUrl))
+  }
+
+  if (!accessToken && pathname.startsWith('/admin') && !tokenRefresh) {
     return NextResponse.redirect(new URL('/auth/login', currentUrl))
   }
 
