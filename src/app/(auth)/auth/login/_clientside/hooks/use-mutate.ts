@@ -17,14 +17,15 @@ export const useLoginHooks = ({
             const response = await loginAction(fd)
             return response
         }, onSuccess: (res) => {
+            if (res?.error) throw res
+
             const token = res.data.token
             const role = res.data.role
 
             const encryptedRole = encryptCrypto({ val: role, key: secretKey as string })
-
-            localStorage.setItem('_token', token)
-            setCookie({ data: encryptedRole.toString(), expires: 1, cookieName: '_role' })
-            setCookie({ data: token, expires: 1, cookieName: '_token' })
+            
+            setCookie({ data: encryptedRole.toString(), expires: (10 * 365 * 24 * 60), cookieName: '_role' })
+            setCookie({ data: token, expires: (3 / 1440), cookieName: '_token' })
 
             toast({
                 title: res.message || 'Berhasil Login',
@@ -33,11 +34,18 @@ export const useLoginHooks = ({
 
             window.location.href = (role === 'ADMIN') ? '/admin/dashboard' : '/'
 
-        }, onError: () => {
-            toast({
-                title: 'Gagal Login',
-                description: new Date().toDateString(),
-            })
+        }, onError: (err) => {
+            if ('error' in err && err?.error) {
+                toast({
+                    title: err?.message || '',
+                    description: new Date().toDateString(),
+                })
+            } else {
+                toast({
+                    title: 'Ada kesalahan dari server!',
+                    description: new Date().toDateString(),
+                })
+            }
         }
     })
     return {
