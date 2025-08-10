@@ -17,6 +17,12 @@ import { Spinner } from "@/components/ui/spinner"
 import { MdKeyboardArrowRight } from "react-icons/md"
 import InputSearch from "@/components/core/inputSearch"
 import { IDataProduk } from "@/app/(admin)/admin/produk/_clientside/types"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { FiHome, FiLogOut } from 'react-icons/fi'
+import { clearCookies } from "@/app/_serverside/utils/clearCookies"
+import Cookies from "js-cookie"
+import { decryptCrypto } from "@/utils/cryptoJs"
 
 interface INavigationItem {
     menuName: string;
@@ -38,6 +44,7 @@ interface IDesktopMenuProps {
     tokenExist: string
 }
 
+const key = process.env.NEXT_PUBLIC_SECRET_KEY || ''
 export default function DesktopMenu({
     setLoading, loading,
     debounce,
@@ -46,8 +53,24 @@ export default function DesktopMenu({
     arrayStatisNavigation,
     tokenExist
 }: IDesktopMenuProps) {
+    const [roleUser, setRoleUser] = React.useState<string>('')
+    const handleLogout = async () => {
+        await clearCookies()
+        window.location.href = '/auth/login'
+    }
+
+    React.useEffect(() => {
+        const dataRole = Cookies.get('_role')
+        if (dataRole) {
+            const role = decryptCrypto({ data: dataRole, key: key })
+            setRoleUser(role)
+        } else {
+            setRoleUser('USER') 
+        }
+    }, [])
+
     return (
-        <div className="py-4 px-5 w-full gap-2 md:flex hidden justify-between items-center">
+        <div className="py-4 px-5 w-full gap-2 md:flex hidden justify-between items-center relative">
             <div className="md:flex hidden items-center gap-5 w-full">
                 <Link href={'/'} className="rounded-full w-fit h-12">
                     <Image alt="profile"
@@ -131,7 +154,7 @@ export default function DesktopMenu({
                         )
                     })}
 
-                    {!tokenExist && (
+                    {!tokenExist ? (
                         <React.Fragment>
                             <NavigationMenuItem>
                                 <Link href="/auth/register">
@@ -144,7 +167,41 @@ export default function DesktopMenu({
                                 </Link>
                             </NavigationMenuItem>
                         </React.Fragment>
-                    )}
+                    ) : (
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Avatar className="cursor-pointer">
+                                    <AvatarImage src="/profil-default.png" />
+                                    <AvatarFallback>CN</AvatarFallback>
+                                </Avatar>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent side="bottom" align="end" className="min-w-44 p-2 rounded-xl bg-white shadow-lg">
+                                {[{ kode: 1, title: 'Dashboard', icon: <FiHome /> },
+                                { kode: 2, title: 'Logout', icon: <FiLogOut /> }].map(item => {
+                                    const baseClass = "flex items-center gap-3 px-3 py-2 rounded-md select-none"
+                                    if (item.kode === 2) {
+                                        return (
+                                            <DropdownMenuItem key={item.kode} onClick={handleLogout}
+                                                className={`${baseClass} bg-red-500 text-white hover:bg-red-600 cursor-pointer`}>
+                                                {item.icon}
+                                                <span>{item.title}</span>
+                                            </DropdownMenuItem>
+                                        )
+                                    }
+
+                                    return (
+                                        <Link href={(item?.kode === 1 && roleUser === 'ADMIN') ? '/admin/dashboard' : ''} key={item.kode}>
+                                            <DropdownMenuItem className={`${baseClass} text-gray-700 hover:bg-gray-100 cursor-pointer`}>
+                                                {item.icon}
+                                                <span>{item.title}</span>
+                                            </DropdownMenuItem>
+                                        </Link>
+                                    )
+                                })}
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    )
+                    }
                 </NavigationMenuList>
             </NavigationMenu>
         </div>

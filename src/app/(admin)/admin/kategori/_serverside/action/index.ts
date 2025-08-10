@@ -16,14 +16,15 @@ export const getCategoryProduct = async () => {
             method: 'GET'
         })
 
-        if (!res.ok) throw new Error('Data tidak tersedia')
-
         const result = await res.json()
+        console.log(result, '<<')
+        if (!res.ok) return result
+
 
         return result
     } catch (error) {
         console.log(error)
-        throw error
+        return error
     }
 }
 

@@ -25,7 +25,7 @@ export const useLoginHooks = ({
             const encryptedRole = encryptCrypto({ val: role, key: secretKey as string })
             
             setCookie({ data: encryptedRole.toString(), expires: (10 * 365 * 24 * 60), cookieName: '_role' })
-            setCookie({ data: token, expires: (3 / 1440), cookieName: '_token' })
+            setCookie({ data: token, expires: (5 / 1440), cookieName: '_token' })
 
             toast({
                 title: res.message || 'Berhasil Login',

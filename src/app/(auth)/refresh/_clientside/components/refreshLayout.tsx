@@ -1,7 +1,7 @@
 'use client'
 
 import { handleGetRefreshToken } from "@/app/(auth)/refresh/_serverside/action"
-import RefreshToken from "@/app/_clientside/components/refreshToken"
+import RefreshToken from "./refreshToken"
 import { useQuery } from "@tanstack/react-query"
 import React from "react"
 
