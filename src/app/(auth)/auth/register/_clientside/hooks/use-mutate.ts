@@ -14,15 +14,24 @@ export const useMutateRegister = () => {
         mutationFn: async (fd: FormData) => {
             return await registerAction(fd)
         }, onSuccess: (res) => {
+            if (res?.error) throw res
+
             toast({
                 title: res.message || 'Berhasil melakukan registrasi',
                 description: new Date().toDateString(),
             })
         }, onError: (err) => {
-            toast({
-                title: err?.message || 'Gagal melakukan registrasi',
-                description: new Date().toDateString(),
-            })
+            if ('error' in err && err?.error) {
+                toast({
+                    title: err?.message || '',
+                    description: new Date().toDateString(),
+                })
+            } else {
+                toast({
+                    title: 'Ada kesalahan dari server!',
+                    description: new Date().toDateString(),
+                })
+            }
         }
     })
 

@@ -24,6 +24,7 @@ interface IDataChatUser {
     deletedAt: null | string
 }
 
+const BASEURL = process.env.NEXT_PUBLIC_BASE_URL
 export default function FloatMenu() {
     const isNotFound = useAppSelector((state) => state.globaltheme.notFoundPage)
     const pathname = usePathname()
@@ -52,7 +53,7 @@ export default function FloatMenu() {
         isNotFound
 
     React.useEffect(() => {
-        const socket = SocketIO('https://api-v1.gancy.my.id')
+        const socket = SocketIO(BASEURL)
 
         if (openSocket) {
             socketRef.current = socket
