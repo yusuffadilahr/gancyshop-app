@@ -18,8 +18,6 @@ export default function BodyKategori() {
             }
         })
 
-        console.log(getDataCategory, '<<')
-
     return (
         <div className='px-5 pt-10 space-y-3'>
 
