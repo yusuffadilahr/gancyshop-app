@@ -52,7 +52,7 @@ export default function FloatMenu() {
         isNotFound
 
     React.useEffect(() => {
-        const socket = SocketIO('https://api-v1-motorparts.gancy.my.id/api/')
+        const socket = SocketIO('https://api-v1-motorparts.gancy.my.id')
 
         if (openSocket) {
             socketRef.current = socket
