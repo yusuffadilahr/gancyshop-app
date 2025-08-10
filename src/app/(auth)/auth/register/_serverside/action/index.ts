@@ -22,7 +22,10 @@ export const registerAction = async (fd: FormData) => {
             body: JSON.stringify(data)
         })
 
+        console.log(res,'<< apaan emang')
+
         const result = await res.json()
+        console.log(result, '<< apaan')
         if (!res.ok) throw new Error(result?.message || 'Login gagal')
 
         return result
