@@ -18,6 +18,8 @@ export default function BodyKategori() {
             }
         })
 
+        console.log(getDataCategory, '<<')
+
     return (
         <div className='px-5 pt-10 space-y-3'>
 
@@ -37,9 +39,9 @@ export default function BodyKategori() {
                     {getDataCategory?.map((item, i) => (
                         <TableRow key={i}>
                             <TableCell>{i + 1}</TableCell>
-                            <TableCell>{item.categoryName}</TableCell>
-                            <TableCell>{item.CategoryMotorcyle.motorCycleName}</TableCell>
-                            <TableCell>{item.CategoryMotorcyle.releaseYear}</TableCell>
+                            <TableCell>{item?.categoryName}</TableCell>
+                            <TableCell>{item?.categorymotorcyle?.motorCycleName}</TableCell>
+                            <TableCell>{item?.categorymotorcyle?.releaseYear}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

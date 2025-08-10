@@ -52,7 +52,7 @@ export default function FloatMenu() {
         isNotFound
 
     React.useEffect(() => {
-        const socket = SocketIO('http://localhost:8000')
+        const socket = SocketIO('https://api-v1-motorparts.gancy.my.id/api/')
 
         if (openSocket) {
             socketRef.current = socket
@@ -78,7 +78,8 @@ export default function FloatMenu() {
 
     return (
         <div className={`fixed ${isHidden ? 'hidden' : 'flex'}
-        bottom-5 right-5 w-fit py-3 px-4 gap-2 bg-white/90 backdrop-blur-md border border-neutral-200
+        bottom-5 right-5 w-fit py-3 px-4 gap-2 bg-white/90 
+        backdrop-blur-md border border-neutral-200
         rounded-xl shadow-xl items-center`}>
             {openSocket ? (
                 <div className="w-[400px] h-[70vh] overflow-hidden relative rounded-xl">

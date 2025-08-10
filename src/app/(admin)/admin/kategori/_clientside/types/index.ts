@@ -28,7 +28,7 @@ export interface IHelperOptionMotorHooks {
 }
 
 export interface IGETDataCategory {
-    CategoryMotorcyle: {
+    categorymotorcyle: {
         createdAt: string
         deletedAt: string | null
         id: number
