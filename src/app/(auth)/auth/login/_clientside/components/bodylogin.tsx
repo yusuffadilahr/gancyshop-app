@@ -8,9 +8,13 @@ import { Spinner } from "@/components/ui/spinner"
 import Link from "next/link"
 import Image from "next/image"
 import CardAuthLayout from "@/components/core/cardAuthLayout"
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import * as React from "react"
 
 const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY
 export default function BodyLogin() {
+    const [isHiddenPassword, setIsHiddenPassword] = React.useState<boolean>(false)
+
     const { handleLogin, initialValues,
         isPending } = useLoginHooks({ secretKey: secretKey as string })
 
@@ -42,8 +46,17 @@ export default function BodyLogin() {
                             <Input placeholder="example@gmail.com" name="email" type="email" value={values.email || ''}
                                 onChange={(e) => setFieldValue('email', e.target.value)} />
 
-                            <Input placeholder="******" name="password" type="password" value={values.password || ''}
-                                onChange={(e) => setFieldValue('password', e.target.value)} />
+                            <div className="relative">
+                                <Input placeholder="******" name="password" type={
+                                    isHiddenPassword ? 'text' : "password"
+                                } value={values.password || ''}
+                                    onChange={(e) => setFieldValue('password', e.target.value)} />
+                                <Button variant={"link"} className="absolute right-0 top-0 w-fit" type="button"
+                                    onClick={() => setIsHiddenPassword(!isHiddenPassword)}>
+                                    {isHiddenPassword ? <FaEye className="text-neutral-500" /> :
+                                        <FaEyeSlash className="text-neutral-500" />}
+                                </Button>
+                            </div>
 
                             {isPending ?
                                 <Spinner />
