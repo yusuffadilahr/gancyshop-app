@@ -14,9 +14,13 @@ export default function BodyKategori() {
             queryKey: ['get-kategori'],
             queryFn: async () => {
                 const res = await getCategoryProduct()
+                if (res.error) throw res
+
                 return res?.data
             }
         })
+
+    console.log(getDataCategory, '<< apaan ni')
 
     return (
         <div className='px-5 pt-10 space-y-3'>

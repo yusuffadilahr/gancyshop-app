@@ -8,7 +8,7 @@ export default function RefreshToken({ newToken }: { newToken?: { accessToken: s
     const router = useRouter()
     React.useEffect(() => {
         if (newToken) {
-            setCookie({ cookieName: '_token', data: newToken?.accessToken, expires: 15 / (60 * 24) })
+            setCookie({ cookieName: '_token', data: newToken?.accessToken, expires: 0.5 })
             router.back()
         }
     }, [newToken])

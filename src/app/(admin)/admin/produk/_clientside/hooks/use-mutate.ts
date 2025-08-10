@@ -32,7 +32,20 @@ export const useMutateAddProduct = ({ refetch }: { refetch: () => void }) => {
                 stock: number;
                 weightGram: number;
             }>>) => {
-        const value = e.target.files?.[0]
+        const value = e?.target?.files?.[0]
+        if (!e.target.files || !value) return
+
+        if (value?.size >= (2 * 1024 * 1024)) {
+            toast({
+                title: 'File tidak boleh melebihi dari 2MB',
+                description: new Date().toDateString(),
+            })
+
+            setFieldValue('images', null)
+            setFilePreview('')
+
+            return;
+        }
 
         setFieldValue('images', value)
         const data = await fileToDataURL(value as File)
