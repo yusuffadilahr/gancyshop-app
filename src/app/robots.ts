@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next'
- 
+
+const baseURL = process.env.NEXT_PUBLIC_BASE_URL || ''
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
@@ -7,7 +8,7 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/', // mengizinkan bot/crawler mengcrawling data dimulai dari path /
       disallow: '/admin/', // menolak bot/crawler mesin pencari untuk mengcrawling data saat pathname dimulai dari /admin
     },
-    
-    sitemap: 'https://gancyshop.com/sitemap.xml',
+
+    sitemap: baseURL + '/' + 'sitemap.xml',
   }
 }

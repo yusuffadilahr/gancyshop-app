@@ -16,13 +16,13 @@ import { Button } from "@/components/ui/button"
 import { Spinner } from "@/components/ui/spinner"
 import { MdKeyboardArrowRight } from "react-icons/md"
 import InputSearch from "@/components/core/inputSearch"
-import { IDataProduk } from "@/app/(admin)/admin/produk/_clientside/types"
+import { IDataProduk } from "@/app/(admin)/admin/produk/_clients/types"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { FiHome, FiLogOut } from 'react-icons/fi'
-import { clearCookies } from "@/app/_serverside/utils/clearCookies"
+import { clearCookies } from "@/app/_servers/utils/clearCookies"
 import Cookies from "js-cookie"
-import { decryptCrypto } from "@/utils/cryptoJs"
+import { decryptCrypto } from "@/app/_clients/utils/cryptoJs"
 
 interface INavigationItem {
     menuName: string;

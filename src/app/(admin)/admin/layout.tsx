@@ -10,8 +10,8 @@ export const dynamic = 'force-dynamic'
 // maka dari itu menggunakan force-dynamic untuk menjadikan halaman layout ini menjadi dinamis
 // default nextJs layout itu dirender secara server dan statis, maka dari itu akan muncul error bahwa cookie tidak bisa dirender di halaman statis
 
-import SideBarLayout from "@/app/(admin)/admin/_clientside/components/sideBarLayout";
-import { handleGetDataProfileAdmin } from "@/app/(admin)/admin/_serverside/action";
+import SideBarLayout from "@/app/(admin)/admin/_clients/components/sideBarLayout";
+import { handleGetDataProfileAdmin } from "@/app/(admin)/admin/_servers/services";
 import { cookies } from "next/headers"
 import * as React from "react"
 

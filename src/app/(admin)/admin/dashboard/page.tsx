@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-const DynamicBodyDashboard = dynamic(()=> import('./_clientside/components/bodydashboard'), {
+const DynamicBodyDashboard = dynamic(()=> import('./_clients/components/bodyAdminDashboard'), {
     loading: ()=> <></>
 })
 

@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import { decryptCrypto } from "@/utils/cryptoJs";
+import { decryptCrypto } from "@/app/_clients/utils/cryptoJs";
 
 const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY as string
 export async function middleware(req: NextRequest) {

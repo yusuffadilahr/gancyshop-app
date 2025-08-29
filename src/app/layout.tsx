@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import RootProvider from "@/provider";
+import RootProvider from "@/providers";
 import { Navbar } from "@/components/core/navbar";
 import { Toaster } from "@/components/ui/toaster"
 import { Noto_Sans } from 'next/font/google'
