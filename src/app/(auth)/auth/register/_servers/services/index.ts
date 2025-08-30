@@ -1,6 +1,6 @@
 'use server'
 
-import { baseUrl } from "@/app/_clients/utils/axiosInstance"
+import { baseUrlApi } from "@/app/_clients/utils/axiosInstance"
 
 export const registerAction = async (fd: FormData) => {
     try {
@@ -8,10 +8,11 @@ export const registerAction = async (fd: FormData) => {
             firstName: fd.get('firstName'),
             lastName: fd.get('lastName'),
             email: fd.get('email'),
-            phoneNumber: fd.get('phoneNumber')
+            phoneNumber: fd.get('phoneNumber'),
+            password: fd.get('password'),
         }
 
-        const res = await fetch(`${baseUrl}/user/register-user`, {
+        const res = await fetch(`${baseUrlApi}/user/register-user`, {
             cache: 'no-store',
             headers: {
                 "Content-Type": 'application/json',

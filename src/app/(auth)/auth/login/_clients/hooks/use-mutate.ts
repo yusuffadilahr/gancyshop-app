@@ -1,43 +1,44 @@
-import { loginAction } from "@/app/(auth)/auth/login/_servers/services"
 import { setCookie } from "@/app/_servers/utils/setCookies"
 import { toast } from "@/hooks/use-toast"
-import { encryptCrypto } from "@/app/_clients/utils/cryptoJs"
 import { useMutation } from "@tanstack/react-query"
+import { axiosInstance } from "@/app/_clients/utils/axiosInstance"
+import { AxiosError } from "axios"
+import { setLocalStorageWithExpiry } from "@/app/_clients/utils/localStorage"
+import { encryptCrypto } from "@/app/_clients/utils/cryptoJs"
 
-export const useLoginHooks = ({
-    secretKey
-}: { secretKey: string }) => {
+export const useLoginHooks = () => {
     const initialValues = {
         email: '',
         password: ''
     }
 
     const { mutate: handleLogin, isPending } = useMutation({
-        mutationFn: async (fd: FormData) => {
-            const response = await loginAction(fd)
-            return response
+        mutationFn: async (values: { email: string; password: string }) => {
+            return await axiosInstance.post('/user/login-user',
+                values, { withCredentials: true })
         }, onSuccess: (res) => {
-            if (res?.error) throw res
+            const token = res.data.data.token
+            const role = res.data.data.role
 
-            const token = res.data.token
-            const role = res.data.role
+            const isLogin = encryptCrypto({ val: 'true', key: process.env.NEXT_PUBLIC_SECRET_KEY as string })
 
-            const encryptedRole = encryptCrypto({ val: role, key: secretKey as string })
-            
-            setCookie({ data: encryptedRole.toString(), expires: (10 * 365 * 24 * 60), cookieName: '_role' })
-            setCookie({ data: token, expires: (5 / 1440), cookieName: '_token' })
+            setCookie({ data: token, expires: 7, cookieName: '_token' })
+            setCookie({ data: isLogin.toString(), expires: 30, cookieName: '_loggedIn' })
+            setLocalStorageWithExpiry('_loggedIn', 'true', 7 * 24 * 60 * 60 * 1000)
 
             toast({
-                title: res.message || 'Berhasil Login',
+                title: res.data.message || 'Berhasil Login',
                 description: new Date().toDateString(),
             })
 
             window.location.href = (role === 'ADMIN') ? '/admin/dashboard' : '/'
 
         }, onError: (err) => {
-            if ('error' in err && err?.error) {
+            const axiosError = err as AxiosError
+
+            if (axiosError.response) {
                 toast({
-                    title: err?.message || '',
+                    title: (axiosError?.response?.data as Error)?.message || 'Ada kesalahan dari server!',
                     description: new Date().toDateString(),
                 })
             } else {

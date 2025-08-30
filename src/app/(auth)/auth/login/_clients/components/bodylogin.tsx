@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Form, Formik } from 'formik'
+import { ErrorMessage, Form, Formik } from 'formik'
 import { useLoginHooks } from "@/app/(auth)/auth/login/_clients/hooks/use-mutate"
 import { Spinner } from "@/components/ui/spinner"
 import Link from "next/link"
@@ -10,13 +10,13 @@ import Image from "next/image"
 import CardAuthLayout from "@/components/core/cardAuthLayout"
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import * as React from "react"
+import { formLoginSchema } from "@/app/(auth)/auth/login/_clients/schemas/formLoginSchema"
 
-const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY
 export default function BodyLogin() {
     const [isHiddenPassword, setIsHiddenPassword] = React.useState<boolean>(false)
 
     const { handleLogin, initialValues,
-        isPending } = useLoginHooks({ secretKey: secretKey as string })
+        isPending } = useLoginHooks()
 
     return (
         <main className="flex items-center">
@@ -28,29 +28,33 @@ export default function BodyLogin() {
             <CardAuthLayout descriptionTitle="Kelola pesananmu dan kebutuhan suku cadang Anda."
                 title="Masuk ke akun anda">
                 <Formik onSubmit={(values, { resetForm }) => {
-                    const fd = new FormData()
-
-                    fd.append('email', values.email)
-                    fd.append('password', values.password)
-
-                    handleLogin(fd, {
-                        onSuccess: (res) => {
-                            if (!res.error) {
-                                resetForm({ values: initialValues })
-                            }
-                        }
-                    })
-                }} initialValues={initialValues}>
+                    handleLogin({
+                        email: values.email, password: values.password
+                    }, { onSuccess: () => resetForm({ values: initialValues }) }
+                    )
+                }} initialValues={initialValues}
+                    validationSchema={formLoginSchema}>
                     {({ setFieldValue, values }) => (
                         <Form className="space-y-2">
-                            <Input placeholder="example@gmail.com" name="email" type="email" value={values.email || ''}
-                                onChange={(e) => setFieldValue('email', e.target.value)} />
+                            <div>
+                                <Input placeholder="example@gmail.com" name="email" type="email" value={values.email || ''}
+                                    onChange={(e) => setFieldValue('email', e.target.value)} />
+
+                                <ErrorMessage name="email" component='p'
+                                    className="text-[11px] px-1 mt-1 text-red-500" />
+                            </div>
 
                             <div className="relative">
-                                <Input placeholder="******" name="password" type={
-                                    isHiddenPassword ? 'text' : "password"
-                                } value={values.password || ''}
-                                    onChange={(e) => setFieldValue('password', e.target.value)} />
+                                <div>
+                                    <Input placeholder="******" name="password" type={
+                                        isHiddenPassword ? 'text' : "password"
+                                    } value={values.password || ''}
+                                        onChange={(e) => setFieldValue('password', e.target.value)} />
+
+                                    <ErrorMessage name="password" component='p'
+                                        className="text-[11px] px-1 mt-1 text-red-500" />
+                                </div>
+
                                 <Button variant={"link"} className="absolute right-0 top-0 w-fit" type="button"
                                     onClick={() => setIsHiddenPassword(!isHiddenPassword)}>
                                     {isHiddenPassword ? <FaEye className="text-neutral-500" /> :
@@ -62,7 +66,8 @@ export default function BodyLogin() {
                                 <Spinner />
                                 :
                                 <Button variant={"default"} className="w-full" size={"lg"} type="submit"
-                                    disabled={isPending || !values.email || !values.password}>Masuk</Button>}
+                                    disabled={isPending || !values.email || !values.password}
+                                >Masuk</Button>}
                         </Form>
                     )}
                 </Formik>

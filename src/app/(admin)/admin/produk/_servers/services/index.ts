@@ -1,49 +1,48 @@
 'use server'
 
-import { baseUrl } from "@/app/_clients/utils/axiosInstance"
+import { baseUrlApi } from "@/app/_clients/utils/axiosInstance"
+import { handleRetryForServerAction } from "@/app/_servers/services";
 import { cookies } from "next/headers"
 
-export const getAllProduct = async ({
-    search = '',
-    page = '1',
-    limit = '10'
-}: {
-    search: string
-    page: string,
-    limit: string
-}) => {
+export const getAllProduct = async ({ search = '', page = '1', limit = '10' }) => {
     try {
-        const token = (await cookies()).get('_token')?.value
-        const url = `${baseUrl}/admin/all-products`
+        const cookieStore = await cookies()
+        const token = cookieStore.get('_token')?.value;
 
-        const res = await fetch(`${url}?search=${search}&page=${page}&limit=${limit}`, {
+        let res = await fetch(`${baseUrlApi}/admin/all-products?search=${search}&page=${page}&limit=${limit}`, {
             method: 'GET',
             cache: 'no-store',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            },
-        })
+            headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+            credentials: 'include',
+        });
 
-        const result = await res.json()
-        if (!res.ok) throw new Error('Gagal mendapatkan data')
+        if (res.status === 401) {
+            res = await handleRetryForServerAction(token as string,
+                `${baseUrlApi}/admin/all-products?search=${search}&page=${page}&limit=${limit}`, {
+                method: 'GET',
+                cache: 'no-store',
+                credentials: 'include',
+            }) as Response
+        }
 
-        return result
+        if (!res.ok) return [];
+        const result = await res.json();
+
+        return result;
     } catch (error) {
-        if (error) return []
+        console.error(error);
+        return [];
     }
-}
+};
 
 export const updateIsActiveProduct = async (fd: FormData, idProduct: string) => {
     try {
-        const data = {
-            isActive: fd.get('isActive')
-        }
+        const data = { isActive: fd.get('isActive') }
 
         const token = (await cookies()).get('_token')?.value
 
-        const url = `${baseUrl}/admin`
-        const res = await fetch(`${url}/update-is-active/${idProduct}`, {
+        const url = `${baseUrlApi}/admin`
+        let res = await fetch(`${url}/update-is-active/${idProduct}`, {
             headers: {
                 "Authorization": `Bearer ${token}`,
                 "Content-Type": 'application/json',
@@ -54,6 +53,15 @@ export const updateIsActiveProduct = async (fd: FormData, idProduct: string) => 
             cache: 'no-store',
             method: 'PATCH'
         })
+
+        if (res.status === 401) {
+            res = await handleRetryForServerAction(token as string,
+                `${url}/update-is-active/${idProduct}`, {
+                body: JSON.stringify(data),
+                cache: 'no-store',
+                method: 'PATCH'
+            }) as Response
+        }
 
         const result = await res.json()
         if (!res.ok) throw new Error('Gagal memperbaharui produk')
@@ -68,7 +76,7 @@ export const updateIsActiveProduct = async (fd: FormData, idProduct: string) => 
 export const handleGetDataCategoryMotor = async () => {
     try {
         const token = (await cookies()).get('_token')?.value
-        const res = await fetch(`${baseUrl}/category/all-category-motorcycle`, {
+        const res = await fetch(`${baseUrlApi}/category/all-category-motorcycle`, {
             headers: {
                 Authorization: `Bearer ${token}`
             },
@@ -88,7 +96,7 @@ export const handleGetDataCategoryMotor = async () => {
 export const handleGetDataCategoryByCategoryMotor = async (categoryMotorId: string) => {
     try {
         const token = (await cookies()).get('_token')?.value
-        const res = await fetch(`${baseUrl}/category/all-category/${categoryMotorId}`, {
+        const res = await fetch(`${baseUrlApi}/category/all-category/${categoryMotorId}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             },
@@ -108,7 +116,7 @@ export const handleGetDataCategoryByCategoryMotor = async (categoryMotorId: stri
 export const deleteDataProductById = async (idProduct: string) => {
     try {
         const token = (await cookies()).get('_token')?.value
-        const res = await fetch(`${baseUrl}/admin/delete-product/${idProduct}`, {
+        const res = await fetch(`${baseUrlApi}/admin/delete-product/${idProduct}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             },

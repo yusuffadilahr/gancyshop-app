@@ -1,9 +1,10 @@
 import Cookies from 'js-cookie'
 import axios from 'axios'
 
-export const baseUrl = process.env.NEXT_PUBLIC_BASE_URL_API || ''
+export const baseUrlApi = process.env.NEXT_PUBLIC_BASE_URL_API || ''
 export const axiosInstance = axios.create({
-    baseURL: baseUrl
+    baseURL: baseUrlApi,
+    withCredentials: true
 })
 
 axiosInstance.interceptors.request.use((config) => {

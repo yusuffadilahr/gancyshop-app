@@ -2,7 +2,7 @@ import { ICategoryProduct, IProductPublic, IValueOnChange } from "@/app/(landing
 import { useQuery } from "@tanstack/react-query"
 import { getAllProductPublic } from "@/app/(landingmenu)/product/_servers/services"
 import axios from "axios"
-import { baseUrl } from "@/app/_clients/utils/axiosInstance"
+import { baseUrlApi } from "@/app/_clients/utils/axiosInstance"
 
 interface IQueryGetDataHooks {
     valueOnChange: IValueOnChange
@@ -52,7 +52,7 @@ export const useQueryGetData = ({
         isLoading: isLoadingGetCategory } = useQuery<ICategoryProduct[]>({
             queryKey: ['get-data-category'],
             queryFn: async () => {
-                const response = await axios.get(`${baseUrl}/product/all-category-product`, {
+                const response = await axios.get(`${baseUrlApi}/product/all-category-product`, {
                     headers: {
                         "Accept": 'application/json',
                         'Content-Type': 'application/json',

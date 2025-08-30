@@ -1,12 +1,12 @@
 'use server'
 
-import { baseUrl } from "@/app/_clients/utils/axiosInstance"
+import { baseUrlApi } from "@/app/_clients/utils/axiosInstance"
 
 export const setPasswordAction = async (fd: FormData, tokenRequest: string) => {
     try {
         const data = { password: fd.get('password') }
 
-        const res = await fetch(`${baseUrl}/user/set-password-user`, {
+        const res = await fetch(`${baseUrlApi}/user/set-password-user`, {
             headers: {
                 'Authorization': `Bearer ${tokenRequest}`,
                 'Content-Type': 'application/json',

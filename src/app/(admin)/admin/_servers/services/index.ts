@@ -1,17 +1,24 @@
 'use server'
 
-import { baseUrl } from "@/app/_clients/utils/axiosInstance";
+import { baseUrlApi } from "@/app/_clients/utils/axiosInstance";
+import { handleRetryForServerAction } from "@/app/_servers/services";
 
 export const handleGetDataProfileAdmin = async (token: string) => {
     try {
-        const res = await fetch(`${baseUrl}/user/detail-user`, {
+        let res = await fetch(`${baseUrlApi}/user/detail-user`, {
             cache: 'no-store',
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
+            headers: { Authorization: `Bearer ${token}` }
         });
+
+        if (res.status === 401) {
+            res = await handleRetryForServerAction(token, `${baseUrlApi}/user/detail-user`, {
+                method: 'GET',
+                cache: 'no-store'
+            }) as Response
+        }
+
         const result = await res.json()
-        if (!res.ok) throw new Error('Gagal mengambil data')
+        if (!res.ok) throw result;
 
         return result
     } catch (error) {

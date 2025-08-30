@@ -14,7 +14,7 @@ export default function BodyDashboard() {
         router.push('/auth/login')
     }
 
-    console.log(Cookies.get('_refreshToken'), '<<<')
+    console.log(Cookies.get('_refreshToken'), '<<< refresh')
 
     return (
         <div>

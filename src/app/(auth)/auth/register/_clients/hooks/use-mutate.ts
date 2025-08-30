@@ -8,6 +8,8 @@ export const useMutateRegister = () => {
         lastName: '',
         email: '',
         phoneNumber: '+62',
+        password: '',
+        confPassword: ''
     }
 
     const { mutate: handleRegister, isPending } = useMutation({

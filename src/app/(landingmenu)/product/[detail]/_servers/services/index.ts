@@ -1,12 +1,12 @@
 'use server'
 
-import { baseUrl } from "@/app/_clients/utils/axiosInstance"
+import { baseUrlApi } from "@/app/_clients/utils/axiosInstance"
 import { optionError } from "@/app/_clients/utils/optionError"
 
 export const getDataProductById = async (id: string | undefined) => {
     try {
         if (id) {
-            const url = `${baseUrl}/product/single-product/${id}`
+            const url = `${baseUrlApi}/product/single-product/${id}`
             const res = await fetch(url, {
                 method: 'GET',
                 headers: {

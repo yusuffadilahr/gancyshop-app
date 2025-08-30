@@ -1,13 +1,13 @@
 'use server'
 
-import { baseUrl } from "@/app/_clients/utils/axiosInstance"
+import { baseUrlApi } from "@/app/_clients/utils/axiosInstance"
 import { cookies } from "next/headers"
 
 export const handleGetRefreshToken = async () => {
     try {
         const token = await cookies()
         const dataToken = token.get('_refreshToken')?.value
-        const refreshToken = await fetch(`${baseUrl}/user/refresh-token/${dataToken}`, {
+        const refreshToken = await fetch(`${baseUrlApi}/user/refresh-token/${dataToken}`, {
             credentials: 'include',
             cache: 'no-store',
             method: 'GET'

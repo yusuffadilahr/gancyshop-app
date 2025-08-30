@@ -1,6 +1,6 @@
 'use server'
 
-import { baseUrl } from "@/app/_clients/utils/axiosInstance"
+import { baseUrlApi } from "@/app/_clients/utils/axiosInstance"
 // import { cookies } from "next/headers"
 
 export const getAllProductPublic = async ({
@@ -27,7 +27,7 @@ export const getAllProductPublic = async ({
     stock?: string
 }) => {
     try {
-        const url = `${baseUrl}/product/all-product`
+        const url = `${baseUrlApi}/product/all-product`
 
         const res = await fetch(`${url}?search=${search}&page=${page}&limit=${limit}&category=${category}&tanggalDibuat=${tanggal}&minPrice=${minPrice}&maxPrice=${maxPrice}&minWeight=${minWeight}&maxWeight=${maxWeight}&stock=${stock}`, {
             method: 'GET',

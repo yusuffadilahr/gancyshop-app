@@ -9,7 +9,6 @@ import Link from "next/link";
 import Image from "next/image";
 
 export default function BodyLanding({ sectionProductServer }: { sectionProductServer?: React.ReactNode }) {
-
     React.useEffect(() => {
         console.log('Welcome, Diddy!')
     }, [])
@@ -31,8 +30,8 @@ export default function BodyLanding({ sectionProductServer }: { sectionProductSe
                                         <Image width={500} alt="kategori" height={500}
                                             src='/no-data.png' className="w-full object-cover rounded-t-xl" />
                                     </div>
-                                     <div className="flex w-full items-center justify-center rounded-xl">
-                                    <h1>tess</h1>
+                                    <div className="flex w-full items-center justify-center rounded-xl">
+                                        <h1>tess</h1>
                                     </div>
                                 </Card>
                             </CarouselItem>

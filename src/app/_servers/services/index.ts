@@ -1,9 +1,11 @@
 'use server'
-import { baseUrl } from "@/app/_clients/utils/axiosInstance"
+
+import { baseUrlApi } from "@/app/_clients/utils/axiosInstance"
+import { cookies } from "next/headers"
 
 export const getAllDataProductPublic = async () => {
     try {
-        const res = await fetch(`${baseUrl}/product/all-product`, {
+        const res = await fetch(`${baseUrlApi}/product/all-product`, {
             cache: 'no-store',
             method: 'GET'
         })
@@ -20,7 +22,7 @@ export const getAllDataProductPublic = async () => {
 
 export const getAllDataProductBySearch = async (searchData: string) => {
     try {
-        const res = await fetch(`${baseUrl}/product/all-product?search=${searchData || ''}`, {
+        const res = await fetch(`${baseUrlApi}/product/all-product?search=${searchData || ''}`, {
             cache: 'no-store',
             method: 'GET'
         })
@@ -32,4 +34,50 @@ export const getAllDataProductBySearch = async (searchData: string) => {
     } catch (error) {
         throw error
     }
+}
+
+export const handleRefreshToken = async (): Promise<string | null> => {
+    const tokenStore = await cookies()
+    const tokenRefresh = tokenStore.get('_refreshToken')?.value;
+
+    if (!tokenRefresh) return null;
+
+    const resp = await fetch(`${baseUrlApi}/auth/refresh`, {
+        method: 'GET',
+        headers: { Authorization: `Bearer ${tokenRefresh}` },
+        cache: 'no-store',
+        credentials: 'include',
+    });
+
+    if (!resp.ok) return null;
+    const data = await resp.json();
+
+    return data?.data.accessToken;
+};
+
+export const handleRetryForServerAction = async (token: string, url: string, options: RequestInit) => {
+    const cookieStore = await cookies()
+    const newToken = await handleRefreshToken();
+    if (!newToken) return []
+
+    token = newToken;
+    cookieStore.set({
+        name: '_token',
+        value: newToken,
+        path: '/',
+        maxAge: 60 * 60 * 24,
+        sameSite: 'lax',
+    })
+
+    const res = await fetch(url, {
+        ...options,
+        headers: {
+            ...options.headers,
+            "Authorization": `Bearer ${newToken}`,
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        }
+    });
+
+    return res
 }

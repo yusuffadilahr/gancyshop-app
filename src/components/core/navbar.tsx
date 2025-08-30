@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import * as React from "react"
 import Link from "next/link"
 
@@ -65,7 +65,7 @@ export function Navbar() {
     }
 
     React.useEffect(() => {
-        const token = Cookies.get('_token')
+        const token = Cookies.get('_loggedIn')
         if (token) setTokenExist(token as string)
     }, [])
 

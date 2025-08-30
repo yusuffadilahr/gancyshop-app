@@ -1,47 +1,46 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import { decryptCrypto } from "@/app/_clients/utils/cryptoJs";
+import { jwtVerify } from 'jose'
 
-const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY as string
+const jwtSecret = process.env.JWT_SECRET_KEY as string
+
 export async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname
   const currentUrl = req.url
+  const cookieStore = await cookies()
 
-  const accessToken = (await cookies()).get('_token')?.value
-  const tokenRefresh = (await cookies()).get('_refreshToken')?.value
-  const encryptedRole = (await cookies()).get('_role')?.value
+  const accessToken = cookieStore.get('_token')?.value
+  const tokenRefresh = cookieStore.get('_refreshToken')?.value
 
-  let role
+  if (!tokenRefresh && accessToken) {
+    cookieStore.delete('_token')
+    cookieStore.delete('_loggedIn')
 
-  if (!!encryptedRole) {
-    const decryptedRole = decryptCrypto({ data: encryptedRole, key: secretKey })
-    if (!!decryptedRole) {
-      role = decryptedRole
-    }
+    return NextResponse.redirect(new URL('/auth/login', currentUrl))
   }
 
-  if (pathname.startsWith('/auth') && accessToken) {
+  let role
+  const secret = new TextEncoder().encode(jwtSecret)
+
+  if (tokenRefresh) {
+    const { payload: resultRefreshToken } = await jwtVerify(tokenRefresh as string, secret)
+    role = resultRefreshToken?.role as 'ADMIN' | 'USER'
+  }
+
+  if (pathname.startsWith('/auth') && tokenRefresh) {
     return NextResponse.redirect(new URL(role === 'ADMIN' ?
       '/admin/dashboard' : '/', currentUrl))
   }
 
-  if (accessToken && role !== 'ADMIN' && pathname.startsWith('/admin')) {
+  if (tokenRefresh && role !== 'ADMIN' && pathname.startsWith('/admin')) {
     return NextResponse.redirect(new URL('/', currentUrl))
   }
 
-   if (tokenRefresh && accessToken && pathname.startsWith('/refresh')) {
+  if (tokenRefresh && accessToken && pathname.startsWith('/refresh')) {
     return NextResponse.redirect(new URL('/not-found', currentUrl))
   }
 
-  if (!tokenRefresh && !accessToken && pathname.startsWith('/refresh')) {
-    return NextResponse.redirect(new URL('/auth/login', currentUrl))
-  }
-
-  if (tokenRefresh && !accessToken && !pathname.startsWith('/refresh')) {
-    return NextResponse.redirect(new URL('/refresh', currentUrl))
-  }
-
-  if (!accessToken && pathname.startsWith('/admin') && !tokenRefresh) {
+  if (!tokenRefresh && pathname.startsWith('/admin')) {
     return NextResponse.redirect(new URL('/auth/login', currentUrl))
   }
 

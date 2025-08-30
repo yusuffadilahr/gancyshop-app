@@ -8,11 +8,15 @@ import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { Form, Formik } from "formik";
 import Link from "next/link";
+import { useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function BodyRegister() {
-    const { initialValues,
-        handleRegister,
-        isPending } = useMutateRegister()
+    const [isHiddenPassword, setIsHiddenPassword] = useState<{
+        pass: boolean;
+        confPass: boolean
+    }>({ pass: false, confPass: false })
+    const { initialValues, handleRegister, isPending } = useMutateRegister()
 
     return (
         <div className="w-full justify-center items-center flex min-h-20 h-fit">
@@ -26,23 +30,50 @@ export default function BodyRegister() {
                     fd.append('lastName', values.lastName)
                     fd.append('email', values.email)
                     fd.append('phoneNumber', phoneNumberValue)
+                    fd.append('password', values.password)
 
                     handleRegister(fd, {
-                        onSuccess: () => {
-                            resetForm({ values: initialValues })
-                        }
+                        onSuccess: () => { resetForm({ values: initialValues }) }
                     })
                 }} initialValues={initialValues}>
                     {({ setFieldValue, values }) => (
                         <Form className="space-y-2">
-                            <div className="flex items-center gap-2">
+                            <div className="flex sm:flex-row flex-col items-center gap-2">
                                 <Input placeholder="John" name="firstName" type="text" value={values.firstName || ''}
                                     onChange={(e) => setFieldValue('firstName', e.target.value)} />
                                 <Input placeholder="Doe" name="lastName" type="text" value={values.lastName || ''}
                                     onChange={(e) => setFieldValue('lastName', e.target.value)} />
                             </div>
+
                             <Input placeholder="example@gmail.com" name="email" type="email" value={values.email || ''}
                                 onChange={(e) => setFieldValue('email', e.target.value)} />
+
+                            <div className="relative">
+                                <Input placeholder="******" name="password" type={
+                                    isHiddenPassword.pass ? 'text' : "password"
+                                } value={values.password || ''}
+                                    onChange={(e) => setFieldValue('password', e.target.value)} />
+
+                                <Button variant={"link"} className="absolute right-0 top-0 w-fit" type="button"
+                                    onClick={() => setIsHiddenPassword(prev => ({ ...prev, pass: !isHiddenPassword.pass }))}>
+                                    {isHiddenPassword.pass ? <FaEye className="text-neutral-500" /> :
+                                        <FaEyeSlash className="text-neutral-500" />}
+                                </Button>
+                            </div>
+
+                            <div className="relative">
+                                <Input placeholder="******" name="password" type={
+                                    isHiddenPassword.confPass ? 'text' : "password"
+                                } value={values.confPassword || ''}
+                                    onChange={(e) => setFieldValue('confPassword', e.target.value)} />
+
+                                <Button variant={"link"} className="absolute right-0 top-0 w-fit" type="button"
+                                    onClick={() => setIsHiddenPassword(prev => ({ ...prev, confPass: !isHiddenPassword.confPass }))}>
+                                    {isHiddenPassword.confPass ? <FaEye className="text-neutral-500" /> :
+                                        <FaEyeSlash className="text-neutral-500" />}
+                                </Button>
+                            </div>
+
                             <PhoneInput onChange={(value) => setFieldValue('phoneNumber', value)} value={values.phoneNumber}
                                 defaultCountry="ID" />
                             {isPending ?

@@ -1,13 +1,13 @@
 'use server'
 
-import { baseUrl } from "@/app/_clients/utils/axiosInstance"
+import { baseUrlApi } from "@/app/_clients/utils/axiosInstance"
 import { cookies } from "next/headers"
 
 export const getCategoryProduct = async () => {
     try {
         const token = (await cookies()).get('_token')?.value
 
-        const res = await fetch(`${baseUrl}/category/all-categorys`, {
+        const res = await fetch(`${baseUrlApi}/category/all-categorys`, {
             cache: 'no-store',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -39,7 +39,7 @@ export const createCategoryAction = async (fd: FormData) => {
 
         const token = (await cookies()).get('_token')?.value
 
-        const res = await fetch(`${baseUrl}/category/create-category`, {
+        const res = await fetch(`${baseUrlApi}/category/create-category`, {
             cache: 'no-store',
             headers: {
                 'Authorization': `Bearer ${token}`,

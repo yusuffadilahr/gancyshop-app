@@ -1,235 +1,307 @@
 "use client"
 
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
 import Image from "next/image"
 import * as React from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
-import { Star, Shield, Truck, ArrowRight, CheckCircle, Award, Clock } from 'lucide-react'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { ChevronLeft, ChevronRight, ShoppingCart, Star, Wrench } from 'lucide-react'
 
-// interface CarouselSectionProps { }
+// Register GSAP plugins
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger)
+}
+
+interface CarouselSlide {
+  id: number
+  title: string
+  subtitle: string
+  description: string
+  image: string
+  category: string
+  price: string
+  rating: number
+  inStock: boolean
+}
+
+const slides: CarouselSlide[] = [
+  {
+    id: 1,
+    title: "Body Parts Collection",
+    subtitle: "Premium Quality Motorcycle Parts",
+    description: "Fairing, tangki, jok, dan komponen body motor berkualitas tinggi untuk semua jenis motor",
+    image: "/body-hero.png",
+    category: "Body Parts",
+    price: "Mulai dari Rp 250.000",
+    rating: 4.8,
+    inStock: true
+  },
+  {
+    id: 2,
+    title: "Engine Components",
+    subtitle: "Performance & Reliability",
+    description: "Komponen mesin berkualitas untuk performa maksimal dan daya tahan yang lama",
+    image: "/body-hero.png",
+    category: "Engine",
+    price: "Mulai dari Rp 180.000",
+    rating: 4.9,
+    inStock: true
+  },
+  {
+    id: 3,
+    title: "Electrical Parts",
+    subtitle: "Modern Technology Solutions",
+    description: "Sistem kelistrikan modern untuk motor dengan teknologi terdepan",
+    image: "/body-hero.png",
+    category: "Electrical",
+    price: "Mulai dari Rp 125.000",
+    rating: 4.7,
+    inStock: false
+  }
+]
 
 export default function CarouselSection(): React.JSX.Element {
-  const cardBlurRef = React.useRef<HTMLDivElement>(null)
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true)
+  const carouselRef = useRef<HTMLDivElement>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
+  const imageRef = useRef<HTMLDivElement>(null)
+  const statsRef = useRef<HTMLDivElement>(null)
+  const autoPlayRef = useRef<NodeJS.Timeout | null>(null)
 
-  React.useEffect(() => {
-    if (cardBlurRef.current) {
-      const tl = gsap.timeline()
+  // Auto play functionality
+  useEffect(() => {
+    if (isAutoPlaying) {
+      autoPlayRef.current = setInterval(() => {
+        setCurrentSlide((prev) => (prev + 1) % slides.length)
+      }, 5000)
+    }
 
-      // Animate main card
-      tl.from(cardBlurRef.current, {
+    return () => {
+      if (autoPlayRef.current) {
+        clearInterval(autoPlayRef.current)
+      }
+    }
+  }, [isAutoPlaying])
+
+  // GSAP Animations
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Initial animation on mount
+      gsap.from(carouselRef.current, {
         opacity: 0,
-        x: 50,
+        y: 50,
         duration: 1,
-        ease: "back.out(1.7)",
+        ease: "power3.out"
       })
 
-      // Animate elements inside card with stagger
-      tl.from(cardBlurRef.current.querySelector('.welcome-badge'), {
+      // Slide change animation
+      const tl = gsap.timeline()
+      
+      tl.to(contentRef.current, {
         opacity: 0,
-        scale: 0.8,
-        duration: 0.6,
-        ease: "back.out(1.7)",
-      }, "-=0.5")
+        x: -30,
+        duration: 0.3,
+        ease: "power2.inOut"
+      })
+      .to(imageRef.current, {
+        scale: 0.95,
+        opacity: 0.7,
+        duration: 0.3,
+        ease: "power2.inOut"
+      }, "<")
+      .to(contentRef.current, {
+        opacity: 1,
+        x: 0,
+        duration: 0.4,
+        ease: "power2.out"
+      })
+      .to(imageRef.current, {
+        scale: 1,
+        opacity: 1,
+        duration: 0.4,
+        ease: "power2.out"
+      }, "<")
 
-      tl.from(cardBlurRef.current.querySelector('.main-title'), {
-        opacity: 0,
-        y: 20,
-        duration: 0.8,
-        ease: "power2.out",
-      }, "-=0.3")
+      // Scroll trigger animation
+      ScrollTrigger.create({
+        trigger: carouselRef.current,
+        start: "top 80%",
+        onEnter: () => {
+          gsap.from(statsRef.current?.children || [], {
+            opacity: 0,
+            y: 30,
+            duration: 0.6,
+            stagger: 0.1,
+            ease: "back.out(1.7)"
+          })
+        }
+      })
 
-      tl.from(cardBlurRef.current.querySelector('.subtitle'), {
-        opacity: 0,
-        y: 15,
-        duration: 0.6,
-        ease: "power2.out",
-      }, "-=0.4")
+    }, carouselRef)
 
-      tl.from(cardBlurRef.current.querySelectorAll('.feature-item'), {
-        opacity: 0,
-        x: -20,
-        duration: 0.5,
-        stagger: 0.1,
-        ease: "power2.out",
-      }, "-=0.2")
+    return () => ctx.revert()
+  }, [currentSlide])
 
-      tl.from(cardBlurRef.current.querySelectorAll('.cta-button'), {
-        opacity: 0,
-        y: 10,
-        duration: 0.5,
-        stagger: 0.1,
-        ease: "power2.out",
-      }, "-=0.1")
-
-      tl.from(cardBlurRef.current.querySelector('.stats-section'), {
-        opacity: 0,
-        y: 15,
-        duration: 0.6,
-        ease: "power2.out",
-      }, "-=0.2")
-    }
-  }, [])
-
-  const handleOrderClick = (): void => {
-    console.log('Pesan Sekarang clicked!')
-    // Add your order logic here
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length)
+    setIsAutoPlaying(false)
   }
 
-  const handleCatalogClick = (): void => {
-    console.log('Lihat Katalog clicked!')
-    // Add your catalog logic here
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)
+    setIsAutoPlaying(false)
   }
 
-  const handleWhatsAppClick = (): void => {
-    console.log('WhatsApp clicked!')
-    // Add WhatsApp redirect logic here
+  const goToSlide = (index: number) => {
+    setCurrentSlide(index)
+    setIsAutoPlaying(false)
   }
+
+  const currentSlideData = slides[currentSlide]
 
   return (
-    <div className="w-full flex pt-2 gap-1 px-2 md:px-5">
-      <div className="w-full min-h-52 h-fit flex items-center px-0 m-auto bg-neutral-100 rounded-xl relative overflow-hidden">
-        <Image
-          src='/body-hero.png'
-          id="hero-section-id"
-          height={500}
-          width={500}
-          alt="hero-section"
-          priority
-          className="w-full h-[70vh] object-cover rounded-xl transition-opacity"
-        />
-        <div className="absolute px-2 md:px-0 md:left-[5%] bottom-[10%] space-y-2">
-          <Card
-            ref={cardBlurRef}
-            className="bg-white/25 h-[55vh] backdrop-blur-md p-6 lg:p-8 px-8 lg:px-10 space-y-4 shadow-xl rounded-xl border border-white/20 max-w-md lg:max-w-lg overflow-y-auto"
-          >
-            {/* Welcome Badge */}
-            <Badge className="welcome-badge bg-red-500 hover:bg-red-600 text-white text-xs font-semibold px-4 py-2 rounded-full shadow-md transition-all duration-300 inline-flex items-center gap-2">
-              <Award className="w-3 h-3" />
-              Selamat datang di Gancy Shop
-            </Badge>
-
-            {/* Main Title */}
-            <div className="main-title space-y-2">
-              <h1 className="text-lg md:text-xl lg:text-2xl xl:text-3xl text-white font-bold leading-tight drop-shadow-lg">
-                Sparepart Motor
-                <span className="block text-yellow-300 drop-shadow-lg">
-                  Berkualitas Premium
-                </span>
-              </h1>
-            </div>
-
-            {/* Subtitle */}
-            <p className="subtitle text-white/90 text-sm lg:text-base leading-relaxed drop-shadow-sm">
-              Dapatkan sparepart original dengan harga terbaik dan garansi resmi
-            </p>
-
-            {/* Feature Items */}
-            <div className="space-y-3">
-              <div className="feature-item bg-white/15 backdrop-blur-sm px-3 py-2.5 rounded-lg flex items-center gap-3 border border-white/20 transition-all duration-300 hover:bg-white/20">
-                <div className="w-8 h-8 bg-yellow-500/80 rounded-full flex items-center justify-center">
-                  <Star className="w-4 h-4 text-white" />
-                </div>
-                <div>
-                  <div className="text-white font-medium text-sm">Kualitas Terjamin</div>
-                  <div className="text-white/70 text-xs">100% Original & Bergaransi</div>
-                </div>
-              </div>
-
-              <div className="feature-item bg-white/15 backdrop-blur-sm px-3 py-2.5 rounded-lg flex items-center gap-3 border border-white/20 transition-all duration-300 hover:bg-white/20">
-                <div className="w-8 h-8 bg-green-500/80 rounded-full flex items-center justify-center">
-                  <Shield className="w-4 h-4 text-white" />
-                </div>
-                <div>
-                  <div className="text-white font-medium text-sm">Garansi Resmi</div>
-                  <div className="text-white/70 text-xs">Perlindungan Pembelian</div>
-                </div>
-              </div>
-
-              <div className="feature-item bg-white/15 backdrop-blur-sm px-3 py-2.5 rounded-lg flex items-center gap-3 border border-white/20 transition-all duration-300 hover:bg-white/20">
-                <div className="w-8 h-8 bg-blue-500/80 rounded-full flex items-center justify-center">
-                  <Truck className="w-4 h-4 text-white" />
-                </div>
-                <div>
-                  <div className="text-white font-medium text-sm">Pengiriman Cepat</div>
-                  <div className="text-white/70 text-xs">Gratis Ongkir Se-Indonesia</div>
-                </div>
-              </div>
-            </div>
-
-            {/* CTA Buttons */}
-            <div className="space-y-3 pt-2">
-              <div className="flex flex-col sm:flex-row gap-3">
-                <Button
-                  onClick={handleOrderClick}
-                  className="cta-button bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-2.5 rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl flex items-center justify-center gap-2 group"
+    <section className="w-full py-8 px-2 md:px-5 bg-gradient-to-br from-gray-50 to-white">
+      <div 
+        ref={carouselRef}
+        className="w-full mx-auto"
+        onMouseEnter={() => setIsAutoPlaying(false)}
+        onMouseLeave={() => setIsAutoPlaying(true)}
+      >
+        <div className="relative min-h-[70vh] flex items-center bg-white rounded-2xl overflow-hidden group">
+          
+          <div className="absolute inset-0 bg-gradient-to-r from-red-50/50 to-white opacity-70"></div>
+          <div className="absolute inset-0 bg-[url('/pattern.svg')] opacity-5"></div>
+          <div className="relative z-10 grid lg:grid-cols-2 gap-0 w-full min-h-[70vh]">
+            <div 
+              ref={contentRef}
+              className="flex flex-col justify-center p-8 lg:p-12 space-y-6"
+            >
+              <div className="flex items-center space-x-3">
+                <Badge 
+                  variant="secondary" 
+                  className="bg-red-100 text-red-700 hover:bg-red-200 px-4 py-2 text-sm font-semibold"
                 >
-                  Pesan Sekarang
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </Button>
+                  <Wrench className="w-4 h-4 mr-2" />
+                  {currentSlideData.category}
+                </Badge>
+                {currentSlideData.inStock && (
+                  <Badge className="bg-green-100 text-green-700 hover:bg-green-200">
+                    ✓ Ready Stock
+                  </Badge>
+                )}
+              </div>
 
-                <Button
-                  onClick={handleCatalogClick}
-                  variant="outline"
-                  className="cta-button bg-white/15 border-white/40 text-white hover:bg-white/25 hover:border-white/60 backdrop-blur-sm font-medium px-6 py-2.5 rounded-lg transition-all duration-300"
+              <div>
+                <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 leading-tight mb-4">
+                  {currentSlideData.title.split(' ').map((word, index) => (
+                    <span key={index} className={index === 1 ? 'text-red-600' : ''}>
+                      {word}{' '}
+                    </span>
+                  ))}
+                </h1>
+                <p className="text-xl text-gray-600 font-medium">
+                  {currentSlideData.subtitle}
+                </p>
+              </div>
+
+              <p className="text-gray-700 text-lg leading-relaxed max-w-md">
+                {currentSlideData.description}
+              </p>
+
+              <div ref={statsRef} className="flex items-center space-x-6 py-4">
+                <div className="flex items-center space-x-1">
+                  <Star className="w-5 h-5 fill-yellow-400 text-yellow-400" />
+                  <span className="font-semibold text-gray-900">{currentSlideData.rating}</span>
+                  <span className="text-gray-500">(1.2k reviews)</span>
+                </div>
+                <div className="text-2xl font-bold text-red-600">
+                  {currentSlideData.price}
+                </div>
+              </div>
+
+              <div className="flex items-center space-x-4 pt-4">
+                <Button 
+                  size="lg" 
+                  className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
                 >
+                  <ShoppingCart className="w-5 h-5 mr-2" />
                   Lihat Katalog
                 </Button>
+                <Button 
+                  variant="outline" 
+                  size="lg"
+                  className="border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white px-8 py-3 text-lg font-semibold transition-all duration-300"
+                >
+                  Konsultasi
+                </Button>
               </div>
-
-              {/* WhatsApp Quick Contact */}
-              <Button
-                onClick={handleWhatsAppClick}
-                variant="secondary"
-                className="cta-button w-full bg-green-600 hover:bg-green-700 text-white font-medium px-6 py-2 rounded-lg transition-all duration-300 text-sm"
-              >
-                💬 Chat WhatsApp Sekarang
-              </Button>
             </div>
 
-            {/* Trust Stats */}
-            <div className="stats-section pt-4 border-t border-white/20">
-              <div className="grid grid-cols-3 gap-4 text-center">
-                <div className="space-y-1">
-                  <div className="flex items-center justify-center gap-1">
-                    <span className="text-white font-bold text-lg">4.9</span>
-                    <Star className="w-3 h-3 fill-yellow-300 text-yellow-300" />
-                  </div>
-                  <div className="text-white/80 text-xs">Rating</div>
+            <div 
+              ref={imageRef}
+              className="relative flex items-center justify-center p-8 lg:p-12"
+            >
+              <div className="relative w-full h-full">
+                <Image
+                  src={currentSlideData.image}
+                  alt={currentSlideData.title}
+                  fill
+                  priority
+                  className="object-cover rounded-xl transition-all duration-700 hover:scale-105"
+                />
+                
+                <div className="absolute -top-4 -right-4 bg-white rounded-full p-4 shadow-lg">
+                  <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
                 </div>
-
-                <div className="space-y-1">
-                  <div className="text-white font-bold text-lg flex items-center justify-center gap-1">
-                    <Clock className="w-4 h-4" />
-                    24/7
-                  </div>
-                  <div className="text-white/80 text-xs">Support</div>
-                </div>
-
-                <div className="space-y-1">
-                  <div className="text-white font-bold text-lg flex items-center justify-center">
-                    <CheckCircle className="w-4 h-4 text-green-300" />
-                  </div>
-                  <div className="text-white/80 text-xs">Terpercaya</div>
-                </div>
-              </div>
-
-              {/* Additional Stats Row */}
-              <div className="grid grid-cols-2 gap-4 text-center mt-4 pt-3 border-t border-white/10">
-                <div>
-                  <div className="text-white font-bold text-sm">10K+</div>
-                  <div className="text-white/70 text-xs">Pelanggan Puas</div>
-                </div>
-                <div>
-                  <div className="text-white font-bold text-sm">100%</div>
-                  <div className="text-white/70 text-xs">Original</div>
+                <div className="absolute -bottom-4 -left-4 bg-red-600 text-white rounded-xl p-3 shadow-lg">
+                  <span className="text-sm font-bold">500+</span>
+                  <br />
+                  <span className="text-xs">Products</span>
                 </div>
               </div>
             </div>
-          </Card>
+          </div>
+
+          {/* Navigation Arrows */}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={prevSlide}
+            className="absolute left-4 z-10 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white shadow-lg backdrop-blur-sm rounded-full w-12 h-12 opacity-0 group-hover:opacity-100 transition-all duration-300"
+          >
+            <ChevronLeft className="w-6 h-6 text-gray-700" />
+          </Button>
+          
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={nextSlide}
+            className="absolute right-4 z-10 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white shadow-lg backdrop-blur-sm rounded-full w-12 h-12 opacity-0 group-hover:opacity-100 transition-all duration-300"
+          >
+            <ChevronRight className="w-6 h-6 text-gray-700" />
+          </Button>
         </div>
+
+        {/* Bottom Navigation Dots */}
+        <div className="flex items-center justify-center space-x-3 mt-8">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              className={`transition-all duration-300 rounded-full ${
+                index === currentSlide
+                  ? 'w-12 h-3 bg-red-600'
+                  : 'w-3 h-3 bg-gray-300 hover:bg-gray-400'
+              }`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
+        </div>
+
       </div>
-    </div>
+    </section>
   )
 }
