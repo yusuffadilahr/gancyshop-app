@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import * as React from "react"
 import Link from "next/link"
 
@@ -7,8 +7,8 @@ import { Marquee, MarqueeItem, MarqueeContent } from '@/components/ui/shadcn-io/
 import { Button } from "@/components/ui/button"
 import { FaBox } from "react-icons/fa";
 import { useDebouncedCallback } from "use-debounce"
-import { getAllDataProductBySearch } from "@/app/_serverside/action"
-import { IDataProduk } from "@/app/(admin)/admin/produk/_clientside/types"
+import { getAllDataProductBySearch } from "@/app/_servers/services"
+import { IDataProduk } from "@/app/(admin)/admin/produk/_clients/types"
 import { usePathname } from "next/navigation"
 import DesktopMenu from "@/components/core/desktopMenu"
 import MobileMenu from "@/components/core/mobileMenu"
@@ -65,7 +65,7 @@ export function Navbar() {
     }
 
     React.useEffect(() => {
-        const token = Cookies.get('_token')
+        const token = Cookies.get('_loggedIn')
         if (token) setTokenExist(token as string)
     }, [])
 

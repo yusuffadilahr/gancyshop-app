@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import * as React from "react";
 
-const DynamicBodySetPassword = dynamic(() => import('./_clientside/components/bodySetPassword'), {
+const DynamicBodySetPassword = dynamic(() => import('./_clients/components/bodySetPassword'), {
     loading: () => <></>
 })
 
