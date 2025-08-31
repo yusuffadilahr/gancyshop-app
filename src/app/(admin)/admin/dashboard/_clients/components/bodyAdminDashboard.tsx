@@ -8,13 +8,13 @@ export default function BodyDashboard() {
     const router = useRouter()
 
     const deleteCookie = () => {
-        Cookies.remove('_role')
+        Cookies.remove('_refreshToken')
         Cookies.remove('_token')
+        Cookies.remove('_loggedIn')
+        
         localStorage.clear()
         router.push('/auth/login')
     }
-
-    console.log(Cookies.get('_refreshToken'), '<<< refresh')
 
     return (
         <div>

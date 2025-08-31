@@ -46,8 +46,6 @@ export const useQueryGetData = ({
             }
         })
 
-        console.log(dataGetProduct, "<<")
-
     const { data: dataCategory,
         isLoading: isLoadingGetCategory } = useQuery<ICategoryProduct[]>({
             queryKey: ['get-data-category'],

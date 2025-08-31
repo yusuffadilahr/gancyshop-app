@@ -6,9 +6,5 @@ const DynamicBodyProduk = dynamic(() => import('./_clients/components/bodyProduc
 })
 
 export default function page() {
-    return (
-        <React.Fragment>
-            <DynamicBodyProduk />
-        </React.Fragment>
-    );
+    return <DynamicBodyProduk />
 }

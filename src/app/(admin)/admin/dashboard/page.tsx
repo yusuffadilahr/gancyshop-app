@@ -4,7 +4,5 @@ const DynamicBodyDashboard = dynamic(()=> import('./_clients/components/bodyAdmi
 })
 
 export default function page() {
-    return (
-        <DynamicBodyDashboard />
-    );
+    return <DynamicBodyDashboard />
 }

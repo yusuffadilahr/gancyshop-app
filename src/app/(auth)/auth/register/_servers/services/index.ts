@@ -24,10 +24,10 @@ export const registerAction = async (fd: FormData) => {
         })
 
         const result = await res.json()
-        if (!res.ok) throw new Error(result?.message || 'Login gagal')
+        if (!res.ok) throw result
 
         return result
     } catch (error) {
-        throw error
+        return error
     }
 }

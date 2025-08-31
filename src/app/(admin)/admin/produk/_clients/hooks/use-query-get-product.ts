@@ -15,6 +15,7 @@ export const useQueryGetProduct = ({ searchData, limit, page }: {
                 page
             })
 
+            if (res.error) throw res
             return res?.data
         },
     })

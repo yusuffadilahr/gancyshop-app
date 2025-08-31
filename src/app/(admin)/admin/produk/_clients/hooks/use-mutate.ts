@@ -77,6 +77,8 @@ export const useMutateAddProduct = ({ refetch }: { refetch: () => void }) => {
             return await updateIsActiveProduct(fd, id)
         },
         onSuccess: (res) => {
+            if (res?.error) throw res
+
             toast({
                 title: res?.message || 'Produkmu sekarang aktif',
                 description: new Date().toDateString(),

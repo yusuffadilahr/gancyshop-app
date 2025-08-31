@@ -52,7 +52,7 @@ export const useSetParamsFilter = ({
         }
 
         if (datePicker) {
-            searchParams.set('date', datePicker.toLocaleDateString())
+            searchParams.set('date', encodeURIComponent(datePicker.toLocaleDateString()))
         } else {
             searchParams.delete('date')
         }

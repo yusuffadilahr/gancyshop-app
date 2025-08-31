@@ -29,10 +29,13 @@ export default function ModalAddKategori({ refetch }: { refetch: () => void }) {
             return await createCategoryAction(fd)
         },
         onSuccess: (res) => {
+            if (res?.error) throw res
+
             toast({
                 title: res?.message || 'Berhasil mengupload produk',
                 description: new Date().toDateString(),
             })
+
             refetch()
         },
         onError: (err) => {

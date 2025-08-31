@@ -21,7 +21,7 @@ export default function SideBarLayout({ children }: { children: React.ReactNode 
         try {
             const token = Cookies.get('_token')
             const res = await handleGetDataProfileAdmin(String(token))
-            if (!res.ok) throw res
+            if (res.error) throw res
 
             setDataProfil(res?.data)
             dispatch(setProfileAdmin(res?.data))

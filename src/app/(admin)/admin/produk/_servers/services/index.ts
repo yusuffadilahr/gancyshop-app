@@ -64,72 +64,91 @@ export const updateIsActiveProduct = async (fd: FormData, idProduct: string) => 
         }
 
         const result = await res.json()
-        if (!res.ok) throw new Error('Gagal memperbaharui produk')
+        if (!res.ok) throw result
 
         return result
 
     } catch (error) {
-        throw error
+        return error
     }
 }
 
 export const handleGetDataCategoryMotor = async () => {
     try {
         const token = (await cookies()).get('_token')?.value
-        const res = await fetch(`${baseUrlApi}/category/all-category-motorcycle`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            },
+        let res = await fetch(`${baseUrlApi}/category/all-category-motorcycle`, {
+            headers: { Authorization: `Bearer ${token}` },
             method: 'GET',
             cache: 'no-store',
         })
 
-        if (!res.status) throw new Error('Data tidak tersedia')
+        if (res.status === 401) {
+            res = await handleRetryForServerAction(token as string,
+                `${baseUrlApi}/category/all-category-motorcycle`, {
+                method: 'GET',
+                cache: 'no-store',
+            }) as Response
+        }
+
         const result = await res.json()
+        if (!res.status) throw result
 
         return result
     } catch (error) {
-        throw error
+        return error
     }
 }
 
 export const handleGetDataCategoryByCategoryMotor = async (categoryMotorId: string) => {
     try {
         const token = (await cookies()).get('_token')?.value
-        const res = await fetch(`${baseUrlApi}/category/all-category/${categoryMotorId}`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            },
+        let res = await fetch(`${baseUrlApi}/category/all-category/${categoryMotorId}`, {
+            headers: { Authorization: `Bearer ${token}` },
             method: 'GET',
             cache: 'no-store'
         })
 
-        if (!res.ok) throw new Error('Data tidak tersedia')
+        if (res.status === 401) {
+            res = await handleRetryForServerAction(token as string,
+                `${baseUrlApi}/category/all-category/${categoryMotorId}`, {
+                method: 'GET',
+                cache: 'no-store',
+            }) as Response
+        }
+
         const result = await res.json()
+        if (!res.ok) throw result
 
         return result
     } catch (error) {
-        throw error
+        return error
     }
 }
 
 export const deleteDataProductById = async (idProduct: string) => {
     try {
         const token = (await cookies()).get('_token')?.value
-        const res = await fetch(`${baseUrlApi}/admin/delete-product/${idProduct}`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            },
+        let res = await fetch(`${baseUrlApi}/admin/delete-product/${idProduct}`, {
+            headers: { Authorization: `Bearer ${token}` },
             method: 'PATCH',
             cache: 'no-store',
             body: JSON.stringify({})
         })
 
-        if (!res.ok) throw new Error('Data tidak tersedia')
+        if (res.status === 401) {
+            res = await handleRetryForServerAction(token as string,
+                `${baseUrlApi}/admin/delete-product/${idProduct}`, {
+                method: 'PATCH',
+                cache: 'no-store',
+                body: JSON.stringify({})
+            }) as Response
+        }
+
         const result = await res.json()
+        if (!res.ok) throw result
 
         return result
     } catch (error) {
-        throw error
+        return error
     }
 }
