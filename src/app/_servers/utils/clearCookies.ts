@@ -6,5 +6,5 @@ export const clearCookies = async () => {
     const cookie = await cookies()
     cookie.delete('_refreshToken')
     cookie.delete('_token')
-    cookie.delete('_role')
+    cookie.delete('_loggedIn')
 }

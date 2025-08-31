@@ -1,13 +1,14 @@
 'use server'
 
 import { baseUrlApi } from "@/app/_clients/utils/axiosInstance"
+import { handleRetryForServerAction } from "@/app/_servers/services"
 import { cookies } from "next/headers"
 
 export const getCategoryProduct = async () => {
     try {
-        const token = (await cookies()).get('_token')?.value
+        const token = (await cookies()).get('_token')?.value || ''
 
-        const res = await fetch(`${baseUrlApi}/category/all-categorys`, {
+        let res = await fetch(`${baseUrlApi}/category/all-categorys`, {
             cache: 'no-store',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -16,10 +17,18 @@ export const getCategoryProduct = async () => {
             method: 'GET'
         })
 
-        const result = await res.json()
-        console.log(result, '<<')
-        if (!res.ok) return result
+        if (res.status === 401) {
+            res = await handleRetryForServerAction(token,
+                `${baseUrlApi}/category/all-categorys`,
+                {
+                    cache: 'no-store',
+                    method: 'GET'
+                }
+            ) as Response
+        }
 
+        const result = await res.json()
+        if (!res.ok) throw result
 
         return result
     } catch (error) {
@@ -37,9 +46,8 @@ export const createCategoryAction = async (fd: FormData) => {
             categoryName: fd.get('categoryName')
         }
 
-        const token = (await cookies()).get('_token')?.value
-
-        const res = await fetch(`${baseUrlApi}/category/create-category`, {
+        const token = (await cookies()).get('_token')?.value || ''
+        let res = await fetch(`${baseUrlApi}/category/create-category`, {
             cache: 'no-store',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -50,13 +58,26 @@ export const createCategoryAction = async (fd: FormData) => {
             method: 'POST',
             body: JSON.stringify(data)
         })
+        
+        if (res.status === 401) {
+            console.log('trigger');
 
-        if (!res.ok) throw new Error('Ada kesalahan saat proses membuat data')
+            res = await handleRetryForServerAction(token,
+                `${baseUrlApi}/category/create-category`,
+                {
+                    cache: 'no-store',
+                    method: 'POST',
+                    body: JSON.stringify(data)
+                }
+            ) as Response
+        }
+
         const result = await res.json()
+        if (!res.ok) throw result
 
         return result
     } catch (error) {
         console.log(error)
-        throw error
+        return error
     }
 }

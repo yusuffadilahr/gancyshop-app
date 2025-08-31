@@ -24,6 +24,8 @@ export default function ModalDeleteProduct({ data, refetch }: {
             return deleteDataProductById(String(data.id))
         },
         onSuccess: (res) => {
+            if (res?.error) throw res
+
             toast({
                 title: res.data?.message || 'Berhasil menghapus produk',
                 description: new Date().toDateString(),
@@ -39,7 +41,7 @@ export default function ModalDeleteProduct({ data, refetch }: {
             })
         }
     })
-    
+
     return (
         <Dialog>
             <DialogTrigger asChild>

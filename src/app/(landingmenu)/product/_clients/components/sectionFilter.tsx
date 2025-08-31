@@ -5,23 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Separator } from "@/components/ui/separator"
 import { GrPowerReset } from "react-icons/gr"
 import DatePicker from "@/components/core/datePickerInput"
-import * as React from "react"
-import { ICategoryProduct, IValueOnChange } from "@/app/(landingmenu)/product/_clients/types"
-import { DebouncedState } from "use-debounce"
-
-interface ISectionFilterProps {
-    isLoadingGetCategory: boolean,
-    setValueOnChange: React.Dispatch<React.SetStateAction<IValueOnChange>>,
-    valueOnChange: IValueOnChange,
-    dataCategory?: ICategoryProduct[],
-    debounceMaxPrice: DebouncedState<(val: string) => void>,
-    debounceMaxWeight: DebouncedState<(val: string) => void>,
-    debounceMinPrice: DebouncedState<(val: string) => void>,
-    debounceMinWeight: DebouncedState<(val: string) => void>,
-    datePicker: Date | undefined,
-    setDatePicker: React.Dispatch<React.SetStateAction<Date | undefined>>,
-    handleResetFilter: () => void,
-}
+import { ISectionFilterProps } from "@/app/(landingmenu)/product/_clients/types";
 
 export default function SectionFilter({
     isLoadingGetCategory,

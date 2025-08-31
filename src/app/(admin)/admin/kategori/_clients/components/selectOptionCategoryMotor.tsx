@@ -34,12 +34,11 @@ export default function SelectOptionCategoryMotorSearch({
         try {
             setLoading(true)
             const res = await handleGetDataCategoryMotor()
+            if (res.error) throw res
 
-            if (!res.error) {
-                setData(res.data)
-                setOpen(open)
-                setLoading(false)
-            }
+            setData(res.data)
+            setOpen(open)
+            setLoading(false)
 
         } catch (error) {
             console.log(error)

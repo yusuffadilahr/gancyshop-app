@@ -40,9 +40,9 @@ export default function ModalAddProduct({
     const handleGetData = async (id: string) => {
         try {
             const res = await handleGetDataCategoryByCategoryMotor(id)
-            if (!res.error) {
-                setDataCategory(res.data)
-            }
+            if (res?.error) throw res
+            setDataCategory(res.data)
+
         } catch (error) {
             setDataCategory([])
             console.log(error)
