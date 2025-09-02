@@ -2,8 +2,9 @@ import { IDataProduk, IInitialValuesEditProduct } from "@/app/(admin)/admin/prod
 import { toast } from "@/hooks/use-toast";
 import { axiosInstance } from "@/app/_clients/utils/axiosInstance";
 import { useMutation } from "@tanstack/react-query";
+import { Dispatch, SetStateAction } from "react";
 
-export const useMutateEditProduct = ({ dataTable, refetch }: { dataTable: IDataProduk | null, refetch: () => void }) => {
+export const useMutateEditProduct = ({ dataTable, refetch,setOpenDialog }: {setOpenDialog: Dispatch<SetStateAction<boolean>>; dataTable: IDataProduk | null, refetch: () => void }) => {
     const initialValuesEditProduct = {
         images: null,
         name: dataTable?.name || '',
@@ -24,6 +25,7 @@ export const useMutateEditProduct = ({ dataTable, refetch }: { dataTable: IDataP
             })
 
             refetch()
+            setOpenDialog(false)
         }, onError: (err) => {
             console.log(err)
 

@@ -65,6 +65,7 @@ export interface IInitialValuesEditProduct {
 }
 
 export interface ITableProductProps {
+    isLoading: boolean
     filePreview: string
     setFilePreview: React.Dispatch<React.SetStateAction<string>>,
     data: IDataProduk[],

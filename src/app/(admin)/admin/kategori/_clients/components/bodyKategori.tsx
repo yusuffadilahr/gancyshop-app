@@ -1,51 +1,175 @@
-'use client'
-
+'use client';
 import { IGETDataCategory } from '@/app/(admin)/admin/kategori/_clients/types';
 import { getCategoryProduct } from '@/app/(admin)/admin/kategori/_servers/services';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu';
 import { useQuery } from '@tanstack/react-query';
-import { default as nextDynamic } from 'next/dynamic'
+import { default as nextDynamic } from 'next/dynamic';
+import { MoreHorizontal, Edit, Trash2, Eye, Filter } from 'lucide-react';
+import TitleDashboardLayout from '@/components/core/titleDashboardLayout';
+import InputSearch from '@/components/core/inputSearch';
 
-const DynamicModalAddKategori = nextDynamic(() => import('./modalAddKategori'), { loading: () => <></> })
+const DynamicModalAddKategori = nextDynamic(() => import('./modalAddKategori'), { loading: () => <></> });
 
 export default function BodyKategori() {
-    const { data: getDataCategory,
-        refetch: refetchGetDataCategory } = useQuery<IGETDataCategory[]>({
-            queryKey: ['get-kategori'],
-            queryFn: async () => {
-                const res = await getCategoryProduct()
-                if (res.error) throw res
-
-                return res?.data
-            }
-        })
+    const { data: dataCategory, refetch: refetchGetDataCategory, isLoading } = useQuery<IGETDataCategory[]>({
+        queryKey: ['get-kategori'],
+        queryFn: async () => {
+            const res = await getCategoryProduct();
+            if (res.error) throw res;
+            return res?.data;
+        }
+    });
 
     return (
-        <div className='px-5 pt-10 space-y-3'>
+        <div className='px-6 py-8 space-y-6 bg-gray-50 min-h-screen'>
+            <TitleDashboardLayout description="Kelola kategori produk motor Anda"
+                titleMenuDashboard="Kategori Produk"
+                action={<DynamicModalAddKategori refetch={refetchGetDataCategory} />} />
 
-            <DynamicModalAddKategori refetch={refetchGetDataCategory} />
+            <Card>
+                <CardHeader className="pb-4">
+                    <CardTitle className="text-lg flex items-center gap-2">
+                        <Filter className="w-5 h-5" />
+                        Filter & Pencarian
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <div className="flex flex-col sm:flex-row gap-4">
+                        <InputSearch loadingSearch={
+                            false
+                            // loadingSearch
+                        } searchParams={
+                            undefined
+                            // searchParams
+                        }
+                            onChange={(e) => {
+                                console.log(e);
+                                // setLoadingSearch(true)
+                                // debounce(e.target.value)
+                            }} />
+                    </div>
+                </CardContent>
+            </Card>
 
-            <Table className="w-full border rounded-md overflow-hidden">
-                <TableHeader className="bg-gray-50">
-                    <TableRow>
-                        <TableHead className="w-fit max-w-[50px] border px-4 py-2 text-left text-gray-700">No</TableHead>
-                        <TableHead className="w-fit max-w-[200px] border px-4 py-2 text-left text-gray-700">Nama Kategori</TableHead>
-                        <TableHead className="px-4 py-5 border text-left text-gray-700">Jenis Motor</TableHead>
-                        <TableHead className="px-4 py-5 border text-left text-gray-700">Tahun Rilis</TableHead>
-                        <TableHead className="px-4 py-5 border text-right text-gray-700">Action</TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {getDataCategory?.map((item, i) => (
-                        <TableRow key={i}>
-                            <TableCell>{i + 1}</TableCell>
-                            <TableCell>{item?.categoryName}</TableCell>
-                            <TableCell>{item?.categorymotorcyle?.motorCycleName}</TableCell>
-                            <TableCell>{item?.categorymotorcyle?.releaseYear}</TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+            <Card>
+                <CardContent className="p-0">
+                    <div className="overflow-x-auto">
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead className="w-16 px-4 py-4 font-semibold text-gray-700">
+                                        No
+                                    </TableHead>
+                                    <TableHead
+                                        className="px-4 py-4 font-semibold text-gray-700 transition-colors"
+                                    // onClick={() => handleSort('categoryName')}
+                                    >
+                                        Nama Kategori
+                                    </TableHead>
+                                    <TableHead
+                                        className="px-4 py-4 font-semibold text-gray-700 transition-colors"
+                                    // onClick={() => handleSort('motorcycleName')}
+                                    >
+                                        Jenis Motor
+                                    </TableHead>
+                                    <TableHead
+                                        className="px-4 py-4 font-semibold text-gray-700 transition-colors"
+                                    // onClick={() => handleSort('releaseYear')}
+                                    >
+                                        Tahun Rilis
+                                    </TableHead>
+                                    <TableHead className="w-24 px-4 py-4 text-right font-semibold text-gray-700">
+                                        Action
+                                    </TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {isLoading ? (
+                                    <TableRow>
+                                        <TableCell colSpan={5} className="text-center py-8">
+                                            <div className="flex items-center justify-center space-x-2">
+                                                <div className="w-4 h-4 bg-blue-500 rounded-full animate-pulse"></div>
+                                                <div className="w-4 h-4 bg-blue-500 rounded-full animate-pulse delay-75"></div>
+                                                <div className="w-4 h-4 bg-blue-500 rounded-full animate-pulse delay-150"></div>
+                                            </div>
+                                        </TableCell>
+                                    </TableRow>
+                                ) : dataCategory?.length === 0 ? (
+                                    <TableRow>
+                                        <TableCell colSpan={5} className="text-center py-8 text-gray-500">
+                                            Belum ada data kategori
+                                        </TableCell>
+                                    </TableRow>
+                                ) : (
+                                    dataCategory?.map((item, i) => (
+                                        <TableRow key={i} className="hover:bg-gray-50 transition-colors">
+                                            <TableCell className="px-4 py-4 text-gray-600 font-medium">
+                                                {i + 1}
+                                            </TableCell>
+                                            <TableCell className="px-4 py-4">
+                                                <div className="font-medium text-gray-900">
+                                                    {item?.categoryName}
+                                                </div>
+                                            </TableCell>
+                                            <TableCell className="px-4 py-4">
+                                                <Badge variant="secondary" className="font-normal">
+                                                    {item?.categorymotorcyle?.motorCycleName}
+                                                </Badge>
+                                            </TableCell>
+                                            <TableCell className="px-4 py-4">
+                                                <Badge variant="outline">
+                                                    {item?.categorymotorcyle?.releaseYear}
+                                                </Badge>
+                                            </TableCell>
+                                            <TableCell className="px-4 py-4 text-right">
+                                                <DropdownMenu>
+                                                    <DropdownMenuTrigger asChild>
+                                                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                            <MoreHorizontal className="h-4 w-4" />
+                                                        </Button>
+                                                    </DropdownMenuTrigger>
+                                                    <DropdownMenuContent align="end" className="w-32">
+                                                        <DropdownMenuItem
+                                                            // onClick={() => onView?.(item)}
+                                                            className="cursor-pointer"
+                                                        >
+                                                            <Eye className="mr-2 h-4 w-4" />
+                                                            Lihat
+                                                        </DropdownMenuItem>
+                                                        <DropdownMenuItem
+                                                            // onClick={() => onEdit?.(item)}
+                                                            className="cursor-pointer"
+                                                        >
+                                                            <Edit className="mr-2 h-4 w-4" />
+                                                            Edit
+                                                        </DropdownMenuItem>
+                                                        <DropdownMenuItem
+                                                            // onClick={() => onDelete?.(String(item.id) || '')}
+                                                            className="cursor-pointer text-red-600 focus:text-red-600"
+                                                        >
+                                                            <Trash2 className="mr-2 h-4 w-4" />
+                                                            Hapus
+                                                        </DropdownMenuItem>
+                                                    </DropdownMenuContent>
+                                                </DropdownMenu>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))
+                                )}
+                            </TableBody>
+                        </Table>
+                    </div>
+                </CardContent>
+            </Card>
         </div>
     );
 }

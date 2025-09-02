@@ -28,6 +28,7 @@ export default function ModalAddProduct({
     handleChangeFile,
 }: IModalAddProductProps) {
     const [open, setOpen] = React.useState<boolean>(false)
+    const [openDialog, setOpenDialog] = React.useState<boolean>(false)
     const [valueSelectOption, setValueSelectOption] = React.useState<{
         categoryMotor: string
         category: string
@@ -50,13 +51,14 @@ export default function ModalAddProduct({
     }
 
     return (
-        <Dialog onOpenChange={() => {
+        <Dialog onOpenChange={(open) => {
             setValueSelectOption({
                 categoryMotor: '',
                 category: ''
             })
             setFilePreview('')
-        }}>
+            setOpenDialog(open)
+        }} open={openDialog}>
             <DialogTrigger asChild>
                 <Button variant="default" size={"default"}>Tambah</Button>
             </DialogTrigger>
@@ -84,6 +86,7 @@ export default function ModalAddProduct({
                         handleAddProduct(fd, {
                             onSuccess: () => {
                                 resetForm({ values: initialValues })
+                                setOpenDialog(false)
                             }
                         })
                     }}
