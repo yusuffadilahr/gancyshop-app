@@ -6,7 +6,7 @@ export const useQueryGetProduct = ({ searchData, limit, page }: {
     limit: string,
     page: string
 }) => {
-    const { data: dataTable, refetch } = useQuery({
+    const { data: dataTable, refetch, isLoading: isLoadingGetData } = useQuery({
         queryKey: ['get-data-product'],
         queryFn: async () => {
             const res = await getAllProduct({
@@ -20,6 +20,6 @@ export const useQueryGetProduct = ({ searchData, limit, page }: {
         },
     })
     return {
-        dataTable, refetch
+        dataTable, refetch, isLoadingGetData
     }
 }

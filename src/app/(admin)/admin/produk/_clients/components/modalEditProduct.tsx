@@ -14,6 +14,7 @@ import {
     Form, Formik,
 } from "formik";
 import Image from "next/image";
+import { useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
 
@@ -25,13 +26,14 @@ export default function ModalEditProduct({
     handleChangeFile,
     refetch
 }: IModalEditProductProps) {
+    const [openDialog, setOpenDialog] = useState<boolean>(false)
 
     const { initialValuesEditProduct,
         handleEditProduct,
-        validatEditProduct } = useMutateEditProduct({ dataTable, refetch })
+        validatEditProduct } = useMutateEditProduct({ dataTable, refetch, setOpenDialog })
 
     return (
-        <Dialog>
+        <Dialog open={openDialog} onOpenChange={(open) => setOpenDialog(open)}>
             <DialogTrigger asChild>
                 <Button className="w-full flex justify-start"
                     variant={"ghost"} size={"sm"} onClick={onClick}>

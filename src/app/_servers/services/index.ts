@@ -44,7 +44,7 @@ export const handleRefreshToken = async (): Promise<string | null> => {
 
     const resp = await fetch(`${baseUrlApi}/auth/refresh`, {
         method: 'GET',
-        headers: { Authorization: `Bearer ${tokenRefresh}` },
+        headers: { 'Cookie': tokenStore.toString() },
         cache: 'no-store',
         credentials: 'include',
     });

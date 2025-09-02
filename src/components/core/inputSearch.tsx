@@ -19,7 +19,7 @@ export default function InputSearch({
         <div className="flex items-center relative w-full">
             <Input {...props}
                 type="search" defaultValue={searchParams?.get('search') || ''}
-                placeholder="Cari disini.." className={`w-full ${paddingY} rounded-full ${loadingSearch ? 'pl-10' : ''}`} />
+                placeholder="Cari disini.." className={`w-full ${paddingY} rounded-xl ${loadingSearch ? 'pl-10' : ''}`} />
             {loadingSearch && <Spinner className="absolute left-2" size={"small"} />}
         </div>
     );

@@ -12,7 +12,7 @@ export async function middleware(req: NextRequest) {
   const accessToken = cookieStore.get('_token')?.value
   const tokenRefresh = cookieStore.get('_refreshToken')?.value
 
-  if (!tokenRefresh && accessToken) {
+  if (!tokenRefresh && !pathname.startsWith('/auth/login')) {
     cookieStore.delete('_token')
     cookieStore.delete('_loggedIn')
 
