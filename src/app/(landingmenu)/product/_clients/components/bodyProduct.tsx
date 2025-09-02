@@ -55,7 +55,7 @@ export default function BodyProduct() {
                                     productWeight={product?.weightGram} key={idx}
 
                                     customButton={
-                                        <Link href={`/product/${encryptParams(String(product?.id))}`}>
+                                        <Link prefetch={false} href={`/product/${encryptParams(String(product?.id))}`}>
                                             <Button variant='default' size="sm" className="bg-red-500 hover:bg-red-400 text-white"
                                                 disabled={!product.isActive || product.stock === 0}>
                                                 Lihat
