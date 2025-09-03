@@ -28,19 +28,22 @@ export interface IHelperOptionMotorHooks {
 }
 
 export interface IGETDataCategory {
-    categorymotorcyle: {
-        createdAt: string
+    data: {
+        categorymotorcyle: {
+            createdAt: string
+            deletedAt: string | null
+            id: number
+            motorCycleName: string
+            releaseYear: number
+            updatedAt: string
+        }
+
+        categoryMotorcyleId: number
+        categoryName: string
+        createdAt: string | null
         deletedAt: string | null
         id: number
-        motorCycleName: string
-        releaseYear: number
-        updatedAt: string
-    }
-
-    categoryMotorcyleId: number
-    categoryName: string
-    createdAt: string | null
-    deletedAt: string | null
-    id: number
-    updatedAt: string | null
+        updatedAt: string | null
+    }[]
+    totalPage: number
 }

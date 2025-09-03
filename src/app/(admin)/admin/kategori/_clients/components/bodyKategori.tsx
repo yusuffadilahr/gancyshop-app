@@ -16,18 +16,62 @@ import { default as nextDynamic } from 'next/dynamic';
 import { MoreHorizontal, Edit, Trash2, Eye, Filter } from 'lucide-react';
 import TitleDashboardLayout from '@/components/core/titleDashboardLayout';
 import InputSearch from '@/components/core/inputSearch';
+import { useEffect, useState } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { PaginationTable } from '@/components/core/paginationTable';
+import { useDebouncedCallback } from 'use-debounce';
 
 const DynamicModalAddKategori = nextDynamic(() => import('./modalAddKategori'), { loading: () => <></> });
 
 export default function BodyKategori() {
-    const { data: dataCategory, refetch: refetchGetDataCategory, isLoading } = useQuery<IGETDataCategory[]>({
+    const [page, setPage] = useState<number>(1)
+    const [searchData, setSearchData] = useState<{ display: string; debounce: string; loading: boolean }>({
+        display: '', debounce: '', loading: false
+    })
+
+    const params = useSearchParams()
+    const pathname = usePathname()
+    const router = useRouter()
+
+    const limit = 5
+    const { data: dataCategory, refetch: refetchGetDataCategory, isLoading } = useQuery<IGETDataCategory>({
         queryKey: ['get-kategori'],
         queryFn: async () => {
-            const res = await getCategoryProduct();
-            if (res.error) throw res;
+            const res = await getCategoryProduct({ page, limit, search: searchData?.debounce });
+            if (res?.error) return { data: [], totalPage: 1 };
             return res?.data;
         }
     });
+
+    const debounce = useDebouncedCallback(val => {
+        setSearchData(prev => ({ ...prev, debounce: val, loading: false }))
+    }, 800)
+
+    useEffect(() => {
+        const currentParams = new URLSearchParams(params.toString())
+        if (page) {
+            currentParams.set('page', page.toString())
+        } else {
+            currentParams.delete('page')
+        }
+
+        if (limit) {
+            currentParams.set('limit', limit.toString())
+        } else {
+            currentParams.delete('limit')
+        }
+
+        if (searchData.debounce) {
+            currentParams.set('search', searchData.debounce.toString())
+        } else {
+            currentParams.delete('search')
+        }
+
+        const currentPath = `${pathname}?${currentParams.toString()}`
+        router.replace(currentPath)
+        refetchGetDataCategory()
+
+    }, [page, limit, searchData.debounce])
 
     return (
         <div className='px-6 py-8 space-y-6 bg-gray-50 min-h-screen'>
@@ -44,17 +88,11 @@ export default function BodyKategori() {
                 </CardHeader>
                 <CardContent>
                     <div className="flex flex-col sm:flex-row gap-4">
-                        <InputSearch loadingSearch={
-                            false
-                            // loadingSearch
-                        } searchParams={
-                            undefined
-                            // searchParams
-                        }
+                        <InputSearch loadingSearch={searchData?.loading} searchParams={params}
                             onChange={(e) => {
-                                console.log(e);
-                                // setLoadingSearch(true)
-                                // debounce(e.target.value)
+                                const { value } = e.target
+                                setSearchData(prev => ({ ...prev, loading: true, display: value }))
+                                debounce(value)
                             }} />
                     </div>
                 </CardContent>
@@ -103,14 +141,14 @@ export default function BodyKategori() {
                                             </div>
                                         </TableCell>
                                     </TableRow>
-                                ) : dataCategory?.length === 0 ? (
+                                ) : dataCategory?.data?.length === 0 ? (
                                     <TableRow>
                                         <TableCell colSpan={5} className="text-center py-8 text-gray-500">
                                             Belum ada data kategori
                                         </TableCell>
                                     </TableRow>
                                 ) : (
-                                    dataCategory?.map((item, i) => (
+                                    dataCategory?.data?.map((item, i) => (
                                         <TableRow key={i} className="hover:bg-gray-50 transition-colors">
                                             <TableCell className="px-4 py-4 text-gray-600 font-medium">
                                                 {i + 1}
@@ -170,6 +208,10 @@ export default function BodyKategori() {
                     </div>
                 </CardContent>
             </Card>
+
+            <PaginationTable totalPage={dataCategory?.totalPage || 1}
+                handleChangePage={(val) => setPage(val)}
+                page={String(page)} />
         </div>
     );
 }

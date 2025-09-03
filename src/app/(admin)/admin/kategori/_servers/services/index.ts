@@ -4,15 +4,14 @@ import { baseUrlApi } from "@/app/_clients/utils/axiosInstance"
 import { handleRetryForServerAction } from "@/app/_servers/services"
 import { cookies } from "next/headers"
 
-export const getCategoryProduct = async () => {
+export const getCategoryProduct = async ({ page = 1, limit = 5, search = '' }: { page: number; limit: number, search: string }) => {
     try {
         const token = (await cookies()).get('_token')?.value || ''
+        console.log(search);
 
-        let res = await fetch(`${baseUrlApi}/category/all-categorys`, {
+        let res = await fetch(`${baseUrlApi}/category/all-categorys?page=${page}&limit=${limit}&search=${search}`, {
             cache: 'no-store',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            },
+            headers: { 'Authorization': `Bearer ${token}` },
 
             method: 'GET'
         })
@@ -58,7 +57,7 @@ export const createCategoryAction = async (fd: FormData) => {
             method: 'POST',
             body: JSON.stringify(data)
         })
-        
+
         if (res.status === 401) {
             console.log('trigger');
 
