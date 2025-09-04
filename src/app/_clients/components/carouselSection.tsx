@@ -248,7 +248,7 @@ export default function CarouselSection(): React.JSX.Element {
                 <Image
                   src={currentSlideData.image}
                   alt={currentSlideData.title}
-                  fill
+                  fill sizes="100%"
                   priority
                   className="object-cover rounded-xl transition-all duration-700 hover:scale-105"
                 />

@@ -3,7 +3,6 @@ import { toast } from "@/hooks/use-toast"
 import { useMutation } from "@tanstack/react-query"
 import { axiosInstance } from "@/app/_clients/utils/axiosInstance"
 import { AxiosError } from "axios"
-import { setLocalStorageWithExpiry } from "@/app/_clients/utils/localStorage"
 import { encryptCrypto } from "@/app/_clients/utils/cryptoJs"
 
 export const useLoginHooks = () => {
@@ -24,7 +23,7 @@ export const useLoginHooks = () => {
 
             setCookie({ data: token, expires: 7, cookieName: '_token' })
             setCookie({ data: isLogin.toString(), expires: 30, cookieName: '_loggedIn' })
-            setLocalStorageWithExpiry('_loggedIn', 'true', 7 * 24 * 60 * 60 * 1000)
+            setCookie({ data: encryptCrypto({ val: role, key: process.env.NEXT_PUBLIC_SECRET_KEY as string }).toString(), expires: 30, cookieName: '_rl' })
 
             toast({
                 title: res.data.message || 'Berhasil Login',

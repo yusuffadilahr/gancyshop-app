@@ -5,9 +5,10 @@ import { useHelperProduct } from "@/app/(admin)/admin/produk/_clients/hooks/use-
 import { useMutateAddProduct } from "@/app/(admin)/admin/produk/_clients/hooks/use-mutate";
 import { useProductState } from "@/app/(admin)/admin/produk/_clients/hooks/use-product-state";
 import { useQueryGetProduct } from "@/app/(admin)/admin/produk/_clients/hooks/use-query-get-product";
+import DashboardContentLayout from "@/app/_clients/components/dashboardContentLayout";
 import InputSearch from "@/components/core/inputSearch";
 import { PaginationTable } from "@/components/core/paginationTable";
-import TitleDashboardLayout from "@/components/core/titleDashboardLayout";
+import TitleDashboardSection from "@/components/core/titleDashboard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Filter } from "lucide-react";
 import dynamic from "next/dynamic";
@@ -36,8 +37,8 @@ export default function BodyProduk() {
         handleUpdateActiveProduct, isPendingUpdateIsActive } = useMutateAddProduct({ refetch })
 
     return (
-        <div className='px-6 py-8 space-y-6 bg-gray-50 min-h-screen'>
-            <TitleDashboardLayout description="Kelola daftar produk motor Anda"
+        <DashboardContentLayout>
+            <TitleDashboardSection description="Kelola daftar produk motor Anda"
                 titleMenuDashboard="Daftar Produk"
                 action={
                     <DynamicModalAddProduct filePreview={filePreview}
@@ -75,10 +76,10 @@ export default function BodyProduk() {
             </Card>
 
             <div className="py-5 w-full">
-                <PaginationTable totalPage={dataTable?.totalPage}
+                <PaginationTable totalPage={dataTable?.totalPage || 1}
                     handleChangePage={handleChangePage}
                     page={page} />
             </div>
-        </div>
+        </DashboardContentLayout>
     )
 }
