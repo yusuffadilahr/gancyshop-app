@@ -25,7 +25,7 @@ export default function CardProduct({
     return (
         <Card className="overflow-hidden flex flex-col h-fit">
             <CardHeader className="p-0 relative h-60 w-full">
-                <Image src={imageUrl} alt={imageAlt}
+                <Image sizes="100%" src={imageUrl} alt={imageAlt}
                     fill className="object-cover w-full h-full" />
 
                 {!productIsActive && (

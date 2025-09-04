@@ -11,10 +11,13 @@ export async function middleware(req: NextRequest) {
 
   const accessToken = cookieStore.get('_token')?.value
   const tokenRefresh = cookieStore.get('_refreshToken')?.value
+  const loggedIn = cookieStore.get('_loggedIn')?.value
+  const roleInCookie = cookieStore.get('_rl')?.value
 
-  if (!tokenRefresh && !pathname.startsWith('/auth/login')) {
+  if (!tokenRefresh && (loggedIn || accessToken || roleInCookie) && !pathname.startsWith('/auth/login')) {
     cookieStore.delete('_token')
     cookieStore.delete('_loggedIn')
+    cookieStore.delete('_rl')
 
     return NextResponse.redirect(new URL('/auth/login', currentUrl))
   }

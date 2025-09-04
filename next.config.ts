@@ -9,7 +9,6 @@ const cspHeaders = `
   font-src 'self';
   connect-src 'self' ws://localhost:8000 ${baseUrl};
   frame-src 'self';
-  frame-ancestor 'self';
 `
 
 const nextConfig: NextConfig = {

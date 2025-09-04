@@ -1,84 +1,92 @@
-'use client';
-import { IGETDataCategory } from '@/app/(admin)/admin/kategori/_clients/types';
-import { getCategoryProduct } from '@/app/(admin)/admin/kategori/_servers/services';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu';
-import { useQuery } from '@tanstack/react-query';
-import { default as nextDynamic } from 'next/dynamic';
-import { MoreHorizontal, Edit, Trash2, Eye, Filter } from 'lucide-react';
-import TitleDashboardSection from '@/components/core/titleDashboard';
-import InputSearch from '@/components/core/inputSearch';
-import { useEffect, useState } from 'react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { PaginationTable } from '@/components/core/paginationTable';
-import { useDebouncedCallback } from 'use-debounce';
-import DashboardContentLayout from '@/app/_clients/components/dashboardContentLayout';
+'use client'
 
-const DynamicModalAddKategori = nextDynamic(() => import('./modalAddKategori'), { loading: () => <></> });
+import InputSearch from "@/components/core/inputSearch"
+import TitleDashboardSection from "@/components/core/titleDashboard"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { useQuery } from "@tanstack/react-query"
+import { Edit, Eye, Filter, MoreHorizontal, Trash2 } from "lucide-react"
+import { getDataAllUser } from "../services"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Badge } from "@/components/ui/badge"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { Button } from "@/components/ui/button"
+import { PaginationTable } from "@/components/core/paginationTable"
+import { useEffect, useState } from "react"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { useDebouncedCallback } from "use-debounce"
+import DashboardContentLayout from "@/app/_clients/components/dashboardContentLayout"
 
-export default function BodyKategori() {
+interface IDataAllUser {
+    address: string | null
+    createdAt: string
+    email: string
+    firstName: string
+    id: number
+    lastName: string
+    phoneNumber: string
+    role: "ADMIN" | "USER"
+}
+
+interface IResponseGetUser { data: IDataAllUser[]; totalPage: number }
+
+export default function BodyPengguna() {
     const [page, setPage] = useState<number>(1)
     const [searchData, setSearchData] = useState<{ display: string; debounce: string; loading: boolean }>({
-        display: '', debounce: '', loading: false
+        debounce: '', display: '', loading: false
     })
-
-    const params = useSearchParams()
-    const pathname = usePathname()
     const router = useRouter()
-
+    const pathname = usePathname()
+    const searchParams = useSearchParams()
     const limit = 5
-    const { data: dataCategory, refetch: refetchGetDataCategory, isLoading } = useQuery<IGETDataCategory>({
-        queryKey: ['get-kategori'],
+
+    const { data: dataAllUser,
+        isLoading, refetch
+    } = useQuery<IResponseGetUser>({
+        queryKey: ['get_user'],
         queryFn: async () => {
-            const res = await getCategoryProduct({ page, limit, search: searchData?.debounce });
-            if (res?.error) return { data: [], totalPage: 1 };
-            return res?.data;
+            const response = await getDataAllUser({ page, limit, search: searchData.debounce })
+            if (response?.error) throw response
+
+            return response?.data
         }
-    });
+    })
 
     const debounce = useDebouncedCallback(val => {
         setSearchData(prev => ({ ...prev, debounce: val, loading: false }))
     }, 800)
 
     useEffect(() => {
-        const currentParams = new URLSearchParams(params.toString())
+        const params = new URLSearchParams(searchParams.toString())
         if (page) {
-            currentParams.set('page', page.toString())
+            params.set('page', page.toString())
         } else {
-            currentParams.delete('page')
+            params.delete('page')
         }
 
         if (limit) {
-            currentParams.set('limit', limit.toString())
+            params.set('limit', limit.toString())
         } else {
-            currentParams.delete('limit')
+            params.delete('limit')
         }
 
         if (searchData.debounce) {
-            currentParams.set('search', searchData.debounce.toString())
+            params.set('search', searchData.debounce)
         } else {
-            currentParams.delete('search')
+            params.delete('search')
         }
 
-        const currentPath = `${pathname}?${currentParams.toString()}`
+        const currentPath = `${pathname}?${params}`
         router.replace(currentPath)
-        refetchGetDataCategory()
+        refetch()
 
     }, [page, limit, searchData.debounce])
 
     return (
         <DashboardContentLayout>
-            <TitleDashboardSection description="Kelola kategori produk motor Anda"
-                titleMenuDashboard="Kategori Produk"
-                action={<DynamicModalAddKategori refetch={refetchGetDataCategory} />} />
+            <TitleDashboardSection description="Kelola Pengguna Website Anda"
+                titleMenuDashboard="Pengguna"
+            // action={<DynamicModalAddKategori refetch={refetchGetdataAllUser} />} 
+            />
 
             <Card>
                 <CardHeader className="pb-4">
@@ -89,7 +97,8 @@ export default function BodyKategori() {
                 </CardHeader>
                 <CardContent>
                     <div className="flex flex-col sm:flex-row gap-4">
-                        <InputSearch loadingSearch={searchData?.loading} searchParams={params}
+                        <InputSearch loadingSearch={searchData?.loading}
+                            searchParams={searchParams}
                             onChange={(e) => {
                                 const { value } = e.target
                                 setSearchData(prev => ({ ...prev, loading: true, display: value }))
@@ -112,19 +121,25 @@ export default function BodyKategori() {
                                         className="px-4 py-4 font-semibold text-gray-700 transition-colors"
                                     // onClick={() => handleSort('categoryName')}
                                     >
-                                        Nama Kategori
-                                    </TableHead>
-                                    <TableHead
-                                        className="px-4 py-4 font-semibold text-gray-700 transition-colors"
-                                    // onClick={() => handleSort('motorcycleName')}
-                                    >
-                                        Jenis Motor
+                                        Nama
                                     </TableHead>
                                     <TableHead
                                         className="px-4 py-4 font-semibold text-gray-700 transition-colors"
                                     // onClick={() => handleSort('releaseYear')}
                                     >
-                                        Tahun Rilis
+                                        Role
+                                    </TableHead>
+                                    <TableHead
+                                        className="px-4 py-4 font-semibold text-gray-700 transition-colors"
+                                    // onClick={() => handleSort('motorcycleName')}
+                                    >
+                                        Email
+                                    </TableHead>
+                                    <TableHead
+                                        className="px-4 py-4 font-semibold text-gray-700 transition-colors"
+                                    // onClick={() => handleSort('releaseYear')}
+                                    >
+                                        Nomor Telepon
                                     </TableHead>
                                     <TableHead className="w-24 px-4 py-4 text-right font-semibold text-gray-700">
                                         Action
@@ -142,31 +157,36 @@ export default function BodyKategori() {
                                             </div>
                                         </TableCell>
                                     </TableRow>
-                                ) : dataCategory?.data?.length === 0 ? (
+                                ) : dataAllUser?.data?.length === 0 ? (
                                     <TableRow>
                                         <TableCell colSpan={5} className="text-center py-8 text-gray-500">
                                             Belum ada data kategori
                                         </TableCell>
                                     </TableRow>
                                 ) : (
-                                    dataCategory?.data?.map((item, i) => (
+                                    dataAllUser?.data?.map((item, i) => (
                                         <TableRow key={i} className="hover:bg-gray-50 transition-colors">
                                             <TableCell className="px-4 py-4 text-gray-600 font-medium">
                                                 {i + 1}
                                             </TableCell>
                                             <TableCell className="px-4 py-4">
                                                 <div className="font-medium text-gray-900">
-                                                    {item?.categoryName}
+                                                    {item?.firstName} {item?.lastName}
                                                 </div>
                                             </TableCell>
                                             <TableCell className="px-4 py-4">
+                                                <Badge variant="outline">
+                                                    {item?.role || '-'}
+                                                </Badge>
+                                            </TableCell>
+                                            <TableCell className="px-4 py-4">
                                                 <Badge variant="secondary" className="font-normal">
-                                                    {item?.categorymotorcyle?.motorCycleName}
+                                                    {item?.email || '-'}
                                                 </Badge>
                                             </TableCell>
                                             <TableCell className="px-4 py-4">
                                                 <Badge variant="outline">
-                                                    {item?.categorymotorcyle?.releaseYear}
+                                                    {item?.phoneNumber || '-'}
                                                 </Badge>
                                             </TableCell>
                                             <TableCell className="px-4 py-4 text-right">
@@ -210,9 +230,11 @@ export default function BodyKategori() {
                 </CardContent>
             </Card>
 
-            <PaginationTable totalPage={dataCategory?.totalPage || 1}
-                handleChangePage={(val) => setPage(val)}
-                page={String(page)} />
+            <PaginationTable
+                handleChangePage={(newPage) => setPage(newPage)}
+                page={String(page)}
+                totalPage={dataAllUser?.totalPage || 1} />
+
         </DashboardContentLayout>
-    );
+    )
 }

@@ -22,7 +22,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { FiHome, FiLogOut } from 'react-icons/fi'
 import { clearCookies } from "@/app/_servers/utils/clearCookies"
 import Cookies from "js-cookie"
-import { decryptCrypto } from "@/app/_clients/utils/cryptoJs"
+import { decryptCrypto, encryptCrypto } from "@/app/_clients/utils/cryptoJs"
 
 interface INavigationItem {
     menuName: string;
@@ -60,12 +60,12 @@ export default function DesktopMenu({
     }
 
     React.useEffect(() => {
-        const dataRole = Cookies.get('_role')
+        const dataRole = Cookies.get('_rl')
         if (dataRole) {
             const role = decryptCrypto({ data: dataRole, key: key })
             setRoleUser(role)
         } else {
-            setRoleUser('USER') 
+            setRoleUser('USER')
         }
     }, [])
 
@@ -87,23 +87,26 @@ export default function DesktopMenu({
                     {dataProduct.length > 0 ? (
                         <div className="absolute bg-white top-12 z-20 rounded-b-xl max-h-[250px] overflow-auto">
                             <ul className="grid gap-2 p-4 md:w-[200px] lg:w-[650px] space-y-2">
-                                {dataProduct.map((sub) => (
-                                    <Link href={`/product/${sub.id}`} key={sub.id}>
-                                        <div className="flex justify-between items-center border-b pb-2">
-                                            <div className="flex items-center gap-2">
-                                                <Image alt="photo" src={sub.imageUrl} className="w-14 h-1w-14 object-cover"
-                                                    height={500} width={500} />
-                                                <div>
-                                                    <li title={sub.name} onClick={() => setDataProduct([])}>
-                                                        {sub.name}
-                                                    </li>
-                                                    <p className="text-sm text-neutral-500">{sub.category.categoryName}</p>
+                                {dataProduct.map((sub) => {
+                                    const encryptData = encryptCrypto({ val: sub.id.toString(), key: key })
+                                    return (
+                                        <Link href={`/product/${encodeURIComponent(encryptData.toString())}`} key={sub.id}>
+                                            <div className="flex justify-between items-center border-b pb-2">
+                                                <div className="flex items-center gap-2">
+                                                    <Image alt="photo" src={sub.imageUrl} className="w-14 h-1w-14 object-cover"
+                                                        height={500} width={500} />
+                                                    <div>
+                                                        <li title={sub.name} onClick={() => setDataProduct([])}>
+                                                            {sub.name}
+                                                        </li>
+                                                        <p className="text-sm text-neutral-500">{sub.category.categoryName}</p>
+                                                    </div>
                                                 </div>
+                                                <MdKeyboardArrowRight />
                                             </div>
-                                            <MdKeyboardArrowRight />
-                                        </div>
-                                    </Link>
-                                ))}
+                                        </Link>
+                                    )
+                                })}
                             </ul>
                         </div>
                     ) : loading && (
@@ -190,7 +193,7 @@ export default function DesktopMenu({
                                     }
 
                                     return (
-                                        <Link href={(item?.kode === 1 && roleUser === 'ADMIN') ? '/admin/dashboard' : ''} key={item.kode}>
+                                        <Link href={(item?.kode === 1 && roleUser === 'ADMIN') ? '/admin/dashboard' : '/'} key={item.kode}>
                                             <DropdownMenuItem className={`${baseClass} text-gray-700 hover:bg-gray-100 cursor-pointer`}>
                                                 {item.icon}
                                                 <span>{item.title}</span>

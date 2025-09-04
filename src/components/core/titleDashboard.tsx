@@ -4,7 +4,7 @@ interface ITitleDashboardLayoutProps {
     action?: React.ReactNode
 }
 
-export default function TitleDashboardLayout({ titleMenuDashboard, description, action }: ITitleDashboardLayoutProps) {
+export default function TitleDashboardSection({ titleMenuDashboard, description, action }: ITitleDashboardLayoutProps) {
     return (
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>

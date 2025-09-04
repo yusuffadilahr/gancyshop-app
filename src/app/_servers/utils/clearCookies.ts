@@ -1,10 +1,11 @@
-'use server'
+"use server";
 
-import { cookies } from "next/headers"
+import { cookies } from "next/headers";
 
 export const clearCookies = async () => {
-    const cookie = await cookies()
-    cookie.delete('_refreshToken')
-    cookie.delete('_token')
-    cookie.delete('_loggedIn')
-}
+  const cookie = await cookies();
+  cookie.delete("_refreshToken");
+  cookie.delete("_token");
+  cookie.delete("_loggedIn");
+  cookie.delete("_rl");
+};

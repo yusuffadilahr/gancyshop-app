@@ -1,12 +1,17 @@
-'use client'
-
+'use client';
 import CarouselSection from "@/app/_clients/components/carouselSection";
 import * as React from "react";
-import CardPlatform from "@/app/_clients/components/sectionCardPlatform";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
 import Image from "next/image";
+import dynamic from "next/dynamic";
+import { Spinner } from "@/components/ui/spinner";
+
+const DynamicCardPlatform = dynamic(() => import('./sectionCardPlatform'), {
+    loading: () => <Spinner />,
+    ssr: false
+})
 
 export default function BodyLanding({ sectionProductServer }: { sectionProductServer?: React.ReactNode }) {
     React.useEffect(() => {
@@ -40,7 +45,7 @@ export default function BodyLanding({ sectionProductServer }: { sectionProductSe
                 </Carousel>
             </div>
             <React.Fragment>{sectionProductServer}</React.Fragment>
-            <CardPlatform />
+            <DynamicCardPlatform />
 
         </div>
     );
