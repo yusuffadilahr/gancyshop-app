@@ -1,6 +1,10 @@
-import dynamic from "next/dynamic"
+import dynamic from "next/dynamic";
 
-const DynamicNotFoundPage = dynamic(() => import('./_clients/components/bodyNotFound'), { loading: () => null })
+const DynamicNotFoundPage = dynamic(
+  () => import("./_clients/components/bodyNotFound"),
+  { loading: () => null }
+);
+
 export default function NotFound() {
-    return <DynamicNotFoundPage />
+  return <DynamicNotFoundPage />;
 }
