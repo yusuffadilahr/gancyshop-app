@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 const cspHeaders = `
   default-src 'self';
   script-src 'self' 'unsafe-inline' 'unsafe-eval';
@@ -9,17 +9,18 @@ const cspHeaders = `
   font-src 'self';
   connect-src 'self' ws://localhost:8000 ${baseUrl};
   frame-src 'self';
-`
+`;
 
 const nextConfig: NextConfig = {
   /* config options here */
+  reactStrictMode: false,
   images: {
     remotePatterns: [
       {
-        hostname: 'ik.imagekit.io',
-        protocol: 'https',
-      }
-    ]
+        hostname: "ik.imagekit.io",
+        protocol: "https",
+      },
+    ],
   },
   async headers() {
     return [
@@ -29,7 +30,7 @@ const nextConfig: NextConfig = {
           {
             key: "Content-Security-Policy",
             value: cspHeaders.replace(/\s{2,}/g, " ").trim(),
-          }
+          },
         ],
       },
     ];

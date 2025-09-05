@@ -77,11 +77,10 @@ export function Navbar() {
   const handleGetData = async (val: string) => {
     try {
       const res = await getAllDataProductBySearch(val);
-      if (!res.error) {
-        setDataProduct(res?.data?.data);
-        setLoading(false);
-        return;
-      }
+      if (res?.error) throw res;
+
+      setDataProduct(res?.data?.data);
+      setLoading(false);
     } catch (error) {
       setDataProduct([]);
       console.log(error);
@@ -93,7 +92,7 @@ export function Navbar() {
     if (token) setTokenExist(token as string);
   }, []);
 
-  const pathDashboardUser = ["dashboard", "keranjang"];
+  const pathDashboardUser = ["dashboard", "keranjang", "pengaturan"];
   const currentPathUserDashboard = pathname.split("/").slice(2).join("");
 
   return (
