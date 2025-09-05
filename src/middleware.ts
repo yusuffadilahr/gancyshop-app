@@ -51,7 +51,7 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL("/auth/login", currentUrl));
   }
 
-  const pathDashboardUser = ["dashboard", "keranjang"];
+  const pathDashboardUser = ["dashboard", "keranjang", "pengaturan"];
   const currentPathUserDashboard = pathname.split("/").slice(2).join("");
 
   if (
@@ -59,6 +59,10 @@ export async function middleware(req: NextRequest) {
     pathname.startsWith("/user") &&
     pathDashboardUser.includes(currentPathUserDashboard)
   ) {
+    return NextResponse.redirect(new URL("/auth/login", currentUrl));
+  }
+
+  if (!tokenRefresh && pathname.startsWith("/product/")) {
     return NextResponse.redirect(new URL("/auth/login", currentUrl));
   }
 

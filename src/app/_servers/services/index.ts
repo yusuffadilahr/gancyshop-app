@@ -30,12 +30,12 @@ export const getAllDataProductBySearch = async (searchData: string) => {
       }
     );
 
-    if (!res.ok) throw new Error("Data tidak tersedia");
     const result = await res.json();
+    if (!res.ok) throw result;
 
     return result;
   } catch (error) {
-    throw error;
+    return error;
   }
 };
 
