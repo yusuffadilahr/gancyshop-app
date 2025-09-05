@@ -1,4 +1,4 @@
-import { IDataProduk } from "@/app/(admin)/admin/produk/_clients/types";
+import { IDataProduk } from "@/app/(dashboard)/admin/produk/_clients/types";
 import CardProduct from "@/components/core/cardProduct";
 import Link from "next/link";
 
