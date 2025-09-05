@@ -21,7 +21,7 @@ export default function ModalDeleteProduct({ data, refetch }: {
 }) {
     const { mutate: handleDeleteProduct } = useMutation({
         mutationFn: async () => {
-            return deleteDataProductById(String(data.id))
+            return await deleteDataProductById(String(data.id))
         },
         onSuccess: (res) => {
             if (res?.error) throw res
