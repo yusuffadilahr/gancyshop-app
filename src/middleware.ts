@@ -39,10 +39,6 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL('/', currentUrl))
   }
 
-  if (tokenRefresh && accessToken && pathname.startsWith('/refresh')) {
-    return NextResponse.redirect(new URL('/not-found', currentUrl))
-  }
-
   if (!tokenRefresh && pathname.startsWith('/admin')) {
     return NextResponse.redirect(new URL('/auth/login', currentUrl))
   }
