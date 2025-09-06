@@ -20,6 +20,7 @@ import {
 import { toast } from "@/hooks/use-toast";
 import { Spinner } from "@/components/ui/spinner";
 import { useRouter } from "next/navigation";
+import { formatRupiah } from "@/app/_clients/utils/formatConverter";
 
 export interface IProductPublic {
   id: number;
@@ -78,14 +79,6 @@ export default function ProfessionalProductDetail({
       return (await getDataProductById(idProductDecrypted))?.data;
     },
   });
-
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("id-ID", {
-      style: "currency",
-      currency: "IDR",
-      minimumFractionDigits: 0,
-    }).format(price);
-  };
 
   const formatWeight = (weight: number) => {
     if (weight >= 1000) {
@@ -221,7 +214,7 @@ export default function ProfessionalProductDetail({
               <div>
                 <h3 className="text-3xl font-bold text-primary">
                   {dataProduct?.price
-                    ? formatPrice(dataProduct.price)
+                    ? formatRupiah(dataProduct.price)
                     : "Harga tidak tersedia"}
                 </h3>
               </div>
@@ -280,7 +273,7 @@ export default function ProfessionalProductDetail({
                       isPending
                     }
                   >
-                    Tambah ke Keranjang
+                    Checkout
                   </Button>
                 )}
               </div>
