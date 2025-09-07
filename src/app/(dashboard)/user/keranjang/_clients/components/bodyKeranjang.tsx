@@ -1,5 +1,4 @@
 "use client";
-
 import DashboardContentLayout from "@/app/_clients/components/dashboardContentLayout";
 import TitleDashboardSection from "@/components/core/titleDashboard";
 import { Badge } from "@/components/ui/badge";
@@ -12,21 +11,19 @@ import {
   removeCartProduct,
   summarizeQuantityCart,
 } from "../../_servers/services";
-import { useState } from "react";
+import { Fragment, useState } from "react";
+import { ShoppingCart, Trash2, Plus, Minus, Package } from "lucide-react";
 import {
-  Package,
-  Weight,
-  ShoppingCart,
-  Trash2,
-  Plus,
-  Minus,
-  Star,
-  Heart,
-  Share2,
-} from "lucide-react";
-import { formatRupiah } from "@/app/_clients/utils/formatConverter";
+  formatRupiah,
+  formatWeight,
+} from "@/app/_clients/utils/formatConverter";
 import { IDataCartProduct } from "../types";
 import { toast } from "@/hooks/use-toast";
+import Link from "next/link";
+import { Form, Formik } from "formik";
+import { Textarea } from "@/components/ui/textarea";
+import CardFilterLayout from "@/app/_clients/components/cardFilterLayout";
+import InputSearch from "@/components/core/inputSearch";
 
 export default function BodyKeranjang() {
   const [idCart, setIdCart] = useState<number | null>(null);
@@ -97,6 +94,7 @@ export default function BodyKeranjang() {
 
   const totalCartValue =
     dataCartUser?.reduce((total, item) => total + item.totalPrice, 0) || 0;
+
   const totalItems =
     dataCartUser?.reduce((total, item) => total + item.quantity, 0) || 0;
 
@@ -106,6 +104,29 @@ export default function BodyKeranjang() {
         titleMenuDashboard="Keranjang"
         description="Kelola keranjang belanja anda dengan mudah"
       />
+
+      <CardFilterLayout>
+        <div className="flex flex-col sm:flex-row gap-4">
+          <InputSearch
+            loadingSearch={
+              false
+              // searchData?.loading
+            }
+            // searchParams={params}
+            onChange={(e) => {
+              const { value } = e.target;
+              console.log(value);
+
+              // setSearchData((prev) => ({
+              //   ...prev,
+              //   loading: true,
+              //   display: value,
+              // }));
+              // debounce(value);
+            }}
+          />
+        </div>
+      </CardFilterLayout>
 
       <div className="grid grid-cols-12 gap-6 w-full">
         <div className="col-span-12 lg:col-span-7 space-y-4">
@@ -209,6 +230,7 @@ export default function BodyKeranjang() {
                                   size="sm"
                                   variant="outline"
                                   className="h-8 w-8 p-0 hover:bg-red-50 hover:border-red-200"
+                                  disabled={item?.quantity === 1}
                                   onClick={() =>
                                     handleSummarizeCart({
                                       cartId: item?.id,
@@ -256,9 +278,9 @@ export default function BodyKeranjang() {
                   <p className="text-gray-500 mb-4">
                     Belum ada produk yang ditambahkan ke keranjang
                   </p>
-                  <Button className="bg-blue-600 hover:bg-blue-700">
-                    Mulai Belanja
-                  </Button>
+                  <Link href="/product" prefetch={false}>
+                    <Button variant={"destructive"}>Mulai Belanja</Button>
+                  </Link>
                 </div>
               )}
             </CardContent>
@@ -283,7 +305,7 @@ export default function BodyKeranjang() {
                   size="lg"
                   className="w-full bg-white text-blue-600 hover:bg-gray-100 font-semibold"
                 >
-                  Lanjut ke Pembayaran
+                  Beli Semua & Lanjutkan Pembayaran
                 </Button>
               </CardContent>
             </Card>
@@ -292,135 +314,125 @@ export default function BodyKeranjang() {
 
         <div className="col-span-12 lg:col-span-5">
           <Card className="shadow-sm border-0 bg-white sticky top-4">
-            <CardHeader>
-              <CardTitle className="text-lg text-gray-800">
-                Detail Produk
-              </CardTitle>
-              <p className="text-sm text-gray-600">
-                {dataDetailCart
-                  ? "Informasi lengkap produk terpilih"
-                  : "Pilih produk untuk melihat detail"}
-              </p>
-            </CardHeader>
-            <CardContent className="p-6">
-              {dataDetailCart ? (
-                <div className="space-y-6">
-                  {/* Product Image */}
-                  <div className="relative">
-                    <div className="aspect-square bg-gray-50 rounded-xl overflow-hidden border-2 border-gray-100">
-                      <Image
-                        src={
-                          dataDetailCart?.product?.imageUrl || "/no-data.png"
-                        }
-                        alt={dataDetailCart?.product?.name || "Product"}
-                        width={500}
-                        height={500}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div className="absolute top-3 right-3 flex gap-2">
-                      <Button
-                        size="sm"
-                        variant="secondary"
-                        className="h-8 w-8 p-0"
-                      >
-                        <Heart className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="secondary"
-                        className="h-8 w-8 p-0"
-                      >
-                        <Share2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-
-                  {/* Product Name & Price */}
-                  <div>
-                    <h3 className="text-xl font-bold text-gray-800 mb-2 line-clamp-2">
-                      {dataDetailCart?.product?.name || "-"}
-                    </h3>
-                    <div className="flex items-center gap-3 mb-3">
-                      <Badge variant="secondary">
-                        {dataDetailCart?.product?.category?.categoryName || "-"}
-                      </Badge>
-                      <div className="flex items-center gap-1">
-                        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                        <span className="text-sm text-gray-600">
-                          4.8 (124 ulasan)
-                        </span>
-                      </div>
-                    </div>
-                    <div className="flex items-baseline gap-2">
-                      <p className="text-2xl font-bold text-blue-600">
-                        {formatRupiah(dataDetailCart?.product?.price || 0)}
-                      </p>
-                      <p className="text-sm text-gray-500">per unit</p>
-                    </div>
-                  </div>
-
-                  {/* Description */}
-                  <div>
-                    <h4 className="font-semibold mb-3 text-gray-800">
-                      Deskripsi Produk
-                    </h4>
-                    <p className="text-sm text-gray-600 leading-relaxed">
-                      {dataDetailCart?.product?.description ||
-                        "Deskripsi produk tidak tersedia saat ini."}
-                    </p>
-                  </div>
-
-                  {/* Product Specs */}
-                  <div className="space-y-3">
-                    <h4 className="font-semibold text-gray-800">Spesifikasi</h4>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg">
-                        <Package className="h-4 w-4 text-blue-600" />
-                        <div>
-                          <p className="text-xs text-gray-500">Stok</p>
-                          <p className="text-sm font-medium text-gray-800">
-                            {dataDetailCart?.product?.stock || 0} unit
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg">
-                        <Weight className="h-4 w-4 text-blue-600" />
-                        <div>
-                          <p className="text-xs text-gray-500">Berat</p>
-                          <p className="text-sm font-medium text-gray-800">
-                            {dataDetailCart?.product?.weightGram
-                              ? `${dataDetailCart.product.weightGram}g`
-                              : "Tidak diketahui"}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Action Buttons */}
-                  <div className="space-y-3 pt-2">
-                    <Button
-                      className="w-full bg-blue-600 hover:bg-blue-700"
-                      size="lg"
-                    >
-                      <Plus className="h-4 w-4 mr-2" />
-                      Tambah ke Keranjang
-                    </Button>
-                    <div className="grid grid-cols-2 gap-2">
-                      <Button variant="outline" size="sm">
-                        <Heart className="h-4 w-4 mr-2" />
-                        Simpan
-                      </Button>
-                      <Button variant="outline" size="sm">
-                        <Share2 className="h-4 w-4 mr-2" />
-                        Bagikan
-                      </Button>
-                    </div>
-                  </div>
+            <CardHeader className="border-b">
+              <div className="flex justify-between items-center">
+                <div>
+                  <CardTitle className="text-lg text-gray-800">
+                    Detail Belanja
+                  </CardTitle>
+                  <p className="text-sm text-gray-600">
+                    {dataDetailCart
+                      ? "Informasi lengkap produk terpilih"
+                      : "Pilih produk untuk melihat detail"}
+                  </p>
                 </div>
+                <ShoppingCart />
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-7 mt-5">
+              {dataDetailCart ? (
+                <Fragment>
+                  <div className="space-y-2">
+                    <h1 className="font-semibold">Detail Produk</h1>
+                    <div className="grid grid-cols-12 gap-2">
+                      {[
+                        {
+                          title: "Nama Produk",
+                          content: dataDetailCart?.product?.name || "-",
+                        },
+                        {
+                          title: "Nama Kategori",
+                          content:
+                            dataDetailCart?.product?.category?.categoryName ||
+                            "-",
+                        },
+                        {
+                          title: "Berat",
+                          content: dataDetailCart?.product?.weightGram || "-",
+                        },
+                      ].map((detail, i) => (
+                        <Fragment key={i}>
+                          <div className="col-span-12 md:col-span-4">
+                            <p className="text-sm">{detail?.title || "-"}</p>
+                          </div>
+                          <div className="col-span-12 md:col-span-8">
+                            {detail?.title === "Nama Produk" ? (
+                              <Badge>{detail?.content || "-"}</Badge>
+                            ) : detail?.title === "Berat" ? (
+                              <Badge>
+                                {formatWeight(Number(detail?.content) || 0) ||
+                                  "-"}
+                              </Badge>
+                            ) : (
+                              <p className="text-sm">
+                                {detail?.content || "-"}
+                              </p>
+                            )}
+                          </div>
+                        </Fragment>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <h1 className="font-semibold">Total Pembayaran</h1>
+                    {[
+                      { title: "Harga", content: dataDetailCart?.price },
+                      { title: "Kuantitas", content: dataDetailCart?.quantity },
+                      {
+                        title: "Total Harga",
+                        content: dataDetailCart?.totalPrice,
+                      },
+                    ].map((item, i) => {
+                      return (
+                        <div
+                          className="flex justify-between items-center"
+                          key={i}
+                        >
+                          <p className="text-sm">{item?.title || "-"}</p>
+                          <p className="text-sm">
+                            {(item?.title === "Harga" ||
+                              item?.title === "Total Harga") &&
+                            item?.content
+                              ? formatRupiah(item?.content)
+                              : item?.title === "Kuantitas"
+                              ? `${item?.content || " "}x`
+                              : item?.content || "-"}
+                          </p>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  <div className="space-y-2">
+                    <h1 className="font-semibold">Detail Alamat</h1>
+                    <Formik onSubmit={() => {}} initialValues={{ address: "" }}>
+                      {({ setFieldValue, values }) => (
+                        <Form className="space-y-3">
+                          <Textarea
+                            onChange={(e) => {
+                              const { value } = e.target;
+                              setFieldValue("address", value);
+                            }}
+                            value={values?.address || ""}
+                            name="address"
+                            id="address"
+                            required
+                            placeholder="Harap masukkan alamat anda dengan benar"
+                          />
+
+                          <Button
+                            className="w-full font-semibold"
+                            type="submit"
+                            disabled={!values.address}
+                          >
+                            Bayar Sekarang
+                          </Button>
+                        </Form>
+                      )}
+                    </Formik>
+                  </div>
+                </Fragment>
               ) : (
                 <div className="text-center py-12">
                   <div className="mx-auto w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-4">

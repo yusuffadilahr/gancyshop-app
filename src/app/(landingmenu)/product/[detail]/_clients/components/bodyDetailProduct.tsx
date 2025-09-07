@@ -9,6 +9,10 @@ import {
   Package,
   Weight,
   ShoppingCart,
+  Share2,
+  Heart,
+  Star,
+  Plus,
 } from "lucide-react";
 import Image from "next/image";
 import { decryptParams } from "@/app/_clients/utils/secureParams";
@@ -18,9 +22,8 @@ import {
   getDataProductById,
 } from "@/app/(landingmenu)/product/[detail]/_servers/services";
 import { toast } from "@/hooks/use-toast";
-import { Spinner } from "@/components/ui/spinner";
 import { useRouter } from "next/navigation";
-import { formatRupiah } from "@/app/_clients/utils/formatConverter";
+import { formatRupiah, formatWeight } from "@/app/_clients/utils/formatConverter";
 
 export interface IProductPublic {
   id: number;
@@ -62,7 +65,7 @@ interface IBodyProductDetail {
   idProduct: string;
 }
 
-export default function ProfessionalProductDetail({
+export default function BodyProduct({
   idProduct,
 }: IBodyProductDetail) {
   const [zoomIn, setZoomIn] = useState<number>(1);
@@ -79,13 +82,6 @@ export default function ProfessionalProductDetail({
       return (await getDataProductById(idProductDecrypted))?.data;
     },
   });
-
-  const formatWeight = (weight: number) => {
-    if (weight >= 1000) {
-      return `${(weight / 1000).toFixed(1)} kg`;
-    }
-    return `${weight} g`;
-  };
 
   const { mutate: handleAddToCart, isPending } = useMutation({
     mutationFn: async () => {
@@ -125,7 +121,7 @@ export default function ProfessionalProductDetail({
     <div className="w-full p-3 h-fit">
       <div className="grid grid-cols-12 gap-2">
         <div className="col-span-12 md:col-span-7">
-          <Card>
+          <Card className="border-none shadow-none">
             <CardContent>
               <div className="flex justify-center overflow-hidden items-center w-full relative">
                 <Image
@@ -172,28 +168,16 @@ export default function ProfessionalProductDetail({
         </div>
 
         <div className="col-span-12 md:col-span-5">
-          <Card>
-            <CardHeader>
-              <div className="flex justify-between items-center">
-                <div className="space-y-2">
-                  <CardTitle className="text-2xl font-bold">
-                    {dataProduct?.name || "Nama Produk"}
+          <Card className="sticky top-4">
+            <CardHeader className="border-b">
+              <div className="flex justify-between w-full items-center">
+                <div>
+                  <CardTitle className="text-lg text-gray-800">
+                    Detail Produk
                   </CardTitle>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="secondary">
-                      {dataProduct?.category?.categoryName || "Kategori"}
-                    </Badge>
-                    {dataProduct?.stock && dataProduct.stock > 0 ? (
-                      <Badge
-                        variant="outline"
-                        className="text-green-600 border-green-600"
-                      >
-                        Stok Tersedia
-                      </Badge>
-                    ) : (
-                      <Badge variant="destructive">Stok Habis</Badge>
-                    )}
-                  </div>
+                  <p className="text-sm text-gray-600">
+                    Informasi lengkap produk
+                  </p>
                 </div>
                 <Button
                   variant="outline"
@@ -209,59 +193,73 @@ export default function ProfessionalProductDetail({
                 </Button>
               </div>
             </CardHeader>
-            <CardContent className="space-y-4">
-              {/* Price */}
-              <div>
-                <h3 className="text-3xl font-bold text-primary">
-                  {dataProduct?.price
-                    ? formatRupiah(dataProduct.price)
-                    : "Harga tidak tersedia"}
-                </h3>
-              </div>
-
-              {/* Description */}
-              <div>
-                <h4 className="font-semibold mb-2">Deskripsi</h4>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {dataProduct?.description || "Deskripsi tidak tersedia"}
-                </p>
-              </div>
-
-              {/* Product Details */}
-              <div className="space-y-3">
-                <h4 className="font-semibold">Detail Produk</h4>
-
-                <div className="flex items-center gap-2">
-                  <Package className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm">Stok:</span>
-                  <span className="text-sm font-medium">
-                    {dataProduct?.stock || 0} unit
-                  </span>
+            <CardContent className="p-6">
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-xl font-bold text-gray-800 mb-2 line-clamp-2">
+                    {dataProduct?.name || "-"}
+                  </h3>
+                  <div className="flex items-center gap-3 mb-3">
+                    <Badge variant="secondary">
+                      {dataProduct?.category?.categoryName || "-"}
+                    </Badge>
+                    <div className="flex items-center gap-1">
+                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                      <span className="text-sm text-gray-600">
+                        4.8 (124 ulasan)
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex items-baseline gap-2">
+                    <p className="text-2xl font-bold text-blue-600">
+                      {formatRupiah(dataProduct?.price || 0)}
+                    </p>
+                    <p className="text-sm text-gray-500">per unit</p>
+                  </div>
                 </div>
 
-                <div className="flex items-center gap-2">
-                  <Weight className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm">Berat:</span>
-                  <span className="text-sm font-medium">
-                    {dataProduct?.weightGram
-                      ? formatWeight(dataProduct.weightGram)
-                      : "-"}
-                  </span>
+                {/* Description */}
+                <div>
+                  <h4 className="font-semibold mb-3 text-gray-800">
+                    Deskripsi Produk
+                  </h4>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    {dataProduct?.description ||
+                      "Deskripsi produk tidak tersedia saat ini."}
+                  </p>
                 </div>
-              </div>
 
-              {/* Action Buttons */}
-              <div className="pt-4 space-y-2">
-                {/* <Button
-                  className="w-full"
-                  size="lg"
-                  disabled={!dataProduct?.stock || dataProduct.stock === 0}
-                >
-                  Beli Sekarang
-                </Button> */}
-                {isPending ? (
-                  <Spinner />
-                ) : (
+                {/* Product Specs */}
+                <div className="space-y-3">
+                  <h4 className="font-semibold text-gray-800">Spesifikasi</h4>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg">
+                      <Package className="h-4 w-4 text-blue-600" />
+                      <div>
+                        <p className="text-xs text-gray-500">Stok</p>
+                        <p className="text-sm font-medium text-gray-800">
+                          {dataProduct?.stock || 0} unit
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg">
+                      <Weight className="h-4 w-4 text-blue-600" />
+                      <div>
+                        <p className="text-xs text-gray-500">Berat</p>
+                        <p className="text-sm font-medium text-gray-800">
+                          {dataProduct?.weightGram
+                            ? `${formatWeight(dataProduct?.weightGram)}`
+                            : "Tidak diketahui"}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="space-y-3 pt-2">
                   <Button
                     variant="destructive"
                     className="w-full"
@@ -273,9 +271,20 @@ export default function ProfessionalProductDetail({
                       isPending
                     }
                   >
-                    Checkout
+                    <Plus className="h-4 w-4 mr-2" />
+                    Tambah ke Keranjang
                   </Button>
-                )}
+                  <div className="grid grid-cols-2 gap-2">
+                    <Button variant="outline" size="sm">
+                      <Heart className="h-4 w-4 mr-2" />
+                      Simpan
+                    </Button>
+                    <Button variant="outline" size="sm">
+                      <Share2 className="h-4 w-4 mr-2" />
+                      Bagikan
+                    </Button>
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>
