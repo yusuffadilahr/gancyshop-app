@@ -1,21 +1,28 @@
 export const fileToDataURL = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
 
-        reader.onload = () => {
-            resolve(reader.result as string)
-        };
+    reader.onload = () => {
+      resolve(reader.result as string);
+    };
 
-        reader.onerror = reject;
+    reader.onerror = reject;
 
-        reader.readAsDataURL(file);
-    });
+    reader.readAsDataURL(file);
+  });
 };
 
 export function formatRupiah(value: number): string {
-        return new Intl.NumberFormat('id-ID', {
-            style: 'currency',
-            currency: 'IDR',
-            maximumFractionDigits: 0,
-        }).format(value);
-    }
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    maximumFractionDigits: 0,
+  }).format(value);
+}
+
+export const formatWeight = (weight: number) => {
+  if (weight >= 1000) {
+    return `${(weight / 1000).toFixed(1)} kg`;
+  }
+  return `${weight} g`;
+};
