@@ -12,21 +12,7 @@ import {
 } from "@/components/ui/sidebar";
 import Image from "next/image";
 import Link from "next/link";
-import { IconType } from "react-icons/lib";
-
-interface IAppSideBar {
-  dataProfil: {
-    fullname: string;
-    phoneNumber: string;
-    email: string;
-  };
-  dataMenu: {
-    title: string;
-    url: string;
-    icon: IconType;
-  }[];
-  role: "USER" | "ADMIN";
-}
+import { IAppSideBar } from "../types";
 
 export function AppSidebar({ dataProfil, dataMenu, role }: IAppSideBar) {
   return (
