@@ -50,7 +50,7 @@ export const useQueryGetData = ({
         isLoading: isLoadingGetCategory } = useQuery<ICategoryProduct[]>({
             queryKey: ['get-data-category'],
             queryFn: async () => {
-                const response = await axios.get(`${baseUrlApi}/product/all-category-product`, {
+                const response = await axios.get(`${baseUrlApi}/category/all-category-product`, {
                     headers: {
                         "Accept": 'application/json',
                         'Content-Type': 'application/json',
