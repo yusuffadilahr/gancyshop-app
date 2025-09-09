@@ -3,9 +3,14 @@
 import { cookies } from "next/headers";
 
 export const clearCookies = async () => {
-  const cookie = await cookies();
-  cookie.delete("_refreshToken");
-  cookie.delete("_token");
-  cookie.delete("_loggedIn");
-  cookie.delete("_rl");
+  const cookieStore = await cookies();
+
+  cookieStore.delete({
+    name: "_refreshToken",
+    domain: ".gancy.my.id",
+  });
+
+  cookieStore.delete({ name: "_token" });
+  cookieStore.delete({ name: "_loggedIn" });
+  cookieStore.delete({ name: "_rl" });
 };
