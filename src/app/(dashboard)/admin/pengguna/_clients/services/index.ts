@@ -1,9 +1,9 @@
 "use server";
 
+import { baseUrlApi } from "@/app/_clients/utils/axiosInstance";
 import { handleRetryForServerAction } from "@/app/_servers/services";
 import { cookies } from "next/headers";
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL_API || "";
 export const getDataAllUser = async ({
   page = 1,
   limit = 5,
@@ -17,7 +17,7 @@ export const getDataAllUser = async ({
   const token = cookieStore.get("_token")?.value;
 
   let res = await fetch(
-    baseUrl +
+    baseUrlApi +
       "/admin/all-users" +
       `?page=${page}&limit=${limit}&search=${search}`,
     {
@@ -49,7 +49,7 @@ export const deleteDataUser = async (id: number) => {
     const cookieStore = await cookies();
     const token = cookieStore.get("_token")?.value;
 
-    let res = await fetch(baseUrl + "/admin/delete-user/" + id, {
+    let res = await fetch(baseUrlApi + "/admin/delete-user/" + id, {
       method: "DELETE",
       cache: "no-store",
       headers: {

@@ -7,7 +7,8 @@ export const clearCookies = async () => {
 
   cookieStore.delete({
     name: "_refreshToken",
-    domain: ".gancy.my.id",
+    domain:
+      process.env.NODE_ENV === "production" ? ".gancy.my.id" : "localhost",
   });
 
   cookieStore.delete({ name: "_token" });

@@ -1,7 +1,15 @@
 import type { NextConfig } from "next";
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-const baseUrlApi = process.env.NEXT_PUBLIC_DOMAIN_API;
+const isProduction = process.env.NODE_ENV === "production";
+
+const baseUrl = isProduction
+  ? process.env.NEXT_PUBLIC_BASE_URL
+  : "http://localhost:300";
+
+const baseUrlApi = isProduction
+  ? process.env.NEXT_PUBLIC_DOMAIN_API
+  : "http://localhost:8000";
+
 const cspHeaders = `
   default-src 'self';
   script-src 'self' 'unsafe-inline' 'unsafe-eval';
