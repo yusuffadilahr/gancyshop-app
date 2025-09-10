@@ -1,9 +1,9 @@
 "use server";
 
+import { baseUrlApi } from "@/app/_clients/utils/axiosInstance";
 import { handleRetryForServerAction } from "@/app/_servers/services";
 import { cookies } from "next/headers";
 
-const baseUrlApi = process.env.NEXT_PUBLIC_BASE_URL_API || "";
 export const getShoppingCart = async () => {
   const cookieStore = await cookies();
   const token = cookieStore.get("_token")?.value;
