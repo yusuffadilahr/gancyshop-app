@@ -10,14 +10,13 @@ import Link from "next/link";
 
 export default function SectionCardPlatform() {
   return (
-    <div className="px-2 md:px-5 space-y-5 pt-6">
-      <h1 className="font-semibold text-2xl">Platform Resmi</h1>
+    <div className="px-2 md:px-5 space-y-12 py-10">
       <Carousel className="w-full max-w-[100vw]">
         <CarouselContent>
           {dataRatingStatis.map((item, index) => (
             <CarouselItem className="md:basis-1/2 lg:basis-1/4" key={index}>
               <Link href={item.link} target="_blank" className="w-full">
-                <Card className="h-full flex justify-between items-center">
+                <Card className="h-full flex justify-between border-none shadow-none items-center">
                   <CardContent className="p-4 flex flex-col justify-between">
                     <div className="space-y-1">
                       <h2 className="text-xl font-semibold">
@@ -28,7 +27,8 @@ export default function SectionCardPlatform() {
                         <span className="text-gray-700">({item.rating})</span>
                       </p>
                       <p className="text-sm text-gray-500">
-                        Followers: {item.followers.toLocaleString('id-ID') || '-'}
+                        Followers:{" "}
+                        {item.followers.toLocaleString("id-ID") || "-"}
                       </p>
                     </div>
                   </CardContent>

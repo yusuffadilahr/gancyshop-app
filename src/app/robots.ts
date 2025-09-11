@@ -3,7 +3,7 @@ import type { MetadataRoute } from "next";
 const isProduction = process.env.NODE_ENV === "production";
 const baseURL = isProduction
   ? process.env.NEXT_PUBLIC_BASE_URL
-  : "http://localhost:300";
+  : "http://localhost:3000";
 
 export default function robots(): MetadataRoute.Robots {
   return {
