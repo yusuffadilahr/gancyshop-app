@@ -4,7 +4,7 @@ const isProduction = process.env.NODE_ENV === "production";
 
 const baseUrl = isProduction
   ? process.env.NEXT_PUBLIC_BASE_URL
-  : "http://localhost:300";
+  : "http://localhost:3000";
 
 const baseUrlApi = isProduction
   ? process.env.NEXT_PUBLIC_DOMAIN_API
