@@ -60,7 +60,7 @@ function SectionWhyChooseUs() {
   ];
 
   return (
-    <section className="pt-16 px-2 md:px-0">
+    <section className="pt-16 px-2 md:px-5">
       {/* bg-gradient-to-br from-gray-50 via-white to-red-50 */}
       <div className="w-full">
         <div className="text-center mb-12">
@@ -244,7 +244,7 @@ function SectionBusinessStats() {
   ];
 
   return (
-    <section className="py-16 rounded-2xl bg-red-600 mx-2 md:mx-0 relative overflow-hidden">
+    <section className="py-16 rounded-2xl bg-red-600 mx-2 md:mx-5 relative overflow-hidden">
       <div className="absolute inset-0 bg-white/0"></div>
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-12">
@@ -376,99 +376,6 @@ function SectionHowToOrder() {
     </section>
   );
 }
-
-// Section FAQ
-// function SectionFAQ() {
-//   const [openIndex, setOpenIndex] = React.useState<number | null>(null);
-
-//   const faqs = [
-//     {
-//       question: "Apakah semua parts dijamin original?",
-//       answer:
-//         "Ya, semua produk kami 100% original dari distributor resmi dengan sertifikat keaslian. Kami berkomitmen hanya menjual parts berkualitas tinggi.",
-//     },
-//     {
-//       question: "Berapa lama waktu pengiriman?",
-//       answer:
-//         "Untuk area Jabodetabek 1-2 hari kerja, luar kota 3-7 hari kerja tergantung lokasi. Pengiriman same day tersedia untuk order sebelum jam 15:00 WIB.",
-//     },
-//     {
-//       question: "Bagaimana dengan garansi produk?",
-//       answer:
-//         "Semua produk bergaransi resmi 1 tahun. Jika terjadi kerusakan akibat cacat produksi, kami akan ganti dengan yang baru tanpa biaya tambahan.",
-//     },
-//     {
-//       question: "Apakah ada minimal order untuk free ongkir?",
-//       answer:
-//         "Ya, free ongkir berlaku untuk pembelian minimal Rp 500.000 ke seluruh Indonesia. Di bawah itu akan dikenakan ongkos kirim sesuai tarif ekspedisi.",
-//     },
-//     {
-//       question: "Bagaimana cara pembayaran?",
-//       answer:
-//         "Kami menerima pembayaran via transfer bank (BCA, Mandiri, BRI, BNI), e-wallet (OVO, DANA, GoPay), dan COD untuk area tertentu.",
-//     },
-//   ];
-
-//   return (
-//     <section className="py-16 bg-gray-50">
-//       <div className="container mx-auto px-4">
-//         <div className="text-center mb-12">
-//           <Badge variant="secondary" className="mb-4 px-4 py-2">
-//             FAQ
-//           </Badge>
-//           <h2 className="text-4xl font-bold text-gray-900 mb-4">
-//             Pertanyaan yang Sering{" "}
-//             <span className="text-blue-600">Ditanyakan</span>
-//           </h2>
-//           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-//             Temukan jawaban untuk pertanyaan umum tentang produk dan layanan
-//             kami
-//           </p>
-//         </div>
-
-//         <div className="max-w-4xl mx-auto">
-//           {faqs.map((faq, index) => (
-//             <Card key={index} className="mb-4 border-0 shadow-md">
-//               <CardContent className="p-0">
-//                 <button
-//                   onClick={() =>
-//                     setOpenIndex(openIndex === index ? null : index)
-//                   }
-//                   className="w-full p-6 text-left flex justify-between items-center hover:bg-gray-50 transition-colors"
-//                 >
-//                   <h3 className="font-semibold text-gray-900 pr-4">
-//                     {faq.question}
-//                   </h3>
-//                   <ChevronDown
-//                     className={`h-5 w-5 text-gray-500 transition-transform ${
-//                       openIndex === index ? "transform rotate-180" : ""
-//                     }`}
-//                   />
-//                 </button>
-
-//                 {openIndex === index && (
-//                   <div className="px-6 pb-6 pt-0">
-//                     <p className="text-gray-600 leading-relaxed">
-//                       {faq.answer}
-//                     </p>
-//                   </div>
-//                 )}
-//               </CardContent>
-//             </Card>
-//           ))}
-//         </div>
-
-//         <div className="text-center mt-8">
-//           <p className="text-gray-600 mb-4">Masih ada pertanyaan lain?</p>
-//           <Button variant="outline">
-//             <MessageCircle className="mr-2 h-4 w-4" />
-//             Hubungi Customer Service
-//           </Button>
-//         </div>
-//       </div>
-//     </section>
-//   );
-// }
 
 export default function BodyLanding() {
   const [isOpenDialog, setIsOpenDialog] = React.useState<boolean>(false);
