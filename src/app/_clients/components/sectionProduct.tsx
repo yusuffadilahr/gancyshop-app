@@ -18,7 +18,7 @@ export default function SectionProduct() {
             </h2>
             <div className="border-[1px] border-neutral-200 mb-3 flex-1"></div>
           </div>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-center text-gray-600 max-w-2xl mx-auto">
             Kami berkomitmen memberikan produk berkualitas tinggi dengan
             pelayanan terbaik untuk kepuasan Anda
           </p>
