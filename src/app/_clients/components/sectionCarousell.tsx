@@ -15,6 +15,7 @@ import {
   Wrench,
 } from "lucide-react";
 import { ICarouselSlide } from "../types";
+import { MdChecklist } from "react-icons/md";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -23,10 +24,10 @@ if (typeof window !== "undefined") {
 const slides: ICarouselSlide[] = [
   {
     id: 1,
-    title: "Body Parts Collection",
-    subtitle: "Premium Quality Motorcycle Parts",
+    title: "Body Parts Motor Terlengkap",
+    subtitle: "Kualitas Premium untuk Semua Jenis Motor",
     description:
-      "Fairing, tangki, jok, dan komponen body motor berkualitas tinggi untuk semua jenis motor",
+      "Fairing, cover body, spakbor, hingga aksesoris body motor dengan bahan berkualitas tinggi.",
     image: "/body-hero.png",
     category: "Body Parts",
     price: "Mulai dari Rp 250.000",
@@ -35,27 +36,27 @@ const slides: ICarouselSlide[] = [
   },
   {
     id: 2,
-    title: "Engine Components",
-    subtitle: "Performance & Reliability",
+    title: "Fairing & Cover Body",
+    subtitle: "Tampilan Sporty & Presisi",
     description:
-      "Komponen mesin berkualitas untuk performa maksimal dan daya tahan yang lama",
+      "Pilihan fairing dan cover body motor yang pas, rapi, dan bikin motor makin keren.",
     image: "/body-hero.png",
-    category: "Engine",
-    price: "Mulai dari Rp 180.000",
-    rating: 4.9,
+    category: "Fairing",
+    price: "Mulai dari Rp 300.000",
+    rating: 4.7,
     inStock: true,
   },
   {
     id: 3,
-    title: "Electrical Parts",
-    subtitle: "Modern Technology Solutions",
+    title: "Spakbor & Aksesoris Body",
+    subtitle: "Detail Kecil, Efek Besar",
     description:
-      "Sistem kelistrikan modern untuk motor dengan teknologi terdepan",
+      "Spakbor depan & belakang, undercowl, dan aksesoris body lainnya untuk gaya maksimal.",
     image: "/body-hero.png",
-    category: "Electrical",
-    price: "Mulai dari Rp 125.000",
-    rating: 4.7,
-    inStock: false,
+    category: "Aksesoris Body",
+    price: "Mulai dari Rp 150.000",
+    rating: 4.9,
+    inStock: true,
   },
 ];
 
@@ -163,7 +164,7 @@ export default function SectionCarousell(): React.JSX.Element {
   const currentSlideData = slides[currentSlide];
 
   return (
-    <section className="w-full py-8 px-2 md:px-5 bg-gradient-to-br from-gray-50 to-white">
+    <section className="w-full py-8 px-2 md:px-5">
       <div
         ref={carouselRef}
         className="w-full mx-auto"
@@ -171,7 +172,7 @@ export default function SectionCarousell(): React.JSX.Element {
         onMouseLeave={() => setIsAutoPlaying(true)}
       >
         <div className="relative min-h-[70vh] flex items-center bg-white rounded-2xl overflow-hidden group">
-          <div className="absolute inset-0 bg-gradient-to-r from-red-50/50 to-white opacity-70"></div>
+          <div className="absolute inset-0 opacity-70"></div>
           <div className="absolute inset-0 bg-[url('/pattern.svg')] opacity-5"></div>
           <div className="relative z-10 grid lg:grid-cols-2 gap-0 w-full min-h-[70vh]">
             <div
@@ -187,14 +188,18 @@ export default function SectionCarousell(): React.JSX.Element {
                   {currentSlideData.category}
                 </Badge>
                 {currentSlideData.inStock && (
-                  <Badge className="bg-green-100 text-green-700 hover:bg-green-200">
-                    ✓ Ready Stock
+                  <Badge
+                    variant="secondary"
+                    className="bg-green-100 text-green-700 hover:bg-green-200 px-4 py-2 text-sm font-semibold"
+                  >
+                    <MdChecklist className="w-4 h-4 mr-2" />
+                    Ready Stock
                   </Badge>
                 )}
               </div>
 
               <div>
-                <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 leading-tight mb-4">
+                <h1 className="text-4xl font-bold text-gray-900 leading-tight mb-4">
                   {currentSlideData.title.split(" ").map((word, index) => (
                     <span
                       key={index}
