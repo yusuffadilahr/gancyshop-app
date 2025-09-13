@@ -23,51 +23,13 @@ import {
 } from "@/app/(landingmenu)/product/[detail]/_servers/services";
 import { toast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import { formatRupiah, formatWeight } from "@/app/_clients/utils/formatConverter";
+import {
+  formatRupiah,
+  formatWeight,
+} from "@/app/_clients/utils/formatConverter";
+import { IBodyProductDetailProps, IProduct } from "../types";
 
-export interface IProductPublic {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  stock: number;
-  imageUrl: string;
-  fileId: string | null;
-  weightGram: number;
-  isActive: boolean;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string | null;
-  categoryId: number;
-  ownerId: number;
-  category: {
-    id: number;
-    categoryName: string;
-    createdAt: string;
-    updatedAt: string;
-    deletedAt: string | null;
-  };
-
-  cart: {
-    createdAt: string | null;
-    deletedAt: string | null;
-    id: number;
-    price: number;
-    productId: number;
-    quantity: number;
-    totalPrice: number;
-    updatedAt: string | null;
-    userId: number;
-  }[];
-}
-
-interface IBodyProductDetail {
-  idProduct: string;
-}
-
-export default function BodyProduct({
-  idProduct,
-}: IBodyProductDetail) {
+export default function BodyProduct({ idProduct }: IBodyProductDetailProps) {
   const [zoomIn, setZoomIn] = useState<number>(1);
   const idProductDecrypted = decryptParams(idProduct) || undefined;
   const router = useRouter();
@@ -76,12 +38,14 @@ export default function BodyProduct({
     data: dataProduct,
     refetch,
     // isLoading: isLoadingGetProduct
-  } = useQuery<IProductPublic>({
+  } = useQuery<IProduct>({
     queryKey: ["get-product"],
     queryFn: async () => {
       return (await getDataProductById(idProductDecrypted))?.data;
     },
   });
+
+  console.log(dataProduct, "<< data product");
 
   const { mutate: handleAddToCart, isPending } = useMutation({
     mutationFn: async () => {

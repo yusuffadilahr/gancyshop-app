@@ -23,6 +23,9 @@ const cspHeaders = `
 const nextConfig: NextConfig = {
   /* config options here */
   reactStrictMode: false,
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production" ? true : false,
+  },
   images: {
     remotePatterns: [
       {
