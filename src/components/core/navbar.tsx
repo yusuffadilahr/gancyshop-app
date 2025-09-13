@@ -31,36 +31,6 @@ export function Navbar() {
   const arrayStatisNavigation = [
     { menuName: "Beranda", href: "/" },
     { menuName: "Produk", href: "/product" },
-    {
-      menuName: "Kategori",
-      submenu: [
-        {
-          title: "Honda Series",
-          href: "/category/honda",
-          titleCaption: "Sparepart & aksesoris Honda",
-        },
-        {
-          title: "Yamaha Series",
-          href: "/category/yamaha",
-          titleCaption: "Sparepart & aksesoris Yamaha",
-        },
-        {
-          title: "Suzuki Series",
-          href: "/category/suzuki",
-          titleCaption: "Sparepart & aksesoris Suzuki",
-        },
-        {
-          title: "Kawasaki Series",
-          href: "/category/kawasaki",
-          titleCaption: "Sparepart & aksesoris Kawasaki",
-        },
-        {
-          title: "Custom & Aksesoris",
-          href: "/category/custom",
-          titleCaption: "Khusus aksesoris dan modifikasi",
-        },
-      ],
-    },
     { menuName: "Tentang", href: "/tentang-kami" },
     { menuName: "Kontak", href: "/kontak" },
     { menuName: "Testimonial", href: "/testimoni" },
