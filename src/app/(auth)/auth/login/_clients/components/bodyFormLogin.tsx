@@ -13,10 +13,13 @@ import * as React from "react";
 import { formLoginSchema } from "@/app/(auth)/auth/login/_clients/schemas/formLoginSchema";
 
 export default function BodyLogin() {
-  const [isHiddenPassword, setIsHiddenPassword] =
-    React.useState<boolean>(false);
-
-  const { handleLogin, initialValues, isPending } = useLoginHooks();
+  const {
+    isHiddenPassword,
+    setIsHiddenPassword,
+    handleLogin,
+    initialValues,
+    isPending,
+  } = useLoginHooks();
 
   return (
     <main className="flex items-center">

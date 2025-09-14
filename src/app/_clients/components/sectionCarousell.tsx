@@ -1,8 +1,5 @@
-"use client";
-
 import Image from "next/image";
 import * as React from "react";
-import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Button } from "@/components/ui/button";
@@ -14,154 +11,27 @@ import {
   Star,
   Wrench,
 } from "lucide-react";
-import { ICarouselSlide } from "../types";
 import { MdChecklist } from "react-icons/md";
+import { slidesData } from "@/app/_servers/utils/dummyData";
+import { useCarousell } from "../hooks/use-carousell";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const slides: ICarouselSlide[] = [
-  {
-    id: 1,
-    title: "Body Parts Motor Terlengkap",
-    subtitle: "Kualitas Premium untuk Semua Jenis Motor",
-    description:
-      "Fairing, cover body, spakbor, hingga aksesoris body motor dengan bahan berkualitas tinggi.",
-    image: "/body-hero.png",
-    category: "Body Parts",
-    price: "Mulai dari Rp 250.000",
-    rating: 4.8,
-    inStock: true,
-  },
-  {
-    id: 2,
-    title: "Fairing & Cover Body",
-    subtitle: "Tampilan Sporty & Presisi",
-    description:
-      "Pilihan fairing dan cover body motor yang pas, rapi, dan bikin motor makin keren.",
-    image: "/body-hero.png",
-    category: "Fairing",
-    price: "Mulai dari Rp 300.000",
-    rating: 4.7,
-    inStock: true,
-  },
-  {
-    id: 3,
-    title: "Spakbor & Aksesoris Body",
-    subtitle: "Detail Kecil, Efek Besar",
-    description:
-      "Spakbor depan & belakang, undercowl, dan aksesoris body lainnya untuk gaya maksimal.",
-    image: "/body-hero.png",
-    category: "Aksesoris Body",
-    price: "Mulai dari Rp 150.000",
-    rating: 4.9,
-    inStock: true,
-  },
-];
-
 export default function SectionCarousell(): React.JSX.Element {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-
-  const carouselRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
-  const imageRef = useRef<HTMLDivElement>(null);
-  const statsRef = useRef<HTMLDivElement>(null);
-  const autoPlayRef = useRef<NodeJS.Timeout | null>(null);
-
-  useEffect(() => {
-    if (isAutoPlaying) {
-      autoPlayRef.current = setInterval(() => {
-        setCurrentSlide((prev) => (prev + 1) % slides.length);
-      }, 5000);
-    }
-
-    return () => {
-      if (autoPlayRef.current) {
-        clearInterval(autoPlayRef.current);
-      }
-    };
-  }, [isAutoPlaying]);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from(carouselRef.current, {
-        opacity: 0,
-        y: 50,
-        duration: 1,
-        ease: "power3.out",
-      });
-
-      const tl = gsap.timeline();
-
-      tl.to(contentRef.current, {
-        opacity: 0,
-        x: -30,
-        duration: 0.3,
-        ease: "power2.inOut",
-      })
-        .to(
-          imageRef.current,
-          {
-            scale: 0.95,
-            opacity: 0.7,
-            duration: 0.3,
-            ease: "power2.inOut",
-          },
-          "<"
-        )
-        .to(contentRef.current, {
-          opacity: 1,
-          x: 0,
-          duration: 0.4,
-          ease: "power2.out",
-        })
-        .to(
-          imageRef.current,
-          {
-            scale: 1,
-            opacity: 1,
-            duration: 0.4,
-            ease: "power2.out",
-          },
-          "<"
-        );
-
-      ScrollTrigger.create({
-        trigger: carouselRef.current,
-        start: "top 80%",
-        onEnter: () => {
-          gsap.from(statsRef.current?.children || [], {
-            opacity: 0,
-            y: 30,
-            duration: 0.6,
-            stagger: 0.1,
-            ease: "back.out(1.7)",
-          });
-        },
-      });
-    }, carouselRef);
-
-    return () => ctx.revert();
-  }, [currentSlide]);
-
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
-    setIsAutoPlaying(false);
-  };
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-    setIsAutoPlaying(false);
-  };
-
-  const goToSlide = (index: number) => {
-    setCurrentSlide(index);
-    setIsAutoPlaying(false);
-  };
-
-  const currentSlideData = slides[currentSlide];
+  const {
+    currentSlide,
+    carouselRef,
+    contentRef,
+    imageRef,
+    statsRef,
+    nextSlide,
+    prevSlide,
+    goToSlide,
+    currentSlideData,
+    setIsAutoPlaying,
+  } = useCarousell();
 
   return (
     <section className="w-full py-8 px-2 md:px-5">
@@ -295,7 +165,7 @@ export default function SectionCarousell(): React.JSX.Element {
         </div>
 
         <div className="flex items-center justify-center space-x-3 mt-8">
-          {slides.map((_, index) => (
+          {slidesData.map((_, index) => (
             <button
               key={index}
               onClick={() => goToSlide(index)}

@@ -81,8 +81,8 @@ export const handleRetryForServerAction = async (
     headers: {
       ...options.headers,
       Authorization: `Bearer ${newToken}`,
-      "Content-Type": "application/json",
       Accept: "application/json",
+      "Content-Type": "application/json",
     },
   });
 
@@ -114,5 +114,40 @@ export const handleGetProfile = async (token: string) => {
   } catch (error) {
     console.log(error);
     return {};
+  }
+};
+
+export const postEmailSubcription = async (fd: FormData) => {
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("_token")?.value;
+
+    const data = { email: fd.get("email") };
+    const url = `${baseUrlApi}/user/subcription`;
+
+    let res = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+
+    if (res.status === 401) {
+      res = (await handleRetryForServerAction(token as string, url, {
+        method: "POST",
+        body: JSON.stringify(data),
+      })) as Response;
+    }
+
+    const result = await res.json();
+    if (!res.ok) throw result;
+
+    return result;
+  } catch (error) {
+    return error;
   }
 };

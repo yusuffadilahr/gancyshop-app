@@ -1,47 +1,12 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Shield, Truck, Clock, Award } from "lucide-react";
-
-interface ISectionWhyChooseUs {
-  pt?: string;
-  dividerBorder?: boolean;
-}
+import { ISectionWhyChooseUsProps } from "../types";
+import { featuresDummy } from "@/app/_servers/utils/dummyData";
 
 export default function SectionWhyChooseUs({
   pt = "pt-16",
   dividerBorder = true,
-}: ISectionWhyChooseUs) {
-  const features = [
-    {
-      icon: <Shield className="h-8 w-8 text-red-600" />,
-      title: "100% Kualitas Premium",
-      description:
-        "Semua produk dijamin original dari distributor resmi dengan sertifikat keaslian",
-      highlight: "Plug & Play",
-    },
-    {
-      icon: <Truck className="h-8 w-8 text-red-600" />,
-      title: "Ongkir Termurah",
-      description:
-        "Gratis ongkos kirim untuk pembelian minimal Rp 500.000 ke seluruh Indonesia",
-      highlight: "Hemat Ongkir",
-    },
-    {
-      icon: <Clock className="h-8 w-8 text-red-600" />,
-      title: "Langsung Proses",
-      description:
-        "Order sebelum jam 15:00 WIB akan diproses dan dikirim di hari yang sama",
-      highlight: "Proses Cepat",
-    },
-    {
-      icon: <Award className="h-8 w-8 text-red-600" />,
-      title: "Garansi Pengembalian",
-      description:
-        "Garansi resmi untuk semua produk rusak dengan layanan terbaik",
-      highlight: "Garansi Resmi",
-    },
-  ];
-
+}: ISectionWhyChooseUsProps) {
   return (
     <section className={`px-2 md:px-5 ${pt}`}>
       {/* bg-gradient-to-br from-gray-50 via-white to-red-50 */}
@@ -70,7 +35,7 @@ export default function SectionWhyChooseUs({
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {features.map((feature, index) => (
+          {featuresDummy.map((feature, index) => (
             <Card
               key={index}
               className="group hover:shadow-xl transition-all duration-300 border-0 shadow-lg hover:-translate-y-2"

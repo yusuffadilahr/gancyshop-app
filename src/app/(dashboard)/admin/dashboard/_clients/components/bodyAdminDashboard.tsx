@@ -1,5 +1,4 @@
 "use client";
-
 import {
   XAxis,
   YAxis,
@@ -15,7 +14,6 @@ import {
   Area,
 } from "recharts";
 import {
-  TrendingUp,
   TrendingDown,
   Package,
   Users,
@@ -23,87 +21,18 @@ import {
   ShoppingCart,
   AlertTriangle,
   CheckCircle,
-  LucideIcon,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-
-// Sample data for motorcycle body parts business
-const salesData = [
-  { month: "Jan", sales: 485000, orders: 156, customers: 89 },
-  { month: "Feb", sales: 620000, orders: 198, customers: 112 },
-  { month: "Mar", sales: 580000, orders: 185, customers: 98 },
-  { month: "Apr", sales: 750000, orders: 245, customers: 145 },
-  { month: "May", sales: 690000, orders: 225, customers: 128 },
-  { month: "Jun", sales: 820000, orders: 268, customers: 162 },
-];
-
-const productCategoryData = [
-  { name: "Fairing", value: 35, sales: 287000 },
-  { name: "Tank Cover", value: 25, sales: 205000 },
-  { name: "Side Panel", value: 20, sales: 164000 },
-  { name: "Tail Fairing", value: 15, sales: 123000 },
-  { name: "Others", value: 5, sales: 41000 },
-];
-
-const topProducts = [
-  { name: "Ninja 250 Full Set", sold: 45, revenue: 135000 },
-  { name: "R15 Racing Fairing", sold: 38, revenue: 114000 },
-  { name: "CBR150 Body Kit", sold: 32, revenue: 96000 },
-  { name: "GSX Tank Cover", sold: 28, revenue: 84000 },
-  { name: "Vixion Side Panel", sold: 25, revenue: 75000 },
-];
-
-const inventoryData = [
-  { product: "Fairing", inStock: 125, lowStock: 15, outOfStock: 3 },
-  { product: "Tank Cover", inStock: 98, lowStock: 8, outOfStock: 2 },
-  { product: "Side Panel", inStock: 156, lowStock: 12, outOfStock: 1 },
-  { product: "Tail Fairing", inStock: 89, lowStock: 18, outOfStock: 4 },
-];
+import {
+  inventoryData,
+  productCategoryData,
+  salesData,
+  topProducts,
+} from "@/app/_servers/utils/dummyData";
+import MetricCard from "./metricCard";
 
 const COLORS = ["#3b82f6", "#06b6d4", "#10b981", "#f59e0b", "#ef4444"];
 
-interface IMetricCard {
-  title: string;
-  value: string | number;
-  change: string;
-  icon: React.ComponentType<React.SVGProps<SVGSVGElement>> | LucideIcon;
-  isPositive?: boolean;
-}
-
-const MetricCard = ({
-  title,
-  value,
-  change,
-  icon: Icon,
-  isPositive = true,
-}: IMetricCard) => (
-  <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-    <div className="flex items-center justify-between">
-      <div>
-        <p className="text-sm font-medium text-gray-600">{title}</p>
-        <p className="text-2xl font-bold text-gray-900 mt-1">{value}</p>
-        <div className="flex items-center mt-2">
-          {isPositive ? (
-            <TrendingUp className="h-4 w-4 text-green-500 mr-1" />
-          ) : (
-            <TrendingDown className="h-4 w-4 text-red-500 mr-1" />
-          )}
-          <span
-            className={`text-sm font-medium ${
-              isPositive ? "text-green-600" : "text-red-600"
-            }`}
-          >
-            {change}
-          </span>
-          <span className="text-sm text-gray-500 ml-1">vs last month</span>
-        </div>
-      </div>
-      <div className="p-3 bg-blue-50 rounded-full">
-        <Icon className="h-6 w-6 text-blue-600" />
-      </div>
-    </div>
-  </div>
-);
 interface IProduct {
   name: string;
   sold: number;
@@ -168,7 +97,7 @@ const InventoryRow = ({ item }: IInventoryRow) => (
   </div>
 );
 
-export default function MotorcycleBodyDashboard() {
+export default function BodyAdminDashboard() {
   const [isClient, setIsClient] = useState<boolean>(false);
 
   useEffect(() => {

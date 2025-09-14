@@ -5,32 +5,25 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { encryptCrypto } from "../utils/cryptoJs";
-
-interface IFirstVisitModal {
-  isOpenDialog: boolean;
-  setIsOpenDialog: React.Dispatch<React.SetStateAction<boolean>>;
-}
+import { IFirstVisitModalProps } from "../types";
 
 export default function FirstVisitModal({
   isOpenDialog,
   setIsOpenDialog,
-}: IFirstVisitModal) {
+}: IFirstVisitModalProps) {
+  const handleOpenChange = (open: boolean) => {
+    const checked = sessionStorage.getItem("_inf");
+    const dataSessionStrg = encryptCrypto({
+      val: "done",
+      key: process.env.NEXT_PUBLIC_SECRET_KEY || "",
+    });
+
+    if (!checked) sessionStorage.setItem("_inf", dataSessionStrg.toString());
+    setIsOpenDialog(open);
+  };
+
   return (
-    <Dialog
-      open={isOpenDialog}
-      onOpenChange={(open) => {
-        const checked = sessionStorage.getItem("_inf");
-        const dataSessionStrg = encryptCrypto({
-          val: "done",
-          key: process.env.NEXT_PUBLIC_SECRET_KEY || "",
-        });
-
-        if (!checked)
-          sessionStorage.setItem("_inf", dataSessionStrg.toString());
-
-        setIsOpenDialog(open);
-      }}
-    >
+    <Dialog open={isOpenDialog} onOpenChange={handleOpenChange}>
       <DialogTitle className="sr-only">x</DialogTitle>
       <DialogContent className="p-0 shadow-none border-none bg-transparent">
         <Card className="relative w-full shadow-none border-none mx-auto p-8 bg-gradient-to-r from-red-500 to-orange-400 rounded-3xl overflow-hidden">

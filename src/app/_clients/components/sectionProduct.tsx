@@ -6,10 +6,6 @@ export default function SectionProduct() {
   return (
     <div className="px-2 md:px-5 space-y-14 pt-4 py-3 md:py-10 md:pt-20">
       <div className="w-full flex justify-center items-center flex-col gap-5">
-        {/* <Badge variant={"destructive"} className="font-xl p-2 px-4">
-          Produk Kami
-        </Badge> */}
-
         <div className="w-full">
           <div className="w-full flex items-center justify-center gap-3">
             <div className="border-[1px] border-neutral-200 mb-3 flex-1"></div>

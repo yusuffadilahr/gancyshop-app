@@ -8,13 +8,22 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
+import { useMutation } from "@tanstack/react-query";
+import { postEmailSubcription } from "@/app/_servers/services";
+import Cookies from "js-cookie";
+import { toast } from "@/hooks/use-toast";
 
 export function Footer() {
-  const [mounted, setMounted] = useState(false);
+  const [mounted, setMounted] = useState<boolean>(false);
+  const [emailSub, setEmailSub] = useState<string>("");
+  const [isLoggedIn, setIsLoggedIn] = useState<string | undefined>("");
+
   const pathname = usePathname();
   const isNotFound = useAppSelector((state) => state.globaltheme.notFoundPage);
 
   useEffect(() => {
+    const isLogin = Cookies.get("_loggedIn") || undefined;
+    setIsLoggedIn(isLogin);
     setMounted(true);
   }, []);
 
@@ -22,6 +31,38 @@ export function Footer() {
   const dashboardPath = pathname.split("/").slice(2).join("");
 
   const isDashboard = dashboardPathUser.includes(dashboardPath);
+  const { mutate: handleSubcription, isPending } = useMutation({
+    mutationFn: async () => {
+      const fd = new FormData();
+      fd.append("email", emailSub);
+
+      const res = await postEmailSubcription(fd);
+      return res;
+    },
+
+    onSuccess: (res) => {
+      if (res.error) throw res;
+
+      toast({
+        title: res?.message || "Berhasil Mengirim Email",
+        description: new Date().toDateString(),
+      });
+    },
+
+    onError: (err) => {
+      if ("message" in err) {
+        toast({
+          title: err?.message || "Gagal Mengirim Email",
+          description: new Date().toDateString(),
+        });
+      } else {
+        toast({
+          description: new Date().toDateString(),
+          title: "Gagal Mengirim Email",
+        });
+      }
+    },
+  });
 
   if (!mounted) return null;
   if (
@@ -44,12 +85,20 @@ export function Footer() {
             </p>
             <div className="flex items-center gap-2">
               <Input
+                onChange={(e) => {
+                  const { value } = e.target;
+                  setEmailSub(value);
+                }}
+                value={emailSub}
+                name="emailSub"
                 placeholder="Your Email Address"
                 className="bg-slate-100 text-slate-800"
               />
               <Button
+                onClick={() => handleSubcription()}
                 variant="secondary"
                 className="bg-red-500 hover:bg-red-400 text-white"
+                disabled={!isLoggedIn || isPending}
               >
                 Subscribe →
               </Button>

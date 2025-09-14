@@ -12,9 +12,9 @@ import {
 } from "@/components/ui/sidebar";
 import Image from "next/image";
 import Link from "next/link";
-import { IAppSideBar } from "../types";
+import { IAppSideBarProps } from "../types";
 
-export function AppSidebar({ dataProfil, dataMenu, role }: IAppSideBar) {
+export function AppSidebar({ dataProfil, dataMenu, role }: IAppSideBarProps) {
   return (
     <Sidebar>
       <div className="p-2">
@@ -38,6 +38,7 @@ export function AppSidebar({ dataProfil, dataMenu, role }: IAppSideBar) {
           </div>
         </SidebarHeader>
       </div>
+
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel className="pb-5">Menu</SidebarGroupLabel>

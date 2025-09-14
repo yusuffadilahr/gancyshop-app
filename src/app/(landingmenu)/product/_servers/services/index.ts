@@ -40,7 +40,6 @@ export const getAllProductPublic = async ({
       }
     );
     const result = await res.json();
-    console.log(result, "<<");
     if (!res.ok) throw result
 
     return result;
