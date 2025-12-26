@@ -1,6 +1,6 @@
-"use client";;
+"use client";
+
 import { Card, CardContent } from "@/components/ui/card";
-import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
 export default function BodyLandingPage() {
@@ -8,9 +8,8 @@ export default function BodyLandingPage() {
 
   const faqs = [
     {
-      question: "Apakah semua parts dijamin original?",
-      answer:
-        "Ya, semua produk kami 100% original dari distributor resmi dengan sertifikat keaslian. Kami berkomitmen hanya menjual parts berkualitas tinggi.",
+      question: "Apakah semua produk original?",
+      answer: "Tidak, kami hanya menjual sparepart 100% buatan lokal.",
     },
     {
       question: "Berapa lama waktu pengiriman?",
@@ -36,37 +35,52 @@ export default function BodyLandingPage() {
 
   return (
     <section className="py-16 bg-gray-50">
-      <div className="w-full mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-4 md:px-6">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-red-500 mb-4">FAQ</h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Temukan jawaban untuk pertanyaan umum tentang produk dan layanan
-            kami
-          </p>
+          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+            Pertanyaan yang Sering{" "}
+            <span className="text-red-600">Diajukan</span>
+          </h2>
         </div>
 
-        <div className="w-full px-5 mx-auto">
+        <div className="space-y-4">
           {faqs.map((faq, index) => (
-            <Card key={index} className="mb-4 border-0 shadow-md">
+            <Card
+              key={index}
+              className="border-none shadow-md hover:shadow-lg transition-shadow"
+            >
               <CardContent className="p-0">
                 <button
                   onClick={() =>
                     setOpenIndex(openIndex === index ? null : index)
                   }
-                  className="w-full p-6 text-left flex justify-between items-center hover:bg-gray-50 transition-colors"
+                  className="w-full text-left p-6 flex items-center justify-between"
                 >
-                  <h3 className="font-semibold text-gray-900 pr-4">
+                  <h3 className="font-bold text-gray-900 pr-8">
                     {faq.question}
                   </h3>
-                  <ChevronDown
-                    className={`h-5 w-5 text-gray-500 transition-transform ${
-                      openIndex === index ? "transform rotate-180" : ""
+                  <div
+                    className={`flex-shrink-0 w-6 h-6 rounded-full bg-red-100 flex items-center justify-center transition-transform ${
+                      openIndex === index ? "rotate-180" : ""
                     }`}
-                  />
+                  >
+                    <svg
+                      className="w-4 h-4 text-red-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </div>
                 </button>
-
                 {openIndex === index && (
-                  <div className="px-6 pb-6 pt-0">
+                  <div className="px-6 pb-6">
                     <p className="text-gray-600 leading-relaxed">
                       {faq.answer}
                     </p>

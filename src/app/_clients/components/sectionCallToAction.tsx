@@ -1,35 +1,62 @@
-import { Card } from "@/components/ui/card";
-import Link from "next/link";
+import { Clock, MapPin, Phone, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
 
 export default function SectionCallToAction() {
   return (
-    <div className="px-2 md:px-5 pt-10">
-      <Card className="relative w-full shadow-none border-none mx-auto p-8 bg-gradient-to-r from-red-500 to-orange-400 rounded-3xl overflow-hidden">
-        <div className="absolute -top-[90%] -right-20 w-[1000px] h-[1000px] bg-white/20 rounded-full"></div>
-        <div className="absolute -top-[70%] -right-10 w-[800px] h-[800px] bg-white/40 rounded-full"></div>
-        <div className="absolute -top-[50%] -right-20 w-[600px] h-[600px] bg-white/50 rounded-full"></div>
-
-        <div className="relative z-10 inset-0 p-2 md:p-10">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Gancy Motor Parts
-          </h1>
-          <p className="text-white/90 text-lg mb-8 max-w-md">
-            Solusi terpercaya untuk semua kebutuhan{" "}
-            <span className="font-extrabold">body kit & sparepart motor</span>{" "}
-            berkualitas tinggi.
+    <section className="py-20 bg-gradient-to-br from-red-600 to-red-700">
+      <div className="max-w-7xl mx-auto px-4 md:px-6">
+        <div className="text-center text-white">
+          <h2 className="text-3xl lg:text-5xl font-bold mb-4">
+            Siap Upgrade Kendaraan Anda?
+          </h2>
+          <p className="text-lg lg:text-xl text-red-100 mb-8 max-w-2xl mx-auto">
+            Dapatkan sparepart berkualitas dengan harga terbaik. Konsultasi
+            gratis dengan tim ahli kami sekarang!
           </p>
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Link href="/product" prefetch={false}>
-              <Button size="lg" className="rounded-xl">
-                <span>Pesan Sekarang</span>
-                <ArrowRight />
-              </Button>
-            </Link>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+            <Button
+              size="lg"
+              className="bg-white text-red-600 hover:bg-gray-100 font-bold min-w-[200px]"
+            >
+              <Phone className="w-5 h-5 mr-2" />
+              Hubungi Kami
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="border-2 border-white hover:text-red-600 text-red-600 font-bold min-w-[200px]"
+            >
+              <Mail className="w-5 h-5 mr-2" />
+              Email Kami
+            </Button>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            <div className="flex items-center justify-center gap-3">
+              <MapPin className="w-6 h-6 text-red-200" />
+              <div className="text-left">
+                <div className="text-sm text-red-200">Alamat</div>
+                <div className="font-semibold">Bogor, Indonesia</div>
+              </div>
+            </div>
+            <div className="flex items-center justify-center gap-3">
+              <Phone className="w-6 h-6 text-red-200" />
+              <div className="text-left">
+                <div className="text-sm text-red-200">Telepon</div>
+                <div className="font-semibold">+62 895-1329-7524</div>
+              </div>
+            </div>
+            <div className="flex items-center justify-center gap-3">
+              <Clock className="w-6 h-6 text-red-200" />
+              <div className="text-left">
+                <div className="text-sm text-red-200">Jam Kerja</div>
+                <div className="font-semibold">Senin - Sabtu, 8:00-17:00</div>
+              </div>
+            </div>
           </div>
         </div>
-      </Card>
-    </div>
+      </div>
+    </section>
   );
 }

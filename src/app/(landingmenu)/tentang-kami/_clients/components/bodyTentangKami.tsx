@@ -1,338 +1,537 @@
 "use client";
-import React, { JSX } from "react";
-import Image from "next/image";
+import {
+  Users,
+  Target,
+  Heart,
+  TrendingUp,
+  Shield,
+  Zap,
+  CheckCircle,
+  Quote,
+  Calendar,
+  Building,
+  Sparkles,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Target, Heart, PhoneCall, ArrowRight } from "lucide-react";
-import { ITimelineItemProps } from "../types";
-import SectionWhyChooseUs from "@/app/_clients/components/sectionWhyUs";
-import SectionBusinessStats from "@/app/_clients/components/sectionStatBusiness";
+import Image from "next/image";
+import Link from "next/link";
 
-// const Statistics: React.FC<IStatisticProps> = ({
-//   icon: Icon,
-//   value,
-//   label,
-//   description,
-// }) => (
-//   <div className="text-center group hover:scale-105 transition-all duration-300">
-//     <div className="flex justify-center mb-4">
-//       <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center group-hover:shadow-lg transition-all duration-300">
-//         <Icon className="w-8 h-8 text-white" />
-//       </div>
-//     </div>
-//     <div className="text-3xl font-bold text-foreground mb-2">{value}</div>
-//     <div className="font-semibold text-lg text-foreground mb-1">{label}</div>
-//     <p className="text-sm text-muted-foreground">{description}</p>
-//   </div>
-// );
+function HeroAbout() {
+  return (
+    <section className="relative py-20 lg:py-28 bg-gradient-to-br from-red-600 to-red-700 overflow-hidden">
+      {/* <div className="absolute inset-0 bg-[url('/pattern.svg')] opacity-10"></div> */}
 
-// const ValueCard: React.FC<IValueCardProps> = ({
-//   icon: Icon,
-//   title,
-//   description,
-//   features,
-// }) => (
-//   <Card className="h-full border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 group hover:-translate-y-1">
-//     <CardHeader className="text-center pb-6">
-//       <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-3xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-//         <Icon className="w-10 h-10 text-white" />
-//       </div>
-//       <CardTitle className="text-xl font-bold">{title}</CardTitle>
-//       <CardDescription className="text-base leading-relaxed">
-//         {description}
-//       </CardDescription>
-//     </CardHeader>
-//     <CardContent className="pt-0">
-//       <div className="space-y-3">
-//         {features.map((feature, index) => (
-//           <div
-//             key={index}
-//             className="flex items-center gap-3 opacity-80 group-hover:opacity-100 transition-opacity duration-300"
-//           >
-//             <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-//             <span className="text-sm text-muted-foreground">{feature}</span>
-//           </div>
-//         ))}
-//       </div>
-//     </CardContent>
-//   </Card>
-// );
+      <div className="absolute top-20 right-10 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-20 left-10 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
 
-const TimelineItem: React.FC<ITimelineItemProps> = ({
-  year,
-  title,
-  description,
-  milestone,
-}) => (
-  <div className="relative flex gap-6 pb-8 group">
-    <div className="flex flex-col items-center">
-      <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-sm group-hover:scale-110 transition-transform duration-300">
-        {year}
+      <div className="relative max-w-7xl mx-auto px-4 md:px-6">
+        <div className="text-center text-white">
+          <Badge className="bg-white/20 text-white hover:bg-white/30 mb-6 backdrop-blur-sm">
+            Tentang Kami
+          </Badge>
+          <h1 className="text-4xl lg:text-6xl font-bold mb-6">
+            Mitra Terpercaya untuk <br />
+            <span className="text-red-200">Kebutuhan Otomotif</span> Anda
+          </h1>
+          <p className="text-lg lg:text-xl text-red-100 max-w-3xl mx-auto leading-relaxed">
+            Sejak 2019, kami telah melayani ribuan pelanggan dengan komitmen
+            memberikan sparepart berkualitas tinggi dan pelayanan terbaik di
+            industri otomotif Indonesia
+          </p>
+        </div>
       </div>
-      <div className="w-px h-full bg-gradient-to-b from-blue-500 to-transparent mt-4"></div>
-    </div>
-    <div className="flex-1 pb-8">
-      <Badge
-        variant="secondary"
-        className="mb-2 group-hover:bg-blue-100 transition-colors duration-300"
-      >
-        {milestone}
-      </Badge>
-      <h3 className="text-lg font-semibold mb-2 group-hover:text-blue-600 transition-colors duration-300">
-        {title}
-      </h3>
-      <p className="text-muted-foreground text-sm leading-relaxed">
-        {description}
-      </p>
-    </div>
-  </div>
-);
+    </section>
+  );
+}
 
-export default function AboutPage(): JSX.Element {
-  const timeline = [
+function CompanyStory() {
+  return (
+    <section className="py-16 lg:py-20 bg-white">
+      <div className="max-w-7xl mx-auto px-4 md:px-6">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="relative">
+            <div className="aspect-[4/3] bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl overflow-hidden">
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Building className="w-32 h-32 text-gray-300" />
+              </div>
+            </div>
+            <Card className="absolute -bottom-6 -right-6 border-none shadow-2xl max-w-xs">
+              <CardContent className="p-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Calendar className="w-6 h-6 text-red-600" />
+                  </div>
+                  <div>
+                    <div className="text-2xl font-bold text-gray-900">5+</div>
+                    <div className="text-sm text-gray-600">
+                      Tahun Berpengalaman
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div>
+            <Badge className="bg-red-100 text-red-600 hover:bg-red-200 mb-4">
+              Cerita Kami
+            </Badge>
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-6">
+              Perjalanan Kami Membangun{" "}
+              <span className="text-red-600">Kepercayaan</span>
+            </h2>
+
+            <div className="space-y-4 text-gray-600 leading-relaxed text-justify">
+              <p>
+                Berawal dari menjual kecil-kecilan di daerah Bogor pada tahun
+                2019, kami memulai perjalanan dengan visi sederhana: menyediakan
+                sparepart otomotif berkualitas tinggi dengan harga yang
+                terjangkau untuk semua kalangan.
+              </p>
+              <p>
+                Dengan dedikasi dan komitmen terhadap kepuasan pelanggan, kami
+                terus berkembang dan kini telah melayani lebih dari 10,000
+                pelanggan setia di seluruh Indonesia. Kepercayaan yang Anda
+                berikan adalah motivasi terbesar kami.
+              </p>
+              <p>
+                Kami tidak hanya menjual produk, tetapi juga membangun hubungan
+                jangka panjang dengan setiap pelanggan. Tim ahli kami siap
+                memberikan konsultasi dan solusi terbaik untuk kebutuhan
+                kendaraan Anda.
+              </p>
+            </div>
+
+            <div className="mt-8 flex items-center gap-6">
+              <div className="flex -space-x-3">
+                {[1, 2, 3, 4].map((i) => (
+                  <div
+                    key={i}
+                    className="w-12 h-12 rounded-full bg-gradient-to-br from-red-400 to-red-600 border-2 border-white flex items-center justify-center text-white font-bold"
+                  >
+                    <Image
+                      width={500}
+                      height={500}
+                      alt="testimonial"
+                      src={"/profil-default.png"}
+                      className="rounded-full"
+                    />
+                  </div>
+                ))}
+              </div>
+              <div>
+                <div className="font-bold text-gray-900">10,000+ Pelanggan</div>
+                <div className="text-sm text-gray-600">Mempercayai kami</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function VisionMission() {
+  const items = [
     {
-      year: "2020",
-      title: "Pendirian GancyShop",
+      icon: Target,
+      title: "Visi Kami",
       description:
-        "Memulai perjalanan sebagai toko spare part motor dengan fokus pada kualitas dan kepuasan pelanggan. Dimulai dari toko offline kecil dengan visi besar.",
-      milestone: "Founding",
+        "Menjadi distributor sparepart otomotif terkemuka di Indonesia yang dikenal dengan kualitas produk terbaik dan layanan pelanggan yang unggul.",
+      color: "red",
     },
     {
-      year: "2021",
-      title: "Ekspansi Digital",
+      icon: Zap,
+      title: "Misi Kami",
       description:
-        "Meluncurkan platform e-commerce dan sistem manajemen inventory modern. Mulai melayani pelanggan dari berbagai daerah melalui marketplace.",
-      milestone: "Digital Growth",
+        "Menyediakan sparepart original berkualitas tinggi, memberikan konsultasi profesional, dan memastikan kepuasan pelanggan melalui inovasi berkelanjutan.",
+      color: "blue",
+    },
+  ];
+
+  return (
+    <section className="py-16 lg:py-20 bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 md:px-6">
+        <div className="text-center mb-12">
+          <Badge className="bg-red-100 text-red-600 hover:bg-red-200 mb-4">
+            Visi & Misi
+          </Badge>
+          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+            Arah & Tujuan <span className="text-red-600">Perusahaan</span>
+          </h2>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-8">
+          {items.map((item, index) => {
+            const Icon = item.icon;
+            return (
+              <Card
+                key={index}
+                className="border-none shadow-lg hover:shadow-xl transition-shadow duration-300"
+              >
+                <CardContent className="p-8">
+                  <div className="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mb-6">
+                    <Icon className="w-8 h-8 text-red-600" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                    {item.title}
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    {item.description}
+                  </p>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CoreValues() {
+  const values = [
+    {
+      icon: Shield,
+      title: "Integritas",
+      description:
+        "Berkomitmen pada kejujuran dan transparansi dalam setiap transaksi",
+    },
+    {
+      icon: Heart,
+      title: "Kepedulian",
+      description:
+        "Mengutamakan kepuasan dan kebutuhan pelanggan di atas segalanya",
+    },
+    {
+      icon: Sparkles,
+      title: "Kualitas",
+      description:
+        "Hanya menyediakan produk terpilih dengan standar kualitas tertinggi",
+    },
+    {
+      icon: TrendingUp,
+      title: "Inovasi",
+      description:
+        "Terus berinovasi untuk memberikan pengalaman terbaik kepada pelanggan",
+    },
+  ];
+
+  return (
+    <section className="py-16 lg:py-20 bg-white">
+      <div className="max-w-7xl mx-auto px-4 md:px-6">
+        <div className="text-center mb-12">
+          <Badge className="bg-red-100 text-red-600 hover:bg-red-200 mb-4">
+            Nilai-Nilai Kami
+          </Badge>
+          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+            Prinsip yang Kami <span className="text-red-600">Pegang Teguh</span>
+          </h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Nilai-nilai inti yang menjadi fondasi dalam setiap keputusan dan
+            tindakan kami
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {values.map((value, index) => {
+            const Icon = value.icon;
+            return (
+              <Card
+                key={index}
+                className="border border-gray-200 hover:border-red-300 hover:shadow-lg transition-all duration-300 group text-center"
+              >
+                <CardContent className="p-6">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-red-50 rounded-full mb-4 group-hover:bg-red-100 transition-colors">
+                    <Icon className="w-8 h-8 text-red-600" />
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">
+                    {value.title}
+                  </h3>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    {value.description}
+                  </p>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function TeamSection() {
+  const team = [
+    {
+      name: "Fajar Irawan Rukmana",
+      position: "CEO & Founder",
+      image: "/team/ceo.jpg",
+    },
+    {
+      name: "Sarah Putri",
+      position: "Operations Manager",
+      image: "/team/manager.jpg",
+    },
+    {
+      name: "Budi Santoso",
+      position: "Technical Expert",
+      image: "/team/expert.jpg",
+    },
+    {
+      name: "Linda Wijaya",
+      position: "Customer Relations",
+      image: "/team/cs.jpg",
+    },
+  ];
+
+  return (
+    <section className="py-16 lg:py-20 bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 md:px-6">
+        <div className="text-center mb-12">
+          <Badge className="bg-red-100 text-red-600 hover:bg-red-200 mb-4">
+            Tim Kami
+          </Badge>
+          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+            Bertemu dengan <span className="text-red-600">Tim Profesional</span>{" "}
+            Kami
+          </h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Para ahli berpengalaman yang siap membantu Anda menemukan solusi
+            terbaik
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {team.map((member, index) => (
+            <Card
+              key={index}
+              className="border-none shadow-lg hover:shadow-xl transition-all duration-300 group overflow-hidden"
+            >
+              <div className="relative aspect-square bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <Users className="w-24 h-24 text-gray-300" />
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-red-600/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-6">
+                  <div className="text-white text-center">
+                    <div className="font-bold text-lg">{member.name}</div>
+                    <div className="text-sm text-red-100">
+                      {member.position}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <CardContent className="p-5 text-center group-hover:bg-red-50 transition-colors">
+                <h3 className="font-bold text-gray-900 mb-1">{member.name}</h3>
+                <p className="text-sm text-gray-600">{member.position}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Milestones() {
+  const milestones = [
+    {
+      year: "2019",
+      title: "Fondasi Awal",
+      description:
+        "Memulai operasional bisnis online dan membangun kehadiran brand melalui marketplace.",
+    },
+    {
+      year: "2020",
+      title: "Pengembangan Produk",
+      description:
+        "Memperluas variasi katalog serta meningkatkan kapasitas pengemasan dan distribusi.",
     },
     {
       year: "2022",
-      title: "Jaringan Distribusi",
+      title: "Perluasan Jangkauan Pasar",
       description:
-        "Membangun kerjasama dengan supplier resmi dan mengembangkan jaringan distribusi ke seluruh Indonesia dengan sistem logistik yang terintegrasi.",
-      milestone: "Network Expansion",
+        "Mulai beroperasi di beberapa platform e-commerce dan memperluas area pengiriman.",
     },
     {
       year: "2023",
-      title: "Sertifikasi Kualitas",
+      title: "Peningkatan Skala Operasional",
       description:
-        "Meraih sertifikasi ISO 9001:2015 dan menjadi authorized dealer untuk beberapa brand ternama. Menerapkan system quality management yang ketat.",
-      milestone: "Quality Excellence",
+        "Mengoptimalkan manajemen pesanan dan layanan pelanggan untuk mendukung pertumbuhan penjualan.",
     },
     {
-      year: "2024",
-      title: "Inovasi & Teknologi",
+      year: "2025",
+      title: "Penguatan Brand & Profesionalisasi",
       description:
-        "Mengimplementasikan teknologi AI untuk inventory management dan customer service. Meluncurkan aplikasi mobile dan sistem B2B untuk dealer.",
-      milestone: "Tech Innovation",
+        "Fokus pada standarisasi proses operasional, kualitas produk, dan pengalaman pelanggan.",
     },
   ];
-  //   <section className="relative overflow-hidden bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-  //     <div className="relative mx-auto px-4 py-2 lg:py-5">
-  //       <div className="text-center w-full mx-auto mb-16">
-  //         <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6 animate-fade-in">
-  //           Tentang{" "}
-  //           <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-  //             GancyShop
-  //           </span>
-  //         </h1>
-  //         <p className="text-xl text-muted-foreground leading-relaxed mb-8 max-w-3xl mx-auto">
-  //           Partner terpercaya untuk semua kebutuhan spare part motor Anda.
-  //           Dengan pengalaman lebih dari 4 tahun, kami telah melayani ribuan
-  //           pelanggan di seluruh Indonesia dengan komitmen kualitas dan
-  //           pelayanan terbaik.
-  //         </p>
-  //         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-  //           <Button
-  //             size="lg"
-  //             className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 hover:scale-105 transition-all duration-300"
-  //           >
-  //             <PhoneCall className="mr-2 h-4 w-4" />
-  //             Hubungi Kami
-  //           </Button>
-  //           <Button
-  //             variant="outline"
-  //             size="lg"
-  //             className="hover:scale-105 transition-all duration-300 group"
-  //           >
-  //             Lihat Katalog
-  //             <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
-  //           </Button>
-  //         </div>
-  //       </div>
-
-  //       {/* Hero Image */}
-  //       <div className="relative px-20 mx-auto">
-  //         <div className="relative rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-shadow duration-500">
-  //           <Image
-  //             src="/matic.png"
-  //             alt="GancyShop - Spare Part Motor Terpercaya"
-  //             width={1200}
-  //             height={600}
-  //             className="w-full h-auto hover:scale-105 transition-transform duration-700"
-  //             priority
-  //           />
-  //           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-  //           <div className="absolute bottom-6 right-6">
-  //             <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg hover:rotate-12 transition-transform duration-300">
-  //               <Wrench className="w-8 h-8 text-white" />
-  //             </div>
-  //           </div>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   </section>
 
   return (
-    <div className="min-h-screen space-y-10 px-5">
-      <section className="pt-5">
-        <div className="w-full mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Tentang <span className="text-red-600">Kami</span>
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Kami adalah tim yang berdedikasi menghadirkan solusi inovatif
-              dengan standar kualitas terbaik, demi memberikan pengalaman yang
-              terpercaya bagi setiap pelanggan.
-            </p>
-          </div>
-          <div className="grid lg:grid-cols-2 gap-12 px-2 items-center">
-            <div className="space-y-8">
-              <div>
-                <Badge
-                  variant="outline"
-                  className="mb-4 hover:bg-blue-50 transition-colors duration-300"
-                >
-                  <Target className="mr-2 h-3 w-3" />
-                  Visi & Misi
-                </Badge>
-                <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                  Membangun Ekosistem Otomotif yang{" "}
-                  <span className="text-red-600">Berkelanjutan</span>
-                </h2>
-                <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-                  GancyShop didirikan dengan visi menjadi market leader dalam
-                  industri spare part motor di Indonesia. Kami percaya bahwa
-                  kualitas produk dan pelayanan yang excellent adalah kunci
-                  untuk membangun kepercayaan dan loyalitas pelanggan jangka
-                  panjang.
-                </p>
-              </div>
-
-              <div className="grid gap-6">
-                <Card className="border-l-4 border-l-red-500 hover:shadow-lg transition-all duration-300 group">
-                  <CardContent className="p-6">
-                    <div className="flex items-start gap-4">
-                      <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                        <Target className="w-10 h-5 text-red-600 dark:text-red-400" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-lg mb-2">
-                          Visi Kami
-                        </h3>
-                        <p className="text-muted-foreground">
-                          Menjadi platform spare part motor #1 di Indonesia yang
-                          dikenal karena kualitas, inovasi, dan customer
-                          experience yang luar biasa.
-                        </p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="border-l-4 border-l-orange-500 hover:shadow-lg transition-all duration-300 group">
-                  <CardContent className="p-6">
-                    <div className="flex items-start gap-4">
-                      <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                        <Heart className="w-10 h-5 text-orange-600 dark:text-orange-400" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-lg mb-2">
-                          Misi Kami
-                        </h3>
-                        <p className="text-muted-foreground">
-                          Menyediakan spare part berkualitas tinggi dengan harga
-                          kompetitif, didukung layanan pelanggan yang responsive
-                          dan sistem distribusi yang reliable.
-                        </p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-
-            <div className="relative">
-              <Image
-                src="/body-beat.jpg"
-                alt="Spare Part Motor Berkualitas"
-                width={600}
-                height={800}
-                className="rounded-3xl border-[1px] w-full h-auto hover:scale-105 transition-transform duration-500"
-              />
-            </div>
-          </div>
+    <section className="py-16 lg:py-20 bg-white">
+      <div className="max-w-7xl mx-auto px-4 md:px-6">
+        <div className="text-center mb-12">
+          <Badge className="bg-red-100 text-red-600 hover:bg-red-200 mb-4">
+            Milestone
+          </Badge>
+          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+            Perjalanan <span className="text-red-600">Kesuksesan</span> Kami
+          </h2>
         </div>
-      </section>
 
-      <SectionWhyChooseUs pt="pt-10" dividerBorder={false} />
-      <div className="pt-16">
-        <SectionBusinessStats />
-      </div>
+        <div className="relative">
+          <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-gray-200"></div>
 
-      <section className="w-full px-2 pt-10">
-        <div className="mx-auto px-4">
-          <div className="text-center mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Perjalanan <span className="text-red-600">Kami</span>
-            </h2>
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              Dari startup kecil hingga menjadi pemain utama di industri spare
-              part motor Indonesia.
-            </p>
-          </div>
+          <div className="space-y-12">
+            {milestones.map((milestone, index) => (
+              <div
+                key={index}
+                className={`relative flex items-center ${
+                  index % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"
+                }`}
+              >
+                <div className="w-full lg:w-5/12">
+                  <Card className="border border-gray-200 hover:border-red-300 hover:shadow-lg transition-all duration-300">
+                    <CardContent className="p-6">
+                      <div className="flex items-center gap-3 mb-3">
+                        <div className="w-12 h-12 bg-red-600 text-white rounded-full flex items-center justify-center font-bold">
+                          {milestone.year}
+                        </div>
+                        <h3 className="text-xl font-bold text-gray-900">
+                          {milestone.title}
+                        </h3>
+                      </div>
+                      <p className="text-gray-600">{milestone.description}</p>
+                    </CardContent>
+                  </Card>
+                </div>
 
-          <div className="mx-auto">
-            {timeline.map((item, index) => (
-              <TimelineItem key={index} {...item} />
+                <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2 w-4 h-4 bg-red-600 rounded-full border-4 border-white shadow-lg z-10"></div>
+
+                <div className="hidden lg:block w-5/12"></div>
+              </div>
             ))}
           </div>
         </div>
-      </section>
+      </div>
+    </section>
+  );
+}
 
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-blue-600 to-purple-600 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Siap Bergabung dengan Ribuan Pelanggan Setia?
-            </h2>
-            <p className="text-xl opacity-90 mb-8 leading-relaxed">
-              Temukan pengalaman berbelanja spare part motor yang berbeda.
-              Kualitas premium, harga kompetitif, dan pelayanan yang memuaskan.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button
-                size="lg"
-                variant="secondary"
-                className="bg-white text-blue-600 hover:bg-gray-100 hover:scale-105 transition-all duration-300"
-              >
-                <PhoneCall className="mr-2 h-4 w-4" />
-                Konsultasi Gratis
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-white text-white hover:bg-white hover:text-blue-600 hover:scale-105 transition-all duration-300 group"
-              >
-                Lihat Promo Terbaru
-                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
-              </Button>
-            </div>
-          </div>
+// ============== TESTIMONIALS ==============
+function Testimonials() {
+  const testimonials = [
+    {
+      name: "Andi Wijaya",
+      role: "Pemilik Bengkel",
+      content:
+        "Sudah 5 tahun jadi pelanggan setia. Kualitas produk selalu terjaga dan pelayanan sangat memuaskan. Rekomendasi banget!",
+      rating: 5,
+    },
+    {
+      name: "Maya Sari",
+      role: "Driver Online",
+      content:
+        "Harga kompetitif, barang original, dan pengiriman cepat. Sangat membantu untuk kebutuhan kendaraan saya.",
+      rating: 5,
+    },
+    {
+      name: "Bambang Hermawan",
+      role: "Pengusaha Transportasi",
+      content:
+        "Tim yang profesional dan responsif. Konsultasi gratis sangat membantu dalam memilih sparepart yang tepat.",
+      rating: 5,
+    },
+  ];
+
+  return (
+    <section className="py-16 lg:py-20 bg-gradient-to-br from-gray-50 to-white">
+      <div className="max-w-7xl mx-auto px-4 md:px-6">
+        <div className="text-center mb-12">
+          <Badge className="bg-red-100 text-red-600 hover:bg-red-200 mb-4">
+            Testimoni
+          </Badge>
+          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+            Apa Kata <span className="text-red-600">Pelanggan</span> Kami
+          </h2>
         </div>
-      </section>
+
+        <div className="grid md:grid-cols-3 gap-8">
+          {testimonials.map((testimonial, index) => (
+            <Card
+              key={index}
+              className="border-none shadow-lg hover:shadow-xl transition-shadow duration-300"
+            >
+              <CardContent className="p-6">
+                <Quote className="w-10 h-10 text-red-200 mb-4" />
+                <p className="text-gray-700 mb-6 leading-relaxed italic">
+                  &apos;{testimonial.content}&apos;
+                </p>
+                <div className="flex items-center gap-1 mb-4">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <CheckCircle
+                      key={i}
+                      className="w-5 h-5 fill-yellow-400 text-yellow-400"
+                    />
+                  ))}
+                </div>
+                <div>
+                  <div className="font-bold text-gray-900">
+                    {testimonial.name}
+                  </div>
+                  <div className="text-sm text-gray-600">
+                    {testimonial.role}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CTASection() {
+  return (
+    <section className="py-20 bg-gradient-to-br from-red-600 to-red-700">
+      <div className="max-w-4xl mx-auto px-4 md:px-6 text-center text-white">
+        <h2 className="text-3xl lg:text-5xl font-bold mb-6">
+          Mari Bergabung dengan Ribuan Pelanggan Setia Kami
+        </h2>
+        <p className="text-lg lg:text-xl text-red-100 mb-8">
+          Dapatkan penawaran terbaik dan konsultasi gratis untuk kebutuhan
+          otomotif Anda
+        </p>
+        <div className="flex justify-center flex-1">
+          <Link href={"/kontak"}>
+            <Button
+              size="lg"
+              className="bg-white text-red-600 hover:bg-gray-100 font-bold px-8"
+            >
+              Hubungi Kami Sekarang
+            </Button>
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ============== MAIN ABOUT PAGE ==============
+export default function AboutPage() {
+  return (
+    <div className="min-h-screen">
+      <HeroAbout />
+      <CompanyStory />
+      <VisionMission />
+      <CoreValues />
+      <Milestones />
+      <TeamSection />
+      <Testimonials />
+      <CTASection />
     </div>
   );
 }

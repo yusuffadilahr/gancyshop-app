@@ -3,7 +3,9 @@
 import { useAppSelector } from "@/redux/store";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Facebook, Twitter, Instagram, Youtube, Mail } from "lucide-react";
+
+import { FaTiktok } from "react-icons/fa";
+import { SiShopee } from "react-icons/si";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -125,22 +127,22 @@ export function Footer() {
             <h4 className="font-semibold">About</h4>
             <ul className="space-y-1">
               <li>
-                <Link href="#" className="hover:text-red-600">
+                <Link href="/tentang-kami" className="hover:text-red-600">
                   FAQs
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-red-600">
+                <Link href="/tentang-kami" className="hover:text-red-600">
                   Our Mission
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-red-600">
+                <Link href="/tentang-kami" className="hover:text-red-600">
                   Our Team
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-red-600">
+                <Link href="/tentang-kami" className="hover:text-red-600">
                   Press
                 </Link>
               </li>
@@ -182,20 +184,11 @@ export function Footer() {
             reserved.
           </p>
           <div className="flex gap-4 text-red-600">
-            <Link href="#">
-              <Facebook size={16} />
+            <Link href="https://shopee.co.id/gancyshop" target="_blank">
+              <SiShopee size={18} />
             </Link>
-            <Link href="#">
-              <Twitter size={16} />
-            </Link>
-            <Link href="#">
-              <Instagram size={16} />
-            </Link>
-            <Link href="#">
-              <Youtube size={16} />
-            </Link>
-            <Link href="mailto:you@example.com">
-              <Mail size={16} />
+            <Link href="https://www.tiktok.com/@gancyshop" target="_blank">
+              <FaTiktok size={18} />
             </Link>
           </div>
         </div>

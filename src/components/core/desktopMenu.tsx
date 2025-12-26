@@ -107,7 +107,7 @@ export default function DesktopMenu({
                   });
                   return (
                     <Link
-                      href={`/product/${encodeURIComponent(
+                      href={`/produk/${encodeURIComponent(
                         encryptData.toString()
                       )}`}
                       key={sub.id}

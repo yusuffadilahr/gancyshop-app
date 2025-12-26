@@ -30,7 +30,7 @@ export function Navbar() {
 
   const arrayStatisNavigation = [
     { menuName: "Beranda", href: "/" },
-    { menuName: "Produk", href: "/product" },
+    { menuName: "Produk", href: "/produk" },
     { menuName: "Tentang", href: "/tentang-kami" },
     { menuName: "Kontak", href: "/kontak" },
     { menuName: "Testimonial", href: "/testimoni" },
@@ -91,7 +91,7 @@ export function Navbar() {
                       >
                         {promo}
                       </h1>
-                      <Link href={!!tokenExist ? "/product" : "/auth/login"}>
+                      <Link href={!!tokenExist ? "/produk" : "/auth/login"}>
                         <Button
                           variant={"ghost"}
                           size={"sm"}

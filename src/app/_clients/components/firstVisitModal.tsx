@@ -41,7 +41,7 @@ export default function FirstVisitModal({
               berkualitas tinggi.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link href="/product" prefetch={false}>
+              <Link href="/produk" prefetch={false}>
                 <Button size="lg" className="rounded-xl">
                   <span>Pesan Sekarang</span>
                   <ArrowRight />

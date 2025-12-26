@@ -2,6 +2,7 @@ import {
   FaBoxOpen,
   FaCogs,
   FaEnvelope,
+  FaMoneyBill,
   FaTachometerAlt,
   FaTags,
   FaUsers,
@@ -23,6 +24,11 @@ export const useSideBarHelper = () => {
       title: "Kategori Produk",
       url: "/admin/kategori",
       icon: FaTags,
+    },
+    {
+      title: "Laporan",
+      url: "/admin/laporan",
+      icon: FaMoneyBill,
     },
     {
       title: "Pesan Masuk",

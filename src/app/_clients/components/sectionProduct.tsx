@@ -1,45 +1,100 @@
-import { dummyData } from "@/app/_servers/utils/dummyData";
-import CardProduct from "@/components/core/cardProduct";
+import { ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function SectionProduct() {
+  const categories = [
+    {
+      name: "Tameng Beat Karbu",
+      count: 150,
+      image: "/beat.jpg",
+      badge: "Best Seller",
+    },
+    {
+      name: "Body Kanan Kiri Beat Karbu",
+      count: 200,
+      image: "/beat-kankir.jpg",
+      badge: "Popular",
+    },
+    {
+      name: "Body Kanan Kiri Beat Mio",
+      count: 80,
+      image: "/beat-kankir-2.jpg",
+      badge: "Popular",
+    },
+    {
+      name: "Body Kasar",
+      count: 250,
+      image: "/kasar.jpg",
+      badge: "Full Stock",
+    },
+  ];
+
   return (
-    <div className="px-2 md:px-5 space-y-14 pt-4 py-3 md:py-10 md:pt-20">
-      <div className="w-full flex justify-center items-center flex-col gap-5">
-        <div className="w-full">
-          <div className="w-full flex items-center justify-center gap-3">
-            <div className="border-[1px] border-neutral-200 mb-3 flex-1"></div>
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              <span className="text-red-600">100%</span> Produk Premium
-            </h2>
-            <div className="border-[1px] border-neutral-200 mb-3 flex-1"></div>
-          </div>
-          <p className="text-lg text-center text-gray-600 max-w-2xl mx-auto">
-            Kami berkomitmen memberikan produk berkualitas tinggi dengan
-            pelayanan terbaik untuk kepuasan Anda
+    <section className="py-16 bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 md:px-6">
+        <div className="text-center mb-12">
+          <Badge className="bg-red-100 text-red-600 hover:bg-red-200 mb-4">
+            Kategori Produk
+          </Badge>
+          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+            Temukan <span className="text-red-600">Sparepart</span> yang Anda
+            Butuhkan
+          </h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Ribuan produk sparepart dari berbagai merk untuk semua jenis
+            kendaraan
           </p>
         </div>
-      </div>
-      <div className="flex w-full h-full">
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-2 w-full h-fit">
-          {dummyData?.map((item, idx) => (
-            <Link key={idx} href="/product">
-              <CardProduct
-                categoryName={item?.category?.categoryName}
-                imageAlt="Product"
-                imageUrl={item?.imageUrl || ""}
-                productCreatedAt={item?.createdAt || ""}
-                productIsActive={item?.isActive}
-                productName={item?.name}
-                productPrice={item?.price}
-                productStock={item?.stock}
-                productWeight={item?.weightGram}
-                customButton={<div />}
-              />
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {categories.map((category, index) => (
+            <Link key={index} href={"/produk"}>
+              <Card className="group cursor-pointer border-none shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
+                <div className="relative h-72 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
+                  {/* <div className="absolute inset-0 bg-red-600 opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div> */}
+                  <div className="absolute top-3 right-3">
+                    <Badge className="bg-red-600 text-white">
+                      {category.badge}
+                    </Badge>
+                  </div>
+                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-red-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+                  <Image
+                    height={500}
+                    width={500}
+                    loading="lazy"
+                    alt="picture"
+                    src={category?.image}
+                  />
+                </div>
+                <CardContent className="p-5">
+                  <h3 className="text-lg font-bold text-gray-900 mb-1 group-hover:text-red-600 transition-colors">
+                    {category.name}
+                  </h3>
+                  <p className="text-sm text-gray-500">
+                    {category.count}+ Produk
+                  </p>
+                </CardContent>
+              </Card>
             </Link>
           ))}
         </div>
+
+        <div className="text-center">
+          <Link href={"/produk"}>
+            <Button
+              size="lg"
+              className="bg-red-600 hover:bg-red-700 text-white font-semibold"
+            >
+              Lihat Semua Produk
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
+          </Link>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
