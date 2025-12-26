@@ -1,98 +1,107 @@
-import { Card, CardContent } from "@/components/ui/card";
+import { Headphones, CheckCircle, Star, Clock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Shield, Truck, Clock, Award } from "lucide-react";
+import Image from "next/image";
 
-interface ISectionWhyChooseUs {
-  pt?: string;
-  dividerBorder?: boolean;
-}
-
-export default function SectionWhyChooseUs({
-  pt = "pt-16",
-  dividerBorder = true,
-}: ISectionWhyChooseUs) {
+export default function SectionWhyChooseUs() {
   const features = [
     {
-      icon: <Shield className="h-8 w-8 text-red-600" />,
-      title: "100% Kualitas Premium",
+      icon: CheckCircle,
+      title: "Garansi Resmi",
       description:
-        "Semua produk dijamin original dari distributor resmi dengan sertifikat keaslian",
-      highlight: "Plug & Play",
+        "Setiap produk dilengkapi garansi pengembalian jika barang rusak.",
     },
     {
-      icon: <Truck className="h-8 w-8 text-red-600" />,
-      title: "Ongkir Termurah",
-      description:
-        "Gratis ongkos kirim untuk pembelian minimal Rp 500.000 ke seluruh Indonesia",
-      highlight: "Hemat Ongkir",
+      icon: Star,
+      title: "Kualitas Terjamin",
+      description: "Hanya menjual produk terbaik dari brand ternama",
     },
     {
-      icon: <Clock className="h-8 w-8 text-red-600" />,
-      title: "Langsung Proses",
-      description:
-        "Order sebelum jam 15:00 WIB akan diproses dan dikirim di hari yang sama",
-      highlight: "Proses Cepat",
+      icon: Clock,
+      title: "Stok Lengkap",
+      description: "Ribuan item tersedia dan siap dikirim setiap hari",
     },
     {
-      icon: <Award className="h-8 w-8 text-red-600" />,
-      title: "Garansi Pengembalian",
-      description:
-        "Garansi resmi untuk semua produk rusak dengan layanan terbaik",
-      highlight: "Garansi Resmi",
+      icon: Headphones,
+      title: "Customer Service 24/7",
+      description: "Tim support siap membantu Anda kapan saja",
     },
   ];
 
   return (
-    <section className={`px-2 md:px-5 ${pt}`}>
-      {/* bg-gradient-to-br from-gray-50 via-white to-red-50 */}
-      <div className="w-full">
-        <div className="text-center mb-12">
-          <Badge variant="destructive" className="mb-4 px-4 py-2">
-            Mengapa Pilih Kami?
-          </Badge>
-          {dividerBorder ? (
-            <div className="flex items-center w-full justify-center gap-3">
-              <div className="border-[1px] border-neutral-200 flex-1 mb-3"></div>
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                Kepercayaan <span className="text-red-600">1000+</span> Customer
-              </h2>
-              <div className="border-[1px] border-neutral-200 flex-1 mb-3"></div>
-            </div>
-          ) : (
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Kepercayaan <span className="text-red-600">1000+</span> Customer
+    <section className="py-16 bg-white">
+      <div className="max-w-7xl mx-auto px-4 md:px-6">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <Badge className="bg-red-100 text-red-600 hover:bg-red-200 mb-4">
+              Mengapa Kami Berbeda
+            </Badge>
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+              Komitmen Kami untuk <span className="text-red-600">Kepuasan</span>{" "}
+              Anda
             </h2>
-          )}
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Kami berkomitmen memberikan produk berkualitas tinggi dengan
-            pelayanan terbaik untuk kepuasan Anda
-          </p>
-        </div>
+            <p className="text-gray-600 mb-8 leading-relaxed text-justify">
+              Dengan pengalaman lebih dari 5 tahun di industri otomotif, kami
+              memahami kebutuhan pelanggan dan selalu mengutamakan kualitas
+              serta kepuasan Anda.
+            </p>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {features.map((feature, index) => (
-            <Card
-              key={index}
-              className="group hover:shadow-xl transition-all duration-300 border-0 shadow-lg hover:-translate-y-2"
-            >
-              <CardContent className="p-6 text-center">
-                <div className="mb-4 flex justify-center">
-                  <div className="p-3 rounded-full bg-white shadow-md group-hover:scale-110 transition-transform duration-300">
-                    {feature.icon}
+            <div className="space-y-4">
+              {features.map((feature, index) => {
+                const Icon = feature.icon;
+                return (
+                  <div
+                    key={index}
+                    className="flex items-start gap-4 p-4 rounded-lg hover:bg-gray-50 transition-colors"
+                  >
+                    <div className="flex-shrink-0 w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
+                      <Icon className="w-5 h-5 text-red-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-gray-900 mb-1">
+                        {feature.title}
+                      </h3>
+                      <p className="text-sm text-gray-600">
+                        {feature.description}
+                      </p>
+                    </div>
                   </div>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="relative">
+            <div className="aspect-square bg-gradient-to-br from-red-50 to-red-100 rounded-2xl flex items-center justify-center">
+              <div className="w-full h-full absolute">
+                <Image
+                  height={500}
+                  width={500}
+                  loading="lazy"
+                  alt="picture"
+                  src={"/hero-section.png"}
+                  className="h-full w-full object-cover rounded-xl"
+                />
+              </div>
+
+              <div className="text-center p-8 z-20">
+                <div className="text-6xl font-bold text-red-600 mb-2">98%</div>
+                <div className="text-xl font-semibold text-white mb-2">
+                  Kepuasan Pelanggan
                 </div>
-                <Badge variant="outline" className="mb-3 text-xs">
-                  {feature.highlight}
-                </Badge>
-                <h3 className="font-semibold text-lg mb-2 text-gray-900">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600 text-sm leading-relaxed">
-                  {feature.description}
-                </p>
-              </CardContent>
-            </Card>
-          ))}
+                <p className="text-white">Berdasarkan 10,000+ ulasan</p>
+                <div className="flex justify-center gap-1 mt-4">
+                  {[...Array(5)].map((_, i) => (
+                    <Star
+                      key={i}
+                      className="w-6 h-6 fill-yellow-400 text-yellow-400"
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+            {/* <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-red-600 rounded-2xl opacity-10"></div> */}
+            {/* <div className="absolute -top-6 -right-6 w-24 h-24 bg-red-600 rounded-full opacity-10"></div> */}
+          </div>
         </div>
       </div>
     </section>

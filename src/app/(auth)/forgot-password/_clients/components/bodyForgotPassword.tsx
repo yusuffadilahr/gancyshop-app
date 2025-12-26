@@ -4,7 +4,7 @@ import { useMutateForgotPassword } from "@/app/(auth)/forgot-password/_clients/h
 import CardAuthLayout from "@/components/core/cardAuthLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { forgotPasswordSchema } from "@/app/_clients/utils/schemas";
+import { forgotPasswordSchema } from "../schemas";
 import { ErrorMessage, Form, Formik } from "formik";
 import Link from "next/link";
 

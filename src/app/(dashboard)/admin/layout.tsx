@@ -11,12 +11,12 @@
 // default nextJs layout itu dirender secara server dan statis, maka dari itu akan muncul error bahwa cookie tidak bisa dirender di halaman statis
 
 import SideBarLayout from "@/app/(dashboard)/admin/_clients/components/sideBarLayout";
-import * as React from "react"
+import * as React from "react";
 
-export default async function layout({ children }: { children: React.ReactNode }) {
-    return (
-        <SideBarLayout>
-            {children}
-        </SideBarLayout>
-    )
+export default async function layout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return <SideBarLayout>{children}</SideBarLayout>;
 }

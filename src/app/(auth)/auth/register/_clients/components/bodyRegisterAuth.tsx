@@ -1,5 +1,4 @@
-"use client";
-
+"use client";;
 import { useMutateRegister } from "@/app/(auth)/auth/register/_clients/hooks/use-mutate";
 import { formRegisterSchema } from "@/app/(auth)/auth/register/_clients/schemas/formRegisterSchema";
 import CardAuthLayout from "@/components/core/cardAuthLayout";
@@ -8,17 +7,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { ErrorMessage, Form, Formik } from "formik";
-import Link from "next/link";
-import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import SectionNavigation from "./sectionNavigation";
 
 export default function BodyRegister() {
-  const [isHiddenPassword, setIsHiddenPassword] = useState<{
-    pass: boolean;
-    confPass: boolean;
-  }>({ pass: false, confPass: false });
-
-  const { initialValues, handleRegister, isPending } = useMutateRegister();
+  const {
+    isHiddenPassword,
+    setIsHiddenPassword,
+    initialValues,
+    handleRegister,
+    isPending,
+  } = useMutateRegister();
 
   return (
     <div className="w-full justify-center items-center flex min-h-20 h-fit">
@@ -205,25 +204,8 @@ export default function BodyRegister() {
             </Form>
           )}
         </Formik>
-        <div className="flex w-full justify-center items-center flex-col">
-          <h1 className="py-2 text-sm text-gray-500">Atau</h1>
-          <Link href="/auth/login" className="w-full">
-            <Button variant="outline" className="w-full" size="lg">
-              Masuk ke Akun
-            </Button>
-          </Link>
-          <p className="mt-3 text-center text-sm text-gray-600">
-            Dengan membuat akun, Anda menyetujui{" "}
-            <Link href="/terms" className="text-blue-500 underline">
-              Syarat & Ketentuan
-            </Link>{" "}
-            dan{" "}
-            <Link href="/privacy" className="text-blue-500 underline">
-              Kebijakan Privasi
-            </Link>{" "}
-            kami.
-          </p>
-        </div>
+
+        <SectionNavigation />
       </CardAuthLayout>
     </div>
   );

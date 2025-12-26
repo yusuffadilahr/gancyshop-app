@@ -45,8 +45,6 @@ export default function BodyProduct({ idProduct }: IBodyProductDetailProps) {
     },
   });
 
-  console.log(dataProduct, "<< data product");
-
   const { mutate: handleAddToCart, isPending } = useMutation({
     mutationFn: async () => {
       const fd = new FormData();
@@ -238,6 +236,18 @@ export default function BodyProduct({ idProduct }: IBodyProductDetailProps) {
                     <Plus className="h-4 w-4 mr-2" />
                     Tambah ke Keranjang
                   </Button>
+
+                  {findQuantityInCart?.quantity && (
+                    <Button
+                      variant={"outline"}
+                      className="w-full"
+                      onClick={handleNavigateToCart}
+                    >
+                      <ShoppingCart className="h-4 w-4 mr-2" />
+                      Lihat Keranjang
+                    </Button>
+                  )}
+
                   <div className="grid grid-cols-2 gap-2">
                     <Button variant="outline" size="sm">
                       <Heart className="h-4 w-4 mr-2" />

@@ -3,56 +3,20 @@
 import { AppSidebar } from "@/app/_clients/components/appSideBar";
 import { AppBreadcrumb } from "@/app/_clients/components/breadCrumbs";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { setProfileAdmin } from "@/redux/slice/globalSlice";
-import { useAppDispatch } from "@/redux/store";
-import Cookies from "js-cookie";
-import { handleGetProfile } from "@/app/_servers/services";
 import { useSideBarHelper } from "../hooks/use-aside";
-import { useEffect, useState } from "react";
+import { ISideBarLayoutAdminProps } from "../types";
+import { IProfileUser } from "@/app/_clients/types";
+import { useAsideLogic } from "../hooks/use-aside-logic";
 
-export default function SideBarLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const [dataProfil, setDataProfil] = useState<{
-    fullname: string;
-    phoneNumber: string;
-    email: string;
-  } | null>(null);
-  const dispatch = useAppDispatch();
-
-  const handleGetProfilAdmin = async () => {
-    try {
-      const token = Cookies.get("_token");
-      const res = await handleGetProfile(String(token));
-      if (res.error) throw res;
-
-      setDataProfil(res?.data);
-      dispatch(setProfileAdmin(res?.data));
-    } catch (error) {
-      console.log(error);
-      setDataProfil(null);
-    }
-  };
-
+export default function SideBarLayout({ children }: ISideBarLayoutAdminProps) {
+  const { dataProfil } = useAsideLogic();
   const { items } = useSideBarHelper();
-
-  useEffect(() => {
-    handleGetProfilAdmin();
-  }, []);
 
   return (
     <SidebarProvider>
       <AppSidebar
         role="ADMIN"
-        dataProfil={
-          dataProfil as {
-            fullname: string;
-            phoneNumber: string;
-            email: string;
-          }
-        }
+        dataProfil={dataProfil as IProfileUser}
         dataMenu={items}
       />
       <main className="w-full min-h-screen">

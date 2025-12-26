@@ -23,8 +23,6 @@ export const loginAction = async (fd: FormData) => {
     credentials: "include",
   });
 
-  console.log(res, "<<");
-
   const result = await res.json();
   if (!res.ok) return result;
 

@@ -1,52 +1,79 @@
-import { dataRatingStatis } from "@/app/_servers/utils/dummyData";
+import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from "@/components/ui/carousel";
-import Image from "next/image";
-import Link from "next/link";
+import { CreditCard, Headphones, Shield, Truck } from "lucide-react";
 
 export default function SectionCardPlatform() {
+  const platforms = [
+    {
+      icon: Shield,
+      title: "Produk Terjamin",
+      description:
+        "Semua sparepart terjamin dan bergaransi resmi dari distributor",
+      color: "red",
+    },
+    {
+      icon: Truck,
+      title: "Pengiriman Cepat",
+      description:
+        "Gratis ongkir untuk area tertentu dengan estimasi pengiriman 1-3 hari",
+      color: "blue",
+    },
+    {
+      icon: Headphones,
+      title: "Konsultasi Gratis",
+      description:
+        "Tim ahli kami siap membantu memilih sparepart yang tepat untuk kendaraan Anda",
+      color: "green",
+    },
+    {
+      icon: CreditCard,
+      title: "Pembayaran Mudah",
+      description:
+        "Berbagai metode pembayaran tersedia: transfer, e-wallet, dan cicilan 0%",
+      color: "purple",
+    },
+  ];
+
   return (
-    <div className="px-2 md:px-5 space-y-12 py-10">
-      <Carousel className="w-full max-w-[100vw]">
-        <CarouselContent>
-          {dataRatingStatis.map((item, index) => (
-            <CarouselItem className="md:basis-1/2 lg:basis-1/4" key={index}>
-              <Link href={item.link} target="_blank" className="w-full">
-                <Card className="h-full flex justify-between border-none shadow-none items-center">
-                  <CardContent className="p-4 flex flex-col justify-between">
-                    <div className="space-y-1">
-                      <h2 className="text-xl font-semibold">
-                        {item.aplikasiName}
-                      </h2>
-                      <p className="text-yellow-500 text-lg">
-                        {"★".repeat(5)}{" "}
-                        <span className="text-gray-700">({item.rating})</span>
-                      </p>
-                      <p className="text-sm text-gray-500">
-                        Followers:{" "}
-                        {item.followers.toLocaleString("id-ID") || "-"}
-                      </p>
-                    </div>
-                  </CardContent>
-                  <CardContent className="p-4 md:flex flex-col justify-between h-full hidden">
-                    <Image
-                      width={500}
-                      height={500}
-                      alt="app"
-                      src={item.image}
-                      className="w-fit h-24 object-cover"
-                    />
-                  </CardContent>
-                </Card>
-              </Link>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-      </Carousel>
-    </div>
+    <section className="py-16 bg-white">
+      <div className="max-w-7xl mx-auto px-4 md:px-6">
+        <div className="text-center mb-12">
+          <Badge className="bg-red-100 text-red-600 hover:bg-red-200 mb-4">
+            Keunggulan Kami
+          </Badge>
+          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+            Kenapa Pilih <span className="text-red-600">Kami?</span>
+          </h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Kami berkomitmen memberikan pelayanan terbaik dengan produk
+            berkualitas untuk kendaraan Anda
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {platforms.map((platform, index) => {
+            const Icon = platform.icon;
+            return (
+              <Card
+                key={index}
+                className="border border-gray-200 hover:border-red-300 hover:shadow-lg transition-all duration-300 group"
+              >
+                <CardContent className="p-6">
+                  <div className="inline-flex items-center justify-center w-12 h-12 bg-red-50 rounded-lg mb-4 group-hover:bg-red-100 transition-colors">
+                    <Icon className="w-6 h-6 text-red-600" />
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">
+                    {platform.title}
+                  </h3>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    {platform.description}
+                  </p>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+      </div>
+    </section>
   );
 }

@@ -9,17 +9,20 @@ export interface IDataCategoryMotor {
   deletedAt: string | null;
 }
 
-export interface IAppSideBar {
-  dataProfil: {
-    fullname: string;
-    phoneNumber: string;
-    email: string;
-  };
-  dataMenu: {
-    title: string;
-    url: string;
-    icon: IconType;
-  }[];
+export interface IProfileUser {
+  fullname: string;
+  phoneNumber: string;
+  email: string;
+}
+
+interface IDataMenu {
+  title: string;
+  url: string;
+  icon: IconType;
+}
+export interface IAppSideBarProps {
+  dataProfil: IProfileUser;
+  dataMenu: IDataMenu[];
   role: "USER" | "ADMIN";
 }
 
@@ -33,4 +36,14 @@ export interface ICarouselSlide {
   price: string;
   rating: number;
   inStock: boolean;
+}
+
+export interface IFirstVisitModalProps {
+  isOpenDialog: boolean;
+  setIsOpenDialog: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export interface ISectionWhyChooseUsProps {
+  pt?: string;
+  dividerBorder?: boolean;
 }
