@@ -78,6 +78,7 @@ export interface ISectionTableKategoriProps {
   dataCategory: IGETDataCategory | undefined;
   refetchGetDataCategory: () => void;
   isLoading: boolean;
+  paginationCount?: number;
 }
 
 export interface ISearchData {

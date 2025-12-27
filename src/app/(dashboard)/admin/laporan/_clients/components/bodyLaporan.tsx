@@ -22,6 +22,7 @@ import {
   TrendingUp,
   DollarSign,
   TrendingDown,
+  ShoppingCart,
 } from "lucide-react";
 import { formatRupiah } from "@/app/_clients/utils/formatConverter";
 import { useQuery } from "@tanstack/react-query";
@@ -170,6 +171,9 @@ export default function BodyLaporan() {
     setLoading(false);
   };
 
+  const disabledExportPdf =
+    loading || dataReport?.length === 0 || !!searchParams?.get("search");
+
   useEffect(() => {
     const currentParams = new URLSearchParams(searchParams.toString());
     if (debounce?.search) {
@@ -225,7 +229,7 @@ export default function BodyLaporan() {
               variant="outline"
               className="border-gray-300 hover:bg-gray-50"
               onClick={handleExportPdf}
-              disabled={loading}
+              disabled={disabledExportPdf}
             >
               <Download className="w-4 h-4 mr-2" />
               Export
@@ -234,6 +238,7 @@ export default function BodyLaporan() {
             <Button
               variant="outline"
               className="border-gray-300 hover:bg-gray-50"
+              disabled={disabledExportPdf}
               onClick={handleExportPdf}
             >
               <Printer className="w-4 h-4" />
@@ -248,7 +253,7 @@ export default function BodyLaporan() {
           const isPositive = total?.isPositive;
 
           return (
-            <Card className="border-none shadow-md" key={idx}>
+            <Card className="border-none" key={idx}>
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -261,9 +266,15 @@ export default function BodyLaporan() {
                         : total?.value}
                     </h3>
                   </div>
-                  <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-                    <DollarSign className="w-6 h-6 text-red-600" />
-                  </div>
+                  {isFormatRupiah ? (
+                    <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                      <DollarSign className="w-6 h-6 text-red-600" />
+                    </div>
+                  ) : (
+                    <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                      <ShoppingCart className="w-6 h-6 text-blue-600" />
+                    </div>
+                  )}
                 </div>
                 <div
                   className={`mt-2 flex items-center text-xs ${
@@ -284,7 +295,7 @@ export default function BodyLaporan() {
       </div>
 
       <Card className="border-none shadow-md">
-        <CardHeader className="border-b border-gray-200 bg-gray-50">
+        <CardHeader className="border-b border-gray-200 bg-white">
           <div className="flex items-center justify-between">
             <CardTitle className="text-lg font-bold text-gray-900">
               Detail Transaksi Hari Ini

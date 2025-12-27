@@ -163,8 +163,8 @@ export default function BodyPengaturan() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="bio">Bio</Label>
             <Textarea
+              label="Bio"
               id="bio"
               placeholder="Ceritakan sedikit tentang diri Anda..."
               defaultValue="Saya adalah seorang administrator yang berpengalaman dalam mengelola sistem dan tim."

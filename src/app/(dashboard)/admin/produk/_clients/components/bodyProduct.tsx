@@ -108,8 +108,9 @@ export default function BodyProduk() {
               isPending={isPendingUpdateIsActive}
               setFilePreview={setFilePreview}
               handleChangeFile={handleChangeFile}
-              refetch={refetch}
               isLoading={isLoadingGetData}
+              paginationCount={(Number(page) - 1) * Number(limit)}
+              refetch={refetch}
             />
           </div>
         </CardContent>

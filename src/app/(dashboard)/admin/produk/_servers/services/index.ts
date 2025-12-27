@@ -94,7 +94,7 @@ export const updateIsActiveProduct = async (
 export const handleGetDataCategoryMotor = async () => {
   try {
     const token = (await cookies()).get("_token")?.value;
-    let res = await fetch(`${baseUrlApi}/category/all-category-motorcycle`, {
+    let res = await fetch(`${baseUrlApi}/admin/all-category-motorcycle`, {
       headers: { Authorization: `Bearer ${token}` },
       method: "GET",
       cache: "no-store",
@@ -103,7 +103,7 @@ export const handleGetDataCategoryMotor = async () => {
     if (res.status === 401) {
       res = (await handleRetryForServerAction(
         token as string,
-        `${baseUrlApi}/category/all-category-motorcycle`,
+        `${baseUrlApi}/admin/all-category-motorcycle`,
         {
           method: "GET",
           cache: "no-store",
@@ -126,7 +126,7 @@ export const handleGetDataCategoryByCategoryMotor = async (
   try {
     const token = (await cookies()).get("_token")?.value;
     let res = await fetch(
-      `${baseUrlApi}/category/all-category/${categoryMotorId}`,
+      `${baseUrlApi}/admin/all-category/${categoryMotorId}`,
       {
         headers: { Authorization: `Bearer ${token}` },
         method: "GET",
@@ -137,7 +137,7 @@ export const handleGetDataCategoryByCategoryMotor = async (
     if (res.status === 401) {
       res = (await handleRetryForServerAction(
         token as string,
-        `${baseUrlApi}/category/all-category/${categoryMotorId}`,
+        `${baseUrlApi}/admin/all-category/${categoryMotorId}`,
         {
           method: "GET",
           cache: "no-store",

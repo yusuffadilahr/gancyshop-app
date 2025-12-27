@@ -70,6 +70,7 @@ export interface IInitialValuesEditProduct {
 }
 
 export interface ITableProductProps {
+  paginationCount?: number;
   isLoading: boolean;
   filePreview: string;
   setFilePreview: React.Dispatch<React.SetStateAction<string>>;

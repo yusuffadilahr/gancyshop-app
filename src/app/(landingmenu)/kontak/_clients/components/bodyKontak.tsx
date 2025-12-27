@@ -261,13 +261,8 @@ function ContactFormSection() {
               </div>
 
               <div className="space-y-2">
-                <Label
-                  htmlFor="message"
-                  className="text-gray-700 font-semibold"
-                >
-                  Pesan *
-                </Label>
                 <Textarea
+                  label="Pesan"
                   id="message"
                   name="message"
                   placeholder="Tuliskan pesan Anda di sini..."

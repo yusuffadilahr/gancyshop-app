@@ -6,18 +6,19 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import MoreOption from "@/components/core/moreOption";
-import { FaTrash } from "react-icons/fa";
 import ModalEditKategori from "./modalEditKategori";
+
 import { ISectionTableKategoriProps } from "../types";
+import ModalDeleteCategory from "./modalDeleteKategori";
 
 export default function SectionTableKategori({
   dataCategory,
   refetchGetDataCategory,
   isLoading,
+  paginationCount,
 }: ISectionTableKategoriProps) {
   return (
     <Card>
@@ -79,7 +80,7 @@ export default function SectionTableKategori({
                     className="hover:bg-gray-50 transition-colors"
                   >
                     <TableCell className="px-4 py-4 text-gray-600 font-medium">
-                      {i + 1}
+                      {paginationCount ? paginationCount + (i + 1) : i + 1}
                     </TableCell>
                     <TableCell className="px-4 py-4">
                       <div className="font-medium text-gray-900">
@@ -105,15 +106,10 @@ export default function SectionTableKategori({
                             dataItem={item}
                           />
 
-                          <Button
-                            variant={"ghost"}
-                            size={"sm"}
-                            className="w-full flex justify-start text-red-600
-                                hover:text-red-600"
-                          >
-                            <FaTrash />
-                            Hapus
-                          </Button>
+                          <ModalDeleteCategory
+                            idCategory={item?.id}
+                            refetch={refetchGetDataCategory}
+                          />
                         </div>
                       </MoreOption>
                     </TableCell>

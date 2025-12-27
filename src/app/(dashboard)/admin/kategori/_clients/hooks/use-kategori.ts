@@ -23,7 +23,7 @@ export const useKategori = () => {
   const {
     data: dataCategory,
     refetch: refetchGetDataCategory,
-    isLoading,
+    isPending: isLoading,
   } = useQuery<IGETDataCategory>({
     queryKey: ["get-kategori"],
     queryFn: async () => {
