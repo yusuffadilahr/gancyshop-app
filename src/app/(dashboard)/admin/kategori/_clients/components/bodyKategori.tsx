@@ -1,5 +1,4 @@
 "use client";
-
 import dynamic from "next/dynamic";
 import TitleDashboardSection from "@/components/core/titleDashboard";
 import InputSearch from "@/components/core/inputSearch";
@@ -63,6 +62,7 @@ export default function BodyKategori() {
         dataCategory={dataCategory}
         isLoading={isLoading}
         refetchGetDataCategory={refetchGetDataCategory}
+        paginationCount={(page - 1) * limit}
       />
 
       <PaginationTable

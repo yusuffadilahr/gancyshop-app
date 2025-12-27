@@ -24,6 +24,11 @@ import * as React from "react";
 import { FaDesktop } from "react-icons/fa";
 import ModalEditProduct from "./modalEditProduct";
 import ModalDeleteProduct from "./modalDeleteProduct";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function TableProduct({
   data,
@@ -34,6 +39,7 @@ export default function TableProduct({
   filePreview,
   refetch,
   isLoading,
+  paginationCount,
 }: ITableProductProps) {
   const [findProduct, setFindProduct] = React.useState<IDataProduk | null>(
     null
@@ -43,6 +49,9 @@ export default function TableProduct({
     <Table>
       <TableHeader>
         <TableRow>
+          <TableHead className="w-fit max-w-[200px] px-4 py-2 text-left text-gray-700 font-semibold">
+            No
+          </TableHead>
           <TableHead className="w-fit max-w-[200px] px-4 py-2 text-left text-gray-700 font-semibold">
             Nama Produk
           </TableHead>
@@ -84,16 +93,32 @@ export default function TableProduct({
             </TableCell>
           </TableRow>
         ) : (
-          data?.map((item) => {
+          data?.map((item, idx) => {
             return (
               <TableRow
                 key={item.id}
                 className="border-t border-gray-200 hover:bg-gray-50"
               >
                 <TableCell className="px-4 py-5 font-medium">
+                  {paginationCount ? paginationCount + (idx + 1) : idx + 1}
+                </TableCell>
+                <TableCell className="px-4 py-5 font-medium">
                   {item.name}
                 </TableCell>
-                <TableCell className="px-4 py-5">{item.description}</TableCell>
+                <TableCell className="px-4 py-5">
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <p className="truncate max-w-[300px]">
+                        {item.description}
+                      </p>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="max-w-[300px] text-justify">
+                        {item.description}
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TableCell>
                 <TableCell className="px-4 py-5">{item.stock} Pcs</TableCell>
                 <TableCell className="px-4 py-5">
                   <Badge variant={"secondary"}>
@@ -124,7 +149,7 @@ export default function TableProduct({
                 </TableCell>
                 <TableCell className="px-4 py-5 text-left flex justify-end">
                   <MoreOption>
-                    <Link href={"/product"}>
+                    <Link href={"/produk"}>
                       <Button
                         variant={"ghost"}
                         size={"sm"}

@@ -108,7 +108,6 @@ export default function BodyAdminDashboard() {
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto space-y-6">
-        {/* Header */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
           <div className="flex items-center justify-between">
             <div>
@@ -128,7 +127,6 @@ export default function BodyAdminDashboard() {
           </div>
         </div>
 
-        {/* Key Metrics */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <MetricCard
             title="Total Revenue"
@@ -160,9 +158,7 @@ export default function BodyAdminDashboard() {
           />
         </div>
 
-        {/* Charts Row 1 */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Sales Trend */}
           <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 p-6">
             <div className="flex items-center justify-between mb-6">
               <div>
@@ -204,7 +200,6 @@ export default function BodyAdminDashboard() {
             </div>
           </div>
 
-          {/* Product Categories */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
             <div className="mb-6">
               <h3 className="text-lg font-semibold text-gray-900">
@@ -264,9 +259,7 @@ export default function BodyAdminDashboard() {
           </div>
         </div>
 
-        {/* Charts Row 2 */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Top Products */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
             <div className="mb-6">
               <h3 className="text-lg font-semibold text-gray-900">
@@ -287,7 +280,6 @@ export default function BodyAdminDashboard() {
             </div>
           </div>
 
-          {/* Customer Growth */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
             <div className="mb-6">
               <h3 className="text-lg font-semibold text-gray-900">
@@ -325,7 +317,6 @@ export default function BodyAdminDashboard() {
           </div>
         </div>
 
-        {/* Inventory Status */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
           <div className="mb-6">
             <h3 className="text-lg font-semibold text-gray-900">
@@ -342,7 +333,6 @@ export default function BodyAdminDashboard() {
           </div>
         </div>
 
-        {/* Key Insights */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">
             Key Business Insights

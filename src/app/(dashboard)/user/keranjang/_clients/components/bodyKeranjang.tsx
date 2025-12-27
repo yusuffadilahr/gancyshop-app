@@ -278,7 +278,7 @@ export default function BodyKeranjang() {
                   <p className="text-gray-500 mb-4">
                     Belum ada produk yang ditambahkan ke keranjang
                   </p>
-                  <Link href="/product" prefetch={false}>
+                  <Link href="/produk" prefetch={false}>
                     <Button variant={"destructive"}>Mulai Belanja</Button>
                   </Link>
                 </div>
@@ -410,6 +410,7 @@ export default function BodyKeranjang() {
                       {({ setFieldValue, values }) => (
                         <Form className="space-y-3">
                           <Textarea
+                            label="Alamat"
                             onChange={(e) => {
                               const { value } = e.target;
                               setFieldValue("address", value);

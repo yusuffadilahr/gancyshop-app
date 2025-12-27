@@ -15,7 +15,7 @@ export const useQueryGetProduct = ({
   const {
     data: dataTable,
     refetch,
-    isLoading: isLoadingGetData,
+    isPending: isLoadingGetData,
   } = useQuery({
     queryKey: ["get-data-product"],
     queryFn: async () => {

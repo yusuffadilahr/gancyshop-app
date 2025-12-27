@@ -17,7 +17,7 @@ export const getCategoryProduct = async ({
     const token = (await cookies()).get("_token")?.value || "";
 
     let res = await fetch(
-      `${baseUrlApi}/category/all-categorys?page=${page}&limit=${limit}&search=${search}`,
+      `${baseUrlApi}/admin/all-categorys?page=${page}&limit=${limit}&search=${search}`,
       {
         cache: "no-store",
         headers: { Authorization: `Bearer ${token}` },
@@ -29,7 +29,7 @@ export const getCategoryProduct = async ({
     if (res.status === 401) {
       res = (await handleRetryForServerAction(
         token,
-        `${baseUrlApi}/category/all-categorys`,
+        `${baseUrlApi}/admin/all-categorys`,
         {
           cache: "no-store",
           method: "GET",
@@ -95,7 +95,7 @@ export const createCategoryAction = async (fd: FormData) => {
 export const updateCategory = async (fd: FormData) => {
   try {
     const cookieStore = await cookies();
-    const token = cookieStore.get("value")?.value;
+    const token = cookieStore.get("_token")?.value;
 
     const data = {
       categoryId: fd.get("categoryId")
@@ -125,6 +125,37 @@ export const updateCategory = async (fd: FormData) => {
       res = (await handleRetryForServerAction(token as string, url, {
         body: JSON.stringify(data),
         method: "PATCH",
+      })) as Response;
+    }
+
+    const result = await res.json();
+    if (!res.ok) throw result;
+
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const deleteCategoryById = async (id: number) => {
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore?.get("_token")?.value;
+    const url = `${baseUrlApi}/admin/delete-category/${id}`;
+
+    let res = await fetch(url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+
+      method: "DELETE",
+    });
+
+    if (res.status === 401) {
+      res = (await handleRetryForServerAction(token || "", url, {
+        method: "DELETE",
       })) as Response;
     }
 

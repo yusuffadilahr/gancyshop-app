@@ -66,6 +66,10 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL("/auth/login", currentUrl));
   }
 
+  if (!tokenRefresh && pathname.startsWith("/produk/")) {
+    return NextResponse.redirect(new URL("/auth/login", currentUrl));
+  }
+
   return NextResponse.next();
 }
 
